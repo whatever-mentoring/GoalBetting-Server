@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+  datasource:
+    hikari:
+      jdbc-url:
+      username:
+      password:
+      driver-class-name: com.mysql.cj.jdbc.Driver
