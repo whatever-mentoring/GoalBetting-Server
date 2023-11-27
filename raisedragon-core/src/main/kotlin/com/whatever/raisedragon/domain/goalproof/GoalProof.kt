@@ -1,13 +1,13 @@
-package com.whatever.raisedragon.domain.usergoalvote
+package com.whatever.raisedragon.domain.goalproof
 
 import com.whatever.raisedragon.domain.BaseEntity
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.user.User
 import jakarta.persistence.*
 
-@Table(name = "user_goal_vote")
+@Table(name = "goal_proof")
 @Entity
-class UserGoalVote(
+class GoalProof(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -17,18 +17,10 @@ class UserGoalVote(
     @JoinColumn(name = "goal_id")
     val goal: Goal,
 
-    @Enumerated(EnumType.STRING)
-    val type: Type,
+    @Embedded
+    val document: Document,
 
-    @Enumerated(EnumType.STRING)
-    val result: Result,
+) : BaseEntity()
 
-    ) : BaseEntity()
-
-enum class Type {
-    SUCCESS, FAIL
-}
-
-enum class Result {
-    SUCCESS, FAIL
-}
+@Embeddable
+data class Document(val document: String)

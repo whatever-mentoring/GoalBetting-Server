@@ -2,56 +2,34 @@ package com.whatever.raisedragon.domain.goal
 
 import com.whatever.raisedragon.domain.BaseEntity
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Table(name = "goal")
 @Entity
 class Goal(
 
-    @Embedded
-    @Column(name = "content", nullable = true, length = 255)
-    val content: Content,
-
     @Enumerated(EnumType.STRING)
     val type: BettingType,
 
     @Embedded
+    @Column(name = "content", nullable = false, length = 255)
+    val content: Content,
+
+    @Embedded
     @Column(name = "threshold", nullable = false)
-    val threshold: Threshold = Threshold(0)
+    val threshold: Threshold = Threshold(0),
+
+    @Column
+    val deadline: LocalDateTime
 
 ) : BaseEntity()
-
-class Content(
-    private var value: String
-) {
-
-    private fun validate() {
-        if (this.value.isBlank()) {
-            throw IllegalArgumentException()
-        }
-    }
-
-    private fun update(newContent: String) {
-        this.value = newContent
-    }
-
-}
 
 enum class BettingType {
     FREE, BILLING
 }
 
-class Threshold(
-    private var value: Int
-) {
+@Embeddable
+data class Content(val content: String)
 
-    // 7일간의 목표를 달성한 경우
-    private fun isAchieved(): Boolean {
-        return this.value == 7
-    }
-
-    // 목표 진행률 +1
-    private fun increaseValue() {
-        this.value++
-    }
-
-}
+@Embeddable
+data class Threshold(val threshold: Int)
