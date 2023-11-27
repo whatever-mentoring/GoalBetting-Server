@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: raisedragon
+  messages:
+    encoding: UTF-8
