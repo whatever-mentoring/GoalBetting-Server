@@ -1,26 +1,26 @@
-package com.whatever.raisedragon.domain.goalcheering
+package com.whatever.raisedragon.domain.goalproof
 
 import com.whatever.raisedragon.domain.BaseEntity
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
 
-@Table(name = "goal_cheering")
+@Table(name = "goal_proof")
 @Entity
-class GoalCheering(
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id")
-    val goal: Goal,
+class GoalProofEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val userEntity: UserEntity,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "goal_id")
+    val goal: Goal,
+
     @Embedded
-    val cheeringMessage: CheeringMessage
+    val document: Document
 
 ) : BaseEntity()
 
 @Embeddable
-data class CheeringMessage(val cheeringMessage: String)
+data class Document(val document: String)
