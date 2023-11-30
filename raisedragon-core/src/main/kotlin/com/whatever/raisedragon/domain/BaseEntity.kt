@@ -14,8 +14,8 @@ abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
 
-    @Column(name = "is_deleted", nullable = false, updatable = true)
-    var isDeleted: Boolean = false
+    @Column(name = "deleted_at", nullable = true, updatable = true)
+    var deletedAt: LocalDateTime? = null
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
