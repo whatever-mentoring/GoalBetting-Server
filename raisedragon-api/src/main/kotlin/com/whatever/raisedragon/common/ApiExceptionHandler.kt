@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
-import kotlin.Exception
 
 @RestControllerAdvice
 class ApiExceptionHandler {
@@ -20,7 +19,7 @@ class ApiExceptionHandler {
     private fun handlerConstraintViolationException(
         exception: ConstraintViolationException,
     ): Response<Any> {
-        return Response.of(
+        return Response.fail(
             exceptionCode = E400_BAD_REQUEST,
             detailMessage = DETAIL_MESSAGE_BY_PARAMETER_EXCEPTION
         )
@@ -30,7 +29,7 @@ class ApiExceptionHandler {
     private fun handleMethodArgumentTypeMismatchException(
         exception: MethodArgumentTypeMismatchException,
     ): Response<Any> {
-        return Response.of(
+        return Response.fail(
             exceptionCode = E400_BAD_REQUEST,
             detailMessage = DETAIL_MESSAGE_BY_PARAMETER_EXCEPTION
         )
@@ -40,7 +39,7 @@ class ApiExceptionHandler {
     private fun handleMissingServletRequestParameterException(
         exception: MissingServletRequestParameterException,
     ): Response<Any> {
-        return Response.of(
+        return Response.fail(
             exceptionCode = E400_BAD_REQUEST,
             detailMessage = DETAIL_MESSAGE_BY_PARAMETER_EXCEPTION
         )
@@ -50,23 +49,23 @@ class ApiExceptionHandler {
     private fun httpRequestMethodNotSupportedException(
         exception: HttpRequestMethodNotSupportedException
     ): Response<Any> {
-        return Response.of(
+        return Response.fail(
             exceptionCode = E405_METHOD_NOT_ALLOWED,
             detailMessage = DETAIL_MESSAGE_BY_PARAMETER_EXCEPTION
         )
     }
 
     @ExceptionHandler(BaseException::class)
-    private fun handleBaseException(exception: BaseException): ResponseEntity<Response<Any>> {
+    private fun handleBaseException(exception: BaseException): ResponseEntity<Response<Unit>> {
         return ResponseEntity
             .status(exception.exceptionCode.httpStatus)
-            .body(exception.toExceptionResponse())
+            .body(Response.fail(exception))
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     private fun handleInternalServerException(exception: Exception): Response<Any> {
-        return Response.of(E500_INTERNAL_SERVER_ERROR)
+        return Response.fail(E500_INTERNAL_SERVER_ERROR)
     }
 
     companion object {
