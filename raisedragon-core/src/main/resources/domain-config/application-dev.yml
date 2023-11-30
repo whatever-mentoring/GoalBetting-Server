@@ -4,9 +4,9 @@ spring:
       on-profile: dev
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/raisedragon
-      username: root
-      password: 112233
+      url: ENC(XipKlkEc8VLlKgM59OC01yV9WC2y7t7TISTVBYLuQG3CGPz/ph3dSwxtNMxjhJ548592hcelCVmuzEuRJJPP2dS6//yQrpBdBbujHL4m9c4=)
+      username: ENC(n1+fm+uUm/VLP6b0uTsVjeHAkMIobcWsdcfMqW+d8lvMUJKMH/jv9Se7C9hY6pG1)
+      password: ENC(wjhc+VfBjNy+DbgceiG+2/4CPBkLFiDaGqSjjyMRaThj/XtXkWNgPQSQuN4FO0Ge)
   jpa:
     hibernate:
       ddl-auto: validate
