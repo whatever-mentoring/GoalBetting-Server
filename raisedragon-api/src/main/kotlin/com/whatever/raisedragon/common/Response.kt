@@ -5,28 +5,25 @@ import com.whatever.raisedragon.common.exception.ExceptionCode
 import org.springframework.http.HttpStatus
 
 data class Response<T>(
-    val status: Int,
+    val isSuccess: Boolean,
     val data: T? = null,
     val errorResponse: ErrorResponse? = null
 ) {
     companion object {
-        fun <T> success(data: T?): Response<T> {
+        fun <T> success(data: T? = null): Response<T> {
             return Response(
-                status = HttpStatus.OK.value(),
+                isSuccess = true,
                 data = data
             )
         }
 
-        fun success(data: Any? = null): Response<Any> {
-            return Response(
-                status = HttpStatus.OK.value(),
-                data = data
-            )
+        fun success(): Response<Any> {
+            return Response(isSuccess = true)
         }
 
         fun fail(exceptionCode: ExceptionCode, detailMessage: String? = null): Response<Any> {
             return Response(
-                status = exceptionCode.httpStatus.value(),
+                isSuccess = false,
                 errorResponse = ErrorResponse(
                     code = exceptionCode.code,
                     detailMessage = detailMessage ?: exceptionCode.message
@@ -36,7 +33,7 @@ data class Response<T>(
 
         fun fail(exception: BaseException): Response<Unit> {
             return Response(
-                status = exception.exceptionCode.httpStatus.value(),
+                isSuccess = false,
                 errorResponse = ErrorResponse(
                     code = exception.exceptionCode.code,
                     detailMessage = exception.message
