@@ -1,11 +1,12 @@
 package com.whatever.raisedragon.common.exception
 
+import com.whatever.raisedragon.common.ErrorResponse
 import org.springframework.http.HttpStatus
 
 enum class ExceptionCode(
     val httpStatus: HttpStatus,
-    val exceptionCode: String,
-    val exceptionMessage: String,
+    val code: String,
+    val message: String,
 ) {
 
     E400_BAD_REQUEST(HttpStatus.BAD_REQUEST, "000", "필수 파라미터 값이 없거나 잘못된 값으로 요청을 보낸 경우 발생"),
@@ -30,4 +31,18 @@ enum class ExceptionCode(
 
     // ------------------------------ 501 ------------------------------
     E501_NOT_IMPLEMENTED(HttpStatus.NOT_IMPLEMENTED, "000", "지원하지 않는 타입의 요청"),
+}
+
+fun ExceptionCode.throwAsException() {
+    throw BaseException.of(
+        exceptionCode = this,
+        executionMessage = message
+    )
+}
+
+fun ExceptionCode.toErrorResponse(): ErrorResponse {
+    return ErrorResponse(
+        code = code,
+        detailMessage = message
+    )
 }
