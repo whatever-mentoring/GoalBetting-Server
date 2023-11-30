@@ -11,7 +11,7 @@ class BettingEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val userEntity: UserEntity,
+    val user: UserEntity,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id")
@@ -24,7 +24,6 @@ class BettingEntity(
     val result: Result
 
 ) : BaseEntity()
-
 
 enum class PredictionType {
     SUCCESS, FAIL

@@ -15,7 +15,7 @@ class GoalCheering(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val userEntity: UserEntity,
+    val user: UserEntity,
 
     @Embedded
     val cheeringMessage: CheeringMessage

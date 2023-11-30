@@ -1,7 +1,7 @@
-package com.whatever.raisedragon.domain.betting
+package com.whatever.raisedragon.domain.goalproof
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface BettingRepository : JpaRepository<BettingEntity, Long>
+interface GoalProofRepository : JpaRepository<GoalProofEntity, Long>

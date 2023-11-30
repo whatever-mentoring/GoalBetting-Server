@@ -1,10 +1,10 @@
-package com.whatever.raisedragon.domain.betting
+package com.whatever.raisedragon.domain.goalproof
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class BettingService(
-    private val bettingRepository: BettingRepository
+class GoalProofService(
+    private val goalProofRepository: GoalProofRepository
 )

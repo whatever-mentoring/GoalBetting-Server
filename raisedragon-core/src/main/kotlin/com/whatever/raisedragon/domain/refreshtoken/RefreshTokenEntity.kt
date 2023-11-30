@@ -1,13 +1,16 @@
 package com.whatever.raisedragon.domain.refreshtoken
 
 import com.whatever.raisedragon.domain.BaseEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Table
+import com.whatever.raisedragon.domain.user.UserEntity
+import jakarta.persistence.*
 
 @Table(name = "refresh_token")
 @Entity
 class RefreshTokenEntity(
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    val user: UserEntity,
 
     @Column(name = "payload", nullable = true, length = 255)
     val payload: String?
