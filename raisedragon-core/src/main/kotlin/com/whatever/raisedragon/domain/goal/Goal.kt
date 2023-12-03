@@ -13,7 +13,7 @@ data class Goal(
     val deletedAt: LocalDateTime?
 )
 
-fun GoalEntity.toGoal(): Goal = Goal(
+fun GoalEntity.toDto(): Goal = Goal(
     id = id,
     type = type,
     content = content,

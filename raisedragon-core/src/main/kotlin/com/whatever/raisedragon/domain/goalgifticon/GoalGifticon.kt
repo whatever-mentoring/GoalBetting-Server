@@ -1,19 +1,21 @@
 package com.whatever.raisedragon.domain.goalgifticon
 
-import com.whatever.raisedragon.domain.BaseEntity
-import com.whatever.raisedragon.domain.gifticon.GifticonEntity
-import com.whatever.raisedragon.domain.goal.GoalEntity
-import jakarta.persistence.*
+import java.time.LocalDateTime
 
-@Table(name = "goal_gifticon")
-@Entity
-class GoalGifticon(
+data class GoalGifticon(
+    val id: Long,
+    val goalId: Long,
+    val gifticonId: Long,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
+    val deletedAt: LocalDateTime?
+)
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id")
-    val goalEntity: GoalEntity,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gifticon_id")
-    val gifticon: GifticonEntity,
-) : BaseEntity()
+fun GoalGifticonEntity.toDto(): GoalGifticon = GoalGifticon(
+    id = id,
+    goalId = goalEntity.id,
+    gifticonId = gifticon.id,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    deletedAt = deletedAt
+)
