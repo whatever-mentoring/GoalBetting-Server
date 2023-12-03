@@ -17,7 +17,7 @@ data class Response<T>(
             )
         }
 
-        fun success(): Response<Any> {
+        fun success(): Response<Unit> {
             return Response(isSuccess = true)
         }
 
