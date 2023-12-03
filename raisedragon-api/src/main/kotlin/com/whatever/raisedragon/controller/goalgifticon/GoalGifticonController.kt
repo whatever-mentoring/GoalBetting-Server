@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 class GoalGifticonController {
 
     @Operation(summary = "Registering GoalGifticon API", description = "Register GoalProof")
-    @GetMapping("/{goalId}")
+    @PostMapping("/{goalId}/gifticon")
     fun register(
         @PathVariable goalId: Long,
         @RequestBody request: RegisterGoalGifticonRequest
