@@ -1,21 +1,23 @@
 package com.whatever.raisedragon.domain.gifticon
 
-import com.whatever.raisedragon.domain.BaseEntity
-import jakarta.persistence.*
+import java.time.LocalDateTime
 
-@Table(name = "gifticon")
-@Entity
-class Gifticon(
+data class Gifticon(
+    val id: Long,
+    val userId: Long,
+    val url: URL,
+    val isValidated: Boolean,
+    var deletedAt: LocalDateTime?,
+    var createdAt: LocalDateTime?,
+    var updatedAt: LocalDateTime?
+)
 
-    @Embedded
-    @Column(name = "url", nullable = true, length = 255)
-    val url: URL?,
-
-    @Column(name = "is_validated")
-    var isValidated: Boolean = true
-
-) : BaseEntity()
-
-@Embeddable
-data class URL(val url: String)
-
+fun GifticonEntity.toDto(): Gifticon = Gifticon(
+    id = id,
+    userId = user.id,
+    url = url,
+    isValidated = isValidated,
+    deletedAt = deletedAt,
+    createdAt = createdAt,
+    updatedAt = updatedAt
+)
