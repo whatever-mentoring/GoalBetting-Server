@@ -1,7 +1,7 @@
 package com.whatever.raisedragon.domain.goalgifticon
 
 import com.whatever.raisedragon.domain.BaseEntity
-import com.whatever.raisedragon.domain.gifticon.Gifticon
+import com.whatever.raisedragon.domain.gifticon.GifticonEntity
 import com.whatever.raisedragon.domain.goal.Goal
 import jakarta.persistence.*
 
@@ -15,5 +15,5 @@ class GoalGifticon(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gifticon_id")
-    val gifticon: Gifticon,
+    val gifticon: GifticonEntity,
 ) : BaseEntity()
