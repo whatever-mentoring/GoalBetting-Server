@@ -1,35 +1,25 @@
 package com.whatever.raisedragon.domain.goal
 
-import com.whatever.raisedragon.domain.BaseEntity
-import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Table(name = "goal")
-@Entity
-class Goal(
-
-    @Enumerated(EnumType.STRING)
+data class Goal(
+    val id: Long,
     val type: BettingType,
-
-    @Embedded
-    @Column(name = "content", nullable = false, length = 255)
     val content: Content,
+    val threshold: Threshold,
+    val deadline: LocalDateTime,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
+    val deletedAt: LocalDateTime?
+)
 
-    @Embedded
-    @Column(name = "threshold", nullable = false)
-    val threshold: Threshold = Threshold(0),
-
-    @Column
-    val deadline: LocalDateTime
-
-) : BaseEntity()
-
-enum class BettingType {
-    FREE, BILLING
-}
-
-@Embeddable
-data class Content(val content: String)
-
-@Embeddable
-data class Threshold(val threshold: Int)
+fun GoalEntity.toGoal(): Goal = Goal(
+    id = id,
+    type = type,
+    content = content,
+    threshold = threshold,
+    deadline = deadline,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    deletedAt = deletedAt
+)

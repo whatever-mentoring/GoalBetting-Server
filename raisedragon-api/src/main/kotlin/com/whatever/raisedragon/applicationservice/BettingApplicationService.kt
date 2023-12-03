@@ -39,10 +39,14 @@ class BettingApplicationService(
                         null
                     ),
                     goal = Goal(
+                        id = 1L,
                         type = BettingType.BILLING,
                         content = Content("sample"),
                         threshold = Threshold(0),
-                        deadline = LocalDateTime.now()
+                        deadline = LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        null
                     ),
                     predictionType = PredictionType.SUCCESS,
                     result = Result.PROCEEDING,
@@ -68,10 +72,14 @@ class BettingApplicationService(
                 )
             ),
             goal = Goal(
+                id = 1L,
                 type = BettingType.BILLING,
                 content = Content("sample"),
                 threshold = Threshold(0),
-                deadline = LocalDateTime.now()
+                deadline = LocalDateTime.now(),
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now(),
+                deletedAt = null
             ),
             predictionType = PredictionType.SUCCESS,
             result = Result.PROCEEDING

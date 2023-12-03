@@ -1,7 +1,7 @@
 package com.whatever.raisedragon.domain.betting
 
 import com.whatever.raisedragon.domain.BaseEntity
-import com.whatever.raisedragon.domain.goal.Goal
+import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
 
@@ -15,7 +15,7 @@ class BettingEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id")
-    val goal: Goal,
+    val goalEntity: GoalEntity,
 
     @Enumerated(EnumType.STRING)
     val predictionType: PredictionType,

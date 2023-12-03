@@ -4,10 +4,7 @@ import com.whatever.raisedragon.applicationservice.dto.GoalProofResponse
 import com.whatever.raisedragon.applicationservice.dto.UserResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofCreateUpdateResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
-import com.whatever.raisedragon.domain.goal.BettingType
-import com.whatever.raisedragon.domain.goal.Content
-import com.whatever.raisedragon.domain.goal.Goal
-import com.whatever.raisedragon.domain.goal.Threshold
+import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goalproof.Document
 import com.whatever.raisedragon.domain.goalproof.GoalProof
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
@@ -38,10 +35,14 @@ class GoalProofApplicationService(
                         null
                     ),
                     goal = Goal(
+                        id = 1L,
                         type = BettingType.BILLING,
                         content = Content("sample"),
                         threshold = Threshold(0),
-                        deadline = LocalDateTime.now()
+                        deadline = LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        null
                     ),
                     document = Document("sample"),
                     null,
@@ -66,10 +67,14 @@ class GoalProofApplicationService(
                 )
             ),
             goal = Goal(
+                id = 1L,
                 type = BettingType.BILLING,
                 content = Content("sample"),
                 threshold = Threshold(0),
-                deadline = LocalDateTime.now()
+                deadline = LocalDateTime.now(),
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now(),
+                deletedAt = null
             ),
             document = Document("sample")
         )

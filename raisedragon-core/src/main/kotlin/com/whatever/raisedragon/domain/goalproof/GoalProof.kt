@@ -1,6 +1,7 @@
 package com.whatever.raisedragon.domain.goalproof
 
 import com.whatever.raisedragon.domain.goal.Goal
+import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.User
 import java.time.LocalDateTime
 

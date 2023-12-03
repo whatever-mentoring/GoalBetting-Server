@@ -1,7 +1,7 @@
 package com.whatever.raisedragon.domain.goalproof
 
 import com.whatever.raisedragon.domain.BaseEntity
-import com.whatever.raisedragon.domain.goal.Goal
+import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
 
@@ -15,7 +15,7 @@ class GoalProofEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id")
-    val goal: Goal,
+    val goalEntity: GoalEntity,
 
     @Embedded
     val document: Document
