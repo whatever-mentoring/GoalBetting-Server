@@ -44,7 +44,7 @@ class GoalProofController(
     @DeleteMapping("{goalProofId}")
     fun delete(
         @PathVariable goalProofId: Long
-    ): Response<Any> {
+    ): Response<Unit> {
         return Response.success()
     }
 }

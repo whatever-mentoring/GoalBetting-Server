@@ -40,7 +40,7 @@ class UserController(
 
     @Operation(summary = "User delete API", description = "Delete User")
     @DeleteMapping
-    fun delete(): Response<Any> {
+    fun delete(): Response<Unit> {
         return Response.success()
     }
 }

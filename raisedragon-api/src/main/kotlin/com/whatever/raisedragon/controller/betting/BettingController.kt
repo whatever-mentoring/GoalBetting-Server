@@ -44,7 +44,7 @@ class BettingController(
     @DeleteMapping("{bettingId}")
     fun delete(
         @PathVariable bettingId: Long
-    ): Response<Any> {
+    ): Response<Unit> {
         return Response.success()
     }
 }
