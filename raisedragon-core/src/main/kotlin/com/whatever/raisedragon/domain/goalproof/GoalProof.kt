@@ -1,26 +1,15 @@
 package com.whatever.raisedragon.domain.goalproof
 
-import com.whatever.raisedragon.domain.BaseEntity
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.user.User
-import jakarta.persistence.*
+import java.time.LocalDateTime
 
-@Table(name = "goal_proof")
-@Entity
-class GoalProof(
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+data class GoalProof(
+    val id: Long,
     val user: User,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id")
     val goal: Goal,
-
-    @Embedded
     val document: Document,
-
-) : BaseEntity()
-
-@Embeddable
-data class Document(val document: String)
+    var deletedAt: LocalDateTime?,
+    var createdAt: LocalDateTime?,
+    var updatedAt: LocalDateTime?
+)
