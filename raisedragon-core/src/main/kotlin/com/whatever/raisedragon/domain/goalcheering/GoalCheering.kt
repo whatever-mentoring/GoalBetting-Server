@@ -1,7 +1,7 @@
 package com.whatever.raisedragon.domain.goalcheering
 
 import com.whatever.raisedragon.domain.BaseEntity
-import com.whatever.raisedragon.domain.goal.Goal
+import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
 
@@ -11,7 +11,7 @@ class GoalCheering(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id")
-    val goal: Goal,
+    val goalEntity: GoalEntity,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
