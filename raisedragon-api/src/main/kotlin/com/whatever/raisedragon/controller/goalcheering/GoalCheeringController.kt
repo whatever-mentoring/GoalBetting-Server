@@ -4,19 +4,15 @@ import com.whatever.raisedragon.common.Response
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Goal-Cheering", description = "Goal-Cheering API")
 @RestController
 @RequestMapping("/v1/cheering")
 class GoalCheeringController {
 
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Creating GoalCheering API", description = "Create GoalCheering")
     @PostMapping
     fun create(

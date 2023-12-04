@@ -4,6 +4,7 @@ import com.whatever.raisedragon.common.Response
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Gifticon", description = "Gifticon API")
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/v1/gifticon")
 class GifticonController {
 
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Gifticon create API", description = "Create Gifticon")
     @PostMapping
     fun create(
