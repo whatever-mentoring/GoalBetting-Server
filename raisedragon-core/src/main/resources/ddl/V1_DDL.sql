@@ -1,6 +1,7 @@
-create table gifticon
+create table if not exists gifticon
 (
     id           bigint auto_increment primary key,
+    user_id      bigint not null,
     url          varchar(255) not null,
     is_validated bit          not null,
     deleted_at   datetime(6)  null,
@@ -8,19 +9,20 @@ create table gifticon
     updated_at   datetime(6)  not null
 );
 
-create table goal
+create table if not exists goal
 (
     id         bigint auto_increment primary key,
     content    varchar(255)             not null,
     type       enum ('FREE', 'BILLING') not null,
     threshold  int                      not null,
-    deadline   datetime(6)              not null,
+    start_date datetime(6)              not null,
+    end_date   datetime(6)              not null,
     deleted_at datetime(6)              null,
     created_at datetime(6)              not null,
     updated_at datetime(6)              not null
 );
 
-create table goal_gifticon
+create table if not exists goal_gifticon
 (
     id          bigint auto_increment primary key,
     goal_id     bigint      not null,
@@ -30,7 +32,7 @@ create table goal_gifticon
     updated_at  datetime(6) not null
 );
 
-create table refresh_token
+create table if not exists refresh_token
 (
     id         bigint auto_increment primary key,
     user_id    bigint       not null,
@@ -40,7 +42,7 @@ create table refresh_token
     updated_at datetime(6)  not null
 );
 
-create table user
+create table if not exists user
 (
     id                  bigint auto_increment primary key,
     nickname            varchar(255) not null,
@@ -51,7 +53,7 @@ create table user
     updated_at          datetime(6)  not null
 );
 
-create table betting
+create table if not exists betting
 (
     id              bigint auto_increment primary key,
     goal_id         bigint                                 not null,
@@ -63,7 +65,7 @@ create table betting
     updated_at      datetime(6)                            not null
 );
 
-create table goal_cheering
+create table if not exists goal_cheering
 (
     id               bigint auto_increment primary key,
     goal_id          bigint       not null,
@@ -74,7 +76,7 @@ create table goal_cheering
     updated_at       datetime(6)  not null
 );
 
-create table goal_proof
+create table if not exists goal_proof
 (
     id         bigint auto_increment primary key,
     goal_id    bigint       not null,
