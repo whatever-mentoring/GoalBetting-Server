@@ -30,29 +30,30 @@ class BettingApplicationService(
                 Betting(
                     id = 0L,
                     user = User(
-                        0L,
-                        "sample",
-                        "sample",
-                        Nickname("sample"),
-                        null,
-                        null,
-                        null
+                        id = 0L,
+                        oauthTokenPayload = "sample",
+                        fcmTokenPayload = "sample",
+                        nickname = Nickname("sample"),
+                        deletedAt = null,
+                        createdAt = null,
+                        updatedAt = null
                     ),
                     goal = Goal(
                         id = 1L,
                         type = BettingType.BILLING,
                         content = Content("sample"),
                         threshold = Threshold(0),
-                        deadline = LocalDateTime.now(),
-                        LocalDateTime.now(),
-                        LocalDateTime.now(),
-                        null
+                        startDate = LocalDateTime.now().plusDays(1),
+                        endDate = LocalDateTime.now().plusMonths(1),
+                        createdAt = LocalDateTime.now(),
+                        updatedAt = LocalDateTime.now(),
+                        deletedAt = null
                     ),
                     predictionType = PredictionType.SUCCESS,
                     result = Result.PROCEEDING,
-                    null,
-                    null,
-                    null
+                    deletedAt = null,
+                    createdAt = null,
+                    updatedAt = null
                 )
             )
         )
@@ -62,13 +63,13 @@ class BettingApplicationService(
         return BettingRetrieveResponse(
             user = UserResponse.of(
                 User(
-                    0L,
-                    "sample",
-                    "sample",
-                    Nickname("sample"),
-                    null,
-                    null,
-                    null
+                    id = 0L,
+                    oauthTokenPayload = "sample",
+                    fcmTokenPayload = "sample",
+                    nickname = Nickname("sample"),
+                    deletedAt = null,
+                    createdAt = null,
+                    updatedAt = null
                 )
             ),
             goal = Goal(
@@ -76,7 +77,8 @@ class BettingApplicationService(
                 type = BettingType.BILLING,
                 content = Content("sample"),
                 threshold = Threshold(0),
-                deadline = LocalDateTime.now(),
+                startDate = LocalDateTime.now().plusDays(1),
+                endDate = LocalDateTime.now().plusMonths(1),
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now(),
                 deletedAt = null

@@ -21,9 +21,13 @@ data class GoalCreateRequest(
     @field:PositiveOrZero
     val threshold: Int,
 
+    @Schema(description = "다짐 시작 시간")
+    @field:NotNull
+    val startDate: LocalDateTime,
+
     @Schema(description = "다짐 마감 시간")
     @field:NotNull
-    val deadline: LocalDateTime,
+    val endDate: LocalDateTime,
 )
 
 @Schema(description = "[Response] 단건 다짐(Goal) 조회")
@@ -40,8 +44,11 @@ data class GoalResponse(
     @Schema(description = "다짐 인증 횟수")
     val threshold: Int,
 
+    @Schema(description = "다짐 시작 시간")
+    val startDate: LocalDateTime,
+
     @Schema(description = "다짐 마감 시간")
-    val deadline: LocalDateTime
+    val endDate: LocalDateTime
 ) {
     companion object {
         fun sample(): GoalResponse = GoalResponse(
@@ -49,7 +56,8 @@ data class GoalResponse(
             type = BettingType.BILLING,
             content = "Sample Goal's content",
             threshold = 4,
-            deadline = LocalDateTime.now().plusDays(1L)
+            startDate = LocalDateTime.now().plusDays(1L),
+            endDate = LocalDateTime.now().plusMonths(1L)
         )
     }
 }

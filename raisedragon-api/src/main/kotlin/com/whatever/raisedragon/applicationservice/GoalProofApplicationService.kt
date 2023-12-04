@@ -24,30 +24,31 @@ class GoalProofApplicationService(
         return GoalProofCreateUpdateResponse(
             GoalProofResponse.of(
                 GoalProof(
-                    0L,
-                    User(
-                        0L,
-                        "sample",
-                        "sample",
-                        Nickname("sample"),
-                        null,
-                        null,
-                        null
+                    id = 0L,
+                    user = User(
+                        id = 0L,
+                        oauthTokenPayload = "sample",
+                        fcmTokenPayload = "sample",
+                        nickname = Nickname("sample"),
+                        deletedAt = null,
+                        createdAt = null,
+                        updatedAt = null
                     ),
                     goal = Goal(
                         id = 1L,
                         type = BettingType.BILLING,
                         content = Content("sample"),
                         threshold = Threshold(0),
-                        deadline = LocalDateTime.now(),
-                        LocalDateTime.now(),
-                        LocalDateTime.now(),
-                        null
+                        startDate = LocalDateTime.now().plusDays(1),
+                        endDate = LocalDateTime.now().plusMonths(1),
+                        createdAt = LocalDateTime.now(),
+                        updatedAt = LocalDateTime.now(),
+                        deletedAt = null
                     ),
                     document = Document("sample"),
-                    null,
-                    null,
-                    null
+                    deletedAt = null,
+                    createdAt = null,
+                    updatedAt = null
                 )
             )
         )
@@ -57,13 +58,13 @@ class GoalProofApplicationService(
         return GoalProofRetrieveResponse(
             user = UserResponse.of(
                 User(
-                    0L,
-                    "sample",
-                    "sample",
-                    Nickname("sample"),
-                    null,
-                    null,
-                    null
+                    id = 0L,
+                    oauthTokenPayload = "sample",
+                    fcmTokenPayload = "sample",
+                    nickname = Nickname("sample"),
+                    deletedAt = null,
+                    createdAt = null,
+                    updatedAt = null
                 )
             ),
             goal = Goal(
@@ -71,7 +72,8 @@ class GoalProofApplicationService(
                 type = BettingType.BILLING,
                 content = Content("sample"),
                 threshold = Threshold(0),
-                deadline = LocalDateTime.now(),
+                startDate = LocalDateTime.now().plusDays(1),
+                endDate = LocalDateTime.now().plusMonths(1),
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now(),
                 deletedAt = null

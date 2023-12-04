@@ -19,8 +19,11 @@ class GoalEntity(
     @Column(name = "threshold", nullable = false)
     val threshold: Threshold = Threshold(0),
 
-    @Column
-    val deadline: LocalDateTime
+    @Column(name="start_date", nullable = false)
+    val startDate: LocalDateTime,
+
+    @Column(name="end_date", nullable = false)
+    val endDate: LocalDateTime
 
 ) : BaseEntity()
 

@@ -7,7 +7,8 @@ data class Goal(
     val type: BettingType,
     val content: Content,
     val threshold: Threshold,
-    val deadline: LocalDateTime,
+    val startDate: LocalDateTime,
+    val endDate: LocalDateTime,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
     val deletedAt: LocalDateTime?
@@ -18,7 +19,8 @@ fun GoalEntity.toDto(): Goal = Goal(
     type = type,
     content = content,
     threshold = threshold,
-    deadline = deadline,
+    startDate = startDate,
+    endDate = endDate,
     createdAt = createdAt,
     updatedAt = updatedAt,
     deletedAt = deletedAt
