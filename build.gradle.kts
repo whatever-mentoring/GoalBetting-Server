@@ -12,10 +12,6 @@ plugins {
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-application {
-    mainClass.set("com.whatever.raisedragon.RaiseDragonApiApplicationKt")
-}
-
 allprojects {
     group = "com.whatever"
     version = "0.0.1-SNAPSHOT"
@@ -23,6 +19,10 @@ allprojects {
     repositories {
         mavenCentral()
     }
+}
+
+application {
+    mainClass = "com.whatever.raisedragon.RaiseDragonApiApplicationKt"
 }
 
 subprojects {
@@ -58,4 +58,11 @@ subprojects {
         useJUnitPlatform()
     }
 
+    tasks.bootJar {
+        enabled = false
+    }
+
+    tasks.jar {
+        enabled = true
+    }
 }

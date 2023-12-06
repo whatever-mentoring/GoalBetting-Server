@@ -1,3 +1,11 @@
+tasks.bootJar {
+    enabled = true
+}
+
+tasks.jar {
+    enabled = false
+}
+
 val swaggerVersion: String by project.extra
 
 dependencies {
@@ -9,8 +17,4 @@ dependencies {
     
     // Swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
-}
-
-application {
-    mainClass.set("com.whatever.raisedragon.RaiseDragonApiApplicationKt")
 }
