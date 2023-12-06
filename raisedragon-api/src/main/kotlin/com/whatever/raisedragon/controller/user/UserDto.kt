@@ -1,6 +1,5 @@
 package com.whatever.raisedragon.controller.user
 
-import com.whatever.raisedragon.applicationservice.dto.UserResponse
 import com.whatever.raisedragon.domain.user.Nickname
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -22,7 +21,7 @@ data class UserUpdateRequest(
 @Schema(description = "[Response] 유저 생성/수정")
 data class UserCreateUpdateResponse(
     @Schema(description = "User")
-    val userResponse: UserResponse
+    val userRetrieveResponse: UserRetrieveResponse
 )
 
 @Schema(description = "[Response] 유저 조회")

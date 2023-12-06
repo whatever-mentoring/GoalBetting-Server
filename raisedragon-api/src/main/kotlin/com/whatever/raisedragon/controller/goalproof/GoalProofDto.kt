@@ -1,8 +1,5 @@
 package com.whatever.raisedragon.controller.goalproof
 
-import com.whatever.raisedragon.applicationservice.dto.GoalProofResponse
-import com.whatever.raisedragon.applicationservice.dto.UserResponse
-import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goalproof.Document
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -21,16 +18,20 @@ data class GoalProofUpdateRequest(
 @Schema(description = "[Response] 인증내역 생성/수정")
 data class GoalProofCreateUpdateResponse(
     @Schema(description = "GoalProof")
-    val goalProofResponse: GoalProofResponse
+    val goalProofRetrieveResponse: GoalProofRetrieveResponse
 )
 
 @Schema(description = "[Response] 인증내역 조회")
 data class GoalProofRetrieveResponse(
-    @Schema(description = "User")
-    val user: UserResponse,
 
-    @Schema(description = "Goal")
-    val goal: Goal,
+    @Schema(description = "GoalProofId")
+    val id: Long,
+
+    @Schema(description = "UserId")
+    val userId: Long,
+
+    @Schema(description = "GoalId")
+    val goalId: Long,
 
     @Schema(description = "인증 상세")
     val document: Document
