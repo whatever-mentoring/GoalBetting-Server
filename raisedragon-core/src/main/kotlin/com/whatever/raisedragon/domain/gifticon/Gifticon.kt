@@ -14,7 +14,7 @@ data class Gifticon(
 
 fun GifticonEntity.toDto(): Gifticon = Gifticon(
     id = id,
-    userId = user.id,
+    userId = userEntity.id,
     url = url,
     isValidated = isValidated,
     deletedAt = deletedAt,

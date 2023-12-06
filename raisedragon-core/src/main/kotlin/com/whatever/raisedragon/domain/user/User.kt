@@ -11,3 +11,13 @@ data class User(
     var createdAt: LocalDateTime?,
     var updatedAt: LocalDateTime?
 )
+
+fun UserEntity.toDto(): User = User(
+    id = id,
+    oauthTokenPayload = oauthTokenPayload,
+    fcmTokenPayload = fcmTokenPayload,
+    nickname = nickname,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    deletedAt = deletedAt
+)

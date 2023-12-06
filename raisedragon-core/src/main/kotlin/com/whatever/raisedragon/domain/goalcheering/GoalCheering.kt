@@ -13,7 +13,7 @@ data class GoalCheering(
 
 fun GoalCheeringEntity.toDTO(): GoalCheering = GoalCheering(
     id = id,
-    userId = user.id,
+    userId = userEntity.id,
     cheeringMessage = cheeringMessage,
     createdAt = createdAt,
     updatedAt = updatedAt,
