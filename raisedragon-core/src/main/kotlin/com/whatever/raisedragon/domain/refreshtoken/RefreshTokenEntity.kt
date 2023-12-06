@@ -10,7 +10,7 @@ class RefreshTokenEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val user: UserEntity,
+    val userEntity: UserEntity,
 
     @Column(name = "payload", nullable = true, length = 255)
     val payload: String?
