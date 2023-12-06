@@ -20,15 +20,8 @@ class BettingEntity(
     @Enumerated(EnumType.STRING)
     val predictionType: PredictionType,
 
-    @Enumerated(EnumType.STRING)
-    val result: Result
-
 ) : BaseEntity()
 
 enum class PredictionType {
     SUCCESS, FAIL
-}
-
-enum class Result {
-    PROCEEDING, SUCCESS, FAIL
 }

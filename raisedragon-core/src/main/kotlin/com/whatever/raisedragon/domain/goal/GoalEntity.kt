@@ -19,10 +19,13 @@ class GoalEntity(
     @Column(name = "threshold", nullable = false)
     val threshold: Threshold = Threshold(0),
 
-    @Column(name="start_date", nullable = false)
+    @Enumerated(EnumType.STRING)
+    val result: Result,
+
+    @Column(name = "start_date", nullable = false)
     val startDate: LocalDateTime,
 
-    @Column(name="end_date", nullable = false)
+    @Column(name = "end_date", nullable = false)
     val endDate: LocalDateTime
 
 ) : BaseEntity()
@@ -33,6 +36,10 @@ enum class BettingType {
 
 @Embeddable
 data class Content(val content: String)
+
+enum class Result {
+    PROCEEDING, SUCCESS, FAIL
+}
 
 @Embeddable
 data class Threshold(val threshold: Int)
