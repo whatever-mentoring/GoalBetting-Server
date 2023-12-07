@@ -1,6 +1,5 @@
 package com.whatever.raisedragon.domain.user
 
-import com.whatever.raisedragon.domain.auth.AuthService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -8,13 +7,13 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class UserService(
     private val userRepository: UserRepository,
-    private val authService: AuthService
 ) {
 
 
     @Transactional(readOnly = true)
     fun loadByOAuthPayload(payload: String): User? {
-        return userRepository.findByOauthTokenPayload(payload)!!.toDto()
+        val user = userRepository.findByOauthTokenPayload(payload) ?: return null
+        return user.toDto()
     }
 
     fun create(user: User): User {

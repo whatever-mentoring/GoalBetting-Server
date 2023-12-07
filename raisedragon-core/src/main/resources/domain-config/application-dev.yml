@@ -1,15 +1,6 @@
 jwt:
   secret-key: ENC(nFedRKX5zt00VoNk/11zZcZVAtdnl/AHTDJW74urxj103ameypl1NctWnJYl90thp8OS/DIP8B0oHXgvMVJ02TPFiMZes3Kf3/EPG9t/MnUKvjc4iz1HZ+F76oDcvxXheKiioRZkGt1b0g9iyh7PW4CKSo5T/rScgXsg2c+05bg=)
 
-oauth:
-  kakao:
-    client-id: ENC(oM309mRrp+Hjf/KhLlnsTL/VOFcL/6dPNvqWfG4z5gqbXTKT7olEP3WZHHjSSW7+EWxe0T82wgzakhKeQ2lzZvZmHHgHwRIm6WRbFIRapGI=)
-    client-secret: ENC(SZz35/qe9N+ut/zDYu4hJ5wBVBtZYNyxlY56n2yeBV47FNIHRHbOFUO0BcZ055m2lCajo5tLKBOSv0hXTAlQ9gr6EjrhxdBnd87ef4QtNjU=)
-    url:
-      auth: ENC(H8kKBTzdayScTXdJmX/GPVQXSJmIrcSFcR5Ouo3xvF9+ECJu0cQE214whVlzeKINNmBYlWFzNhUC17PAm1Q+8A==)
-      api: ENC(XormSiGCGf/NQ/G5RwlUUAOpSe0Nn2dUxi5HXEhtKRITqQO0n2yVQh/pWhi0wBBiumt9kjXwM/xvwHQLZiC1Vw==)
-      redirection-uri: ENC(JMyvLISqz0NCVBmTVaTrEpEfv+JHRldppm/X1owKwFM8xRdCwWl3ImR47kSyi9zvMnNxQ3moDxUyZgAdSRTDM6fWe3+svg2wbSBZfoQJqtk=)
-
 spring:
   config:
     activate:
