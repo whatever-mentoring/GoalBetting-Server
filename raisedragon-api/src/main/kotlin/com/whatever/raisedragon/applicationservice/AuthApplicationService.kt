@@ -14,15 +14,14 @@ class AuthApplicationService(
     private val userService: UserService,
 ) {
 
-    fun kakoLogin(code: String): User {
-        val kakaoId = authService.getAccessToken(code)
-        val user = kakaoId?.let { userService.loadByOAuthPayload(it) } ?: return userService.create(
+    fun kakoLogin(accessToken: String): User {
+        val kakaoId = authService.verifyKaKao(accessToken)
+        return userService.loadByOAuthPayload(kakaoId) ?: return userService.create(
             User(
                 oauthTokenPayload = kakaoId,
                 fcmTokenPayload = null,
                 nickname = Nickname.generateRandomNickname()
             )
         )
-        return user
     }
 }
