@@ -9,11 +9,9 @@ class UserService(
     private val userRepository: UserRepository,
 ) {
 
-
     @Transactional(readOnly = true)
     fun loadByOAuthPayload(payload: String): User? {
-        val user = userRepository.findByOauthTokenPayload(payload) ?: return null
-        return user.toDto()
+        return userRepository.findByOauthTokenPayload(payload)?.toDto()
     }
 
     fun create(user: User): User {
