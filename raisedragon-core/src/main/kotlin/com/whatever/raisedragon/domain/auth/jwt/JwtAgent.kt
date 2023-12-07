@@ -12,5 +12,4 @@ interface JwtAgent {
      * @return JwtToken 을 반환합니다.
      */
     fun provide(user: User): JwtToken
-
 }

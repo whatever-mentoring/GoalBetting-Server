@@ -18,5 +18,18 @@ class UserEntity(
 
 ) : BaseEntity()
 
+fun User.fromDto(): UserEntity = UserEntity(
+    oauthTokenPayload = oauthTokenPayload,
+    fcmTokenPayload = fcmTokenPayload,
+    nickname = nickname,
+)
+
 @Embeddable
-data class Nickname(val nickname: String)
+data class Nickname(val nickname: String) {
+    companion object {
+        fun generateRandomNickname(): Nickname {
+            return Nickname("random nickname")
+        }
+    }
+}
+
