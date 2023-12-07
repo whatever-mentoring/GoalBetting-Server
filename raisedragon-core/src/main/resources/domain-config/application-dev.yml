@@ -1,3 +1,15 @@
+jwt:
+  secret-key: ENC(nFedRKX5zt00VoNk/11zZcZVAtdnl/AHTDJW74urxj103ameypl1NctWnJYl90thp8OS/DIP8B0oHXgvMVJ02TPFiMZes3Kf3/EPG9t/MnUKvjc4iz1HZ+F76oDcvxXheKiioRZkGt1b0g9iyh7PW4CKSo5T/rScgXsg2c+05bg=)
+
+oauth:
+  kakao:
+    client-id: ENC(oM309mRrp+Hjf/KhLlnsTL/VOFcL/6dPNvqWfG4z5gqbXTKT7olEP3WZHHjSSW7+EWxe0T82wgzakhKeQ2lzZvZmHHgHwRIm6WRbFIRapGI=)
+    client-secret: ENC(SZz35/qe9N+ut/zDYu4hJ5wBVBtZYNyxlY56n2yeBV47FNIHRHbOFUO0BcZ055m2lCajo5tLKBOSv0hXTAlQ9gr6EjrhxdBnd87ef4QtNjU=)
+    url:
+      auth: ENC(H8kKBTzdayScTXdJmX/GPVQXSJmIrcSFcR5Ouo3xvF9+ECJu0cQE214whVlzeKINNmBYlWFzNhUC17PAm1Q+8A==)
+      api: ENC(XormSiGCGf/NQ/G5RwlUUAOpSe0Nn2dUxi5HXEhtKRITqQO0n2yVQh/pWhi0wBBiumt9kjXwM/xvwHQLZiC1Vw==)
+      redirection-uri: ENC(JMyvLISqz0NCVBmTVaTrEpEfv+JHRldppm/X1owKwFM8xRdCwWl3ImR47kSyi9zvMnNxQ3moDxUyZgAdSRTDM6fWe3+svg2wbSBZfoQJqtk=)
+
 spring:
   config:
     activate:
@@ -6,7 +18,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: ENC(XipKlkEc8VLlKgM59OC01yV9WC2y7t7TISTVBYLuQG3CGPz/ph3dSwxtNMxjhJ548592hcelCVmuzEuRJJPP2dS6//yQrpBdBbujHL4m9c4=)
       username: ENC(n1+fm+uUm/VLP6b0uTsVjeHAkMIobcWsdcfMqW+d8lvMUJKMH/jv9Se7C9hY6pG1)
-      password: ENC(wjhc+VfBjNy+DbgceiG+2/4CPBkLFiDaGqSjjyMRaThj/XtXkWNgPQSQuN4FO0Ge)
+      password: ENC(OdGW0TMCzvntfVve9NJ48/ZM40ab3jlIwZoRuA06GLrptSy/4aM6J8TW6nNhfxmz)
   jpa:
     hibernate:
       ddl-auto: validate

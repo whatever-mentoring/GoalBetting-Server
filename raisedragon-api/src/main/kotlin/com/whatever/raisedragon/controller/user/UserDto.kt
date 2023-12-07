@@ -32,3 +32,12 @@ data class UserRetrieveResponse(
     @Schema(description = "닉네임")
     val nickname: Nickname,
 )
+
+@Schema(description = "[Response] 유저 로그인")
+data class UserLoginResponse(
+    @Schema(description = "Access Token")
+    val accessToken: String,
+
+    @Schema(description = "Refresh Token")
+    val refreshToken: String,
+)
