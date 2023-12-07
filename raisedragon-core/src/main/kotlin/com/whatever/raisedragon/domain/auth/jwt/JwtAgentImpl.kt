@@ -33,7 +33,7 @@ class JwtAgentImpl(
 
     private fun buildClaims(user: User): Claims {
         val claims = Jwts.claims()
-        claims.setSubject(user.nickname.nickname)
+        claims.setSubject(user.nickname.value)
         claims["id"] = user.id
         return claims
     }

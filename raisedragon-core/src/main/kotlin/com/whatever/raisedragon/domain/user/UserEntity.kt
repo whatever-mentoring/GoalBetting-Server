@@ -25,7 +25,10 @@ fun User.fromDto(): UserEntity = UserEntity(
 )
 
 @Embeddable
-data class Nickname(val nickname: String) {
+data class Nickname(
+    @Column(name = "nickname")
+    val value: String
+) {
     companion object {
         fun generateRandomNickname(): Nickname {
             return Nickname("random nickname")

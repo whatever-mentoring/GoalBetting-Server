@@ -13,10 +13,10 @@ class KakaoOAuthService(
 ) : AuthService {
 
     private val KAKAO_USERINFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me"
-    override fun verifyKaKao(accessToken: String): String {
+    override fun verifyKaKao(userToken: String): String {
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
-        headers.setBearerAuth(accessToken)
+        headers.setBearerAuth(userToken)
 
         val request = HttpEntity(
             null,
@@ -29,6 +29,6 @@ class KakaoOAuthService(
             KakaoLoginResponse::class.java
         )
 
-        return response.body!!.id!!
+        return response.body?.id!!
     }
 }

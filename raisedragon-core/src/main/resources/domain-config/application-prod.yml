@@ -1,3 +1,6 @@
+jwt:
+  secret-key: ENC(nFedRKX5zt00VoNk/11zZcZVAtdnl/AHTDJW74urxj103ameypl1NctWnJYl90thp8OS/DIP8B0oHXgvMVJ02TPFiMZes3Kf3/EPG9t/MnUKvjc4iz1HZ+F76oDcvxXheKiioRZkGt1b0g9iyh7PW4CKSo5T/rScgXsg2c+05bg=)
+
 spring:
   config:
     activate:
