@@ -1,7 +1,6 @@
 package com.whatever.raisedragon.controller.goalproof
 
-import com.whatever.raisedragon.domain.gifticon.URL
-import com.whatever.raisedragon.domain.goalproof.Comment
+import com.whatever.raisedragon.domain.goalproof.GoalProof
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "[Request] 인증내역 생성")
@@ -16,8 +15,8 @@ data class GoalProofCreateRequest(
     val comment: String
 )
 
-@Schema(description = "[Request] 인증내역 수정")
-data class GoalProofUpdateRequest(
+@Schema(description = "[Request] 모든 다짐 인증 조회")
+data class GoalProofRetrieveAllRequest(
     @Schema(description = "Goal Id")
     val goalId: Long,
 )
@@ -28,7 +27,7 @@ data class GoalProofCreateUpdateResponse(
     val goalProofRetrieveResponse: GoalProofRetrieveResponse
 )
 
-@Schema(description = "[Response] 인증내역 조회")
+@Schema(description = "[Response] 단건 다짐 인증 조회")
 data class GoalProofRetrieveResponse(
 
     @Schema(description = "GoalProofId")
@@ -41,8 +40,24 @@ data class GoalProofRetrieveResponse(
     val goalId: Long,
 
     @Schema(description = "인증 사진")
-    val url: URL,
+    val url: String,
 
     @Schema(description = "인증 부연설명")
-    val comment: Comment,
+    val comment: String,
+) {
+    companion object {
+        fun of(goalProof: GoalProof): GoalProofRetrieveResponse = GoalProofRetrieveResponse(
+            id = goalProof.id,
+            userId = goalProof.userId,
+            goalId = goalProof.goalId,
+            url = goalProof.url.value,
+            comment = goalProof.comment.value
+        )
+    }
+}
+
+@Schema(description = "[Response] 모든 다짐 인증 조회")
+data class GoalProofListRetrieveResponse(
+    @Schema(description = "모든 다짐 인증")
+    val goalProofs: List<GoalProofRetrieveResponse>
 )
