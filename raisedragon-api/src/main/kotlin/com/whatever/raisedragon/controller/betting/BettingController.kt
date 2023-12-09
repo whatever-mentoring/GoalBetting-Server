@@ -2,6 +2,8 @@ package com.whatever.raisedragon.controller.betting
 
 import com.whatever.raisedragon.applicationservice.BettingApplicationService
 import com.whatever.raisedragon.common.Response
+import com.whatever.raisedragon.security.authentication.UserInfo
+import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -19,9 +21,16 @@ class BettingController(
     @Operation(summary = "Betting create API", description = "Create Betting")
     @PostMapping
     fun create(
-        @Valid @RequestBody bettingCreateRequest: BettingCreateRequest
+        @Valid @RequestBody bettingCreateRequest: BettingCreateRequest,
+        @GetAuth userInfo: UserInfo
     ): Response<BettingCreateUpdateResponse> {
-        return Response.success(bettingApplicationService.create())
+        return Response.success(
+            bettingApplicationService.create(
+                userId = userInfo.id,
+                goalId = bettingCreateRequest.goalId,
+                predictionType = bettingCreateRequest.predictionType
+            )
+        )
     }
 
     @Operation(summary = "Betting retrieve API", description = "Retrieve Betting")
