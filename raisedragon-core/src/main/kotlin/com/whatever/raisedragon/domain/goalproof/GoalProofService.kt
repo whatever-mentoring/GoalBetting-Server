@@ -23,7 +23,7 @@ class GoalProofService(
         val goalProof = goalProofRepository.save(
             GoalProofEntity(
                 userEntity = user.fromDto(),
-                goalEntity = goal.fromDto(),
+                goalEntity = goal.fromDto(user.fromDto()),
                 url = url,
                 comment = comment,
             )

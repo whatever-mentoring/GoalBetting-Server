@@ -12,6 +12,7 @@ create table if not exists gifticon
 create table if not exists goal
 (
     id         bigint auto_increment primary key,
+    user_id    bigint                                 not null,
     content    varchar(255)                           not null,
     type       enum ('FREE', 'BILLING')               not null,
     threshold  int                                    not null,

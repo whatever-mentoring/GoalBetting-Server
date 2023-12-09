@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class Goal(
     val id: Long,
+    val userId: Long,
     val type: BettingType,
     val content: Content,
     val threshold: Threshold,
@@ -17,6 +18,7 @@ data class Goal(
 
 fun GoalEntity.toDto(): Goal = Goal(
     id = id,
+    userId = userEntity.id,
     type = type,
     content = content,
     threshold = threshold,

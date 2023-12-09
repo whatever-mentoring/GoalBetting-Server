@@ -1,12 +1,17 @@
 package com.whatever.raisedragon.domain.goal
 
 import com.whatever.raisedragon.domain.BaseEntity
+import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Table(name = "goal")
 @Entity
 class GoalEntity(
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    val userEntity: UserEntity,
 
     @Enumerated(EnumType.STRING)
     val type: BettingType,
@@ -30,7 +35,8 @@ class GoalEntity(
 
 ) : BaseEntity()
 
-fun Goal.fromDto(): GoalEntity = GoalEntity(
+fun Goal.fromDto(userEntity: UserEntity): GoalEntity = GoalEntity(
+    userEntity = userEntity,
     type = type,
     content = content,
     threshold = threshold,
