@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class GoalProofCreateRequest(
     @Schema(description = "Goal Id")
     val goalId: Long,
+
+    @Schema(description = "다짐 인증에 대한 PresignedURL")
+    val document: String
 )
 
 @Schema(description = "[Request] 인증내역 수정")

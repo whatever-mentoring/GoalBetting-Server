@@ -23,4 +23,7 @@ class GoalProofEntity(
 ) : BaseEntity()
 
 @Embeddable
-data class Document(val document: String)
+data class Document(
+    @Column(name = "document")
+    val value: String
+)

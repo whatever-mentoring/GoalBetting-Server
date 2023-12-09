@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.domain.goal
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -28,5 +29,10 @@ class GoalService(
             )
         )
         return goal.toDto()
+    }
+
+    @Transactional(readOnly = true)
+    fun loadById(id: Long): Goal {
+        return goalRepository.findByIdOrNull(id)?.toDto() ?: throw Exception()
     }
 }
