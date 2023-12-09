@@ -2,7 +2,6 @@ package com.whatever.raisedragon.domain.user
 
 import com.whatever.raisedragon.domain.BaseEntity
 import jakarta.persistence.*
-import kotlin.random.Random
 
 @Table(name = "user")
 @Entity
@@ -32,8 +31,8 @@ data class Nickname(
 ) {
     companion object {
         fun generateRandomNickname(): Nickname {
-            val randomAdjective = RandomWordsNickname.adjectives[Random.nextInt(RandomWordsNickname.adjectives.size)]
-            val randomNoun = RandomWordsNickname.nouns[Random.nextInt(RandomWordsNickname.nouns.size)]
+            val randomAdjective = RandomWordsNickname.adjectives.random()
+            val randomNoun = RandomWordsNickname.nouns.random()
             return Nickname("$randomAdjective $randomNoun")
         }
     }
