@@ -14,13 +14,14 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 class GoalProofApplicationService(
     private val goalProofService: GoalProofService,
     private val goalService: GoalService,
     private val userService: UserService,
 ) {
 
+    @Transactional
     fun create(
         userId: Long,
         goalId: Long,
