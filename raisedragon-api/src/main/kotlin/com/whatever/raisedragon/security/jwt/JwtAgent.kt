@@ -1,6 +1,7 @@
-package com.whatever.raisedragon.domain.auth.jwt
+package com.whatever.raisedragon.security.jwt
 
 import com.whatever.raisedragon.domain.user.User
+import com.whatever.raisedragon.security.authentication.UserInfo
 
 interface JwtAgent {
 
@@ -12,4 +13,12 @@ interface JwtAgent {
      * @return JwtToken 을 반환합니다.
      */
     fun provide(user: User): JwtToken
+
+    /**
+     * 사용자의 accessToken을 입력받아 UserInfo 객체를 반환합니다.
+     *
+     * @param token 사용자가 발급받은 JWT
+     * @return UserInfo 를 반환합니다.
+     */
+    fun extractUserFromToken(token: String): UserInfo?
 }

@@ -14,4 +14,8 @@ data class UserInfo(
             )
         }
     }
+
+    fun getDetails(): Map<String, String> {
+        return mapOf("nickname" to nickname)
+    }
 }
