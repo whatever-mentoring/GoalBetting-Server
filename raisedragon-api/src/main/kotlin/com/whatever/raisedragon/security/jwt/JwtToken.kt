@@ -1,4 +1,4 @@
-package com.whatever.raisedragon.domain.auth.jwt
+package com.whatever.raisedragon.security.jwt
 
 data class JwtToken(
     val accessToken: String,

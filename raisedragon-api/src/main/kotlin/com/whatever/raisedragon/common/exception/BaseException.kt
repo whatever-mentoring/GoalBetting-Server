@@ -12,12 +12,12 @@ class BaseException(
     companion object {
         fun of(
             exceptionCode: ExceptionCode,
-            executionMessage: String,
+            executionMessage: String? = null,
             cause: Throwable? = null
         ): BaseException {
             return BaseException(
                 exceptionCode = exceptionCode,
-                message = executionMessage,
+                message = executionMessage ?: exceptionCode.message,
                 cause = cause
             )
         }
