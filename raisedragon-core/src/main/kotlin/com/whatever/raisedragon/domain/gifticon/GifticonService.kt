@@ -1,7 +1,6 @@
 package com.whatever.raisedragon.domain.gifticon
 
-import com.whatever.raisedragon.domain.user.User
-import com.whatever.raisedragon.domain.user.fromDto
+import com.whatever.raisedragon.domain.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -9,15 +8,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class GifticonService(
     private val gifticonRepository: GifticonRepository,
+    private val userRepository: UserRepository
 ) {
 
     fun create(
-        user: User,
+        userId: Long,
         presignedURL: String,
     ): Gifticon {
         val gifticon = gifticonRepository.save(
             GifticonEntity(
-                userEntity = user.fromDto(),
+                userEntity = userRepository.findById(userId).get(),
                 url = URL(presignedURL)
             )
         )

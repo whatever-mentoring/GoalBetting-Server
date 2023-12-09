@@ -1,29 +1,27 @@
 package com.whatever.raisedragon.domain.goalgifticon
 
-import com.whatever.raisedragon.domain.gifticon.Gifticon
-import com.whatever.raisedragon.domain.gifticon.fromDto
-import com.whatever.raisedragon.domain.goal.Goal
-import com.whatever.raisedragon.domain.goal.fromDto
-import com.whatever.raisedragon.domain.user.User
-import com.whatever.raisedragon.domain.user.fromDto
+import com.whatever.raisedragon.domain.gifticon.GifticonRepository
+import com.whatever.raisedragon.domain.goal.GoalRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @Service
 class GoalGifticonService(
-    private val goalGifticonRepository: GoalGifticonRepository
+    private val goalGifticonRepository: GoalGifticonRepository,
+    private val goalRepository: GoalRepository,
+    private val gifticonRepository: GifticonRepository
 ) {
 
     fun create(
-        goal: Goal,
-        gifticon: Gifticon,
-        user: User,
+        goalId: Long,
+        gifticonId: Long,
+        userId: Long,
     ) {
         goalGifticonRepository.save(
             GoalGifticonEntity(
-                goal.fromDto(),
-                gifticon.fromDto(user.fromDto())
+                goalEntity = goalRepository.findById(goalId).get(),
+                gifticon = gifticonRepository.findById(gifticonId).get()
             )
         )
     }
