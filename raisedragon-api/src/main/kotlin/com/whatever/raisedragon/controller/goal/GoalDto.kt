@@ -1,9 +1,13 @@
 package com.whatever.raisedragon.controller.goal
 
 import com.whatever.raisedragon.domain.goal.BettingType
+import com.whatever.raisedragon.domain.goal.Content
+import com.whatever.raisedragon.domain.goal.Goal
+import com.whatever.raisedragon.domain.goal.Threshold
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.PositiveOrZero
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Schema(description = "[Request] 다짐 생성")
@@ -15,6 +19,9 @@ data class GoalCreateRequest(
     @Schema(description = "다짐 내용")
     @field:NotNull
     val content: String,
+
+    @Schema(description = "다짐 기프티콘의 Presigned URL")
+    val presig: String,
 
     @Schema(description = "다짐 인증 횟수")
     @field:NotNull
@@ -39,10 +46,10 @@ data class GoalResponse(
     val type: BettingType,
 
     @Schema(description = "다짐 내용")
-    val content: String,
+    val content: Content,
 
     @Schema(description = "다짐 인증 횟수")
-    val threshold: Int,
+    val threshold: Threshold,
 
     @Schema(description = "다짐 시작 시간")
     val startDate: LocalDateTime,
@@ -51,11 +58,11 @@ data class GoalResponse(
     val endDate: LocalDateTime
 ) {
     companion object {
-        fun sample(): GoalResponse = GoalResponse(
-            id = 1L,
-            type = BettingType.BILLING,
-            content = "Sample Goal's content",
-            threshold = 4,
+        fun of(goal: Goal): GoalResponse = GoalResponse(
+            id = goal.id,
+            type = goal.type,
+            content = goal.content,
+            threshold = goal.threshold,
             startDate = LocalDateTime.now().plusDays(1L),
             endDate = LocalDateTime.now().plusMonths(1L)
         )
