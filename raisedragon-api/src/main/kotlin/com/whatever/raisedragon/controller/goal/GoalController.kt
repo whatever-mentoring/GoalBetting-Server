@@ -4,7 +4,8 @@ import com.whatever.raisedragon.applicationservice.GoalApplicationService
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.domain.goal.Threshold
-import com.whatever.raisedragon.domain.user.User
+import com.whatever.raisedragon.security.authentication.UserInfo
+import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -23,7 +24,7 @@ class GoalController(
     @PostMapping
     fun create(
         @Valid @RequestBody request: GoalCreateRequest,
-        user: User
+        @GetAuth userinfo: UserInfo
     ): Response<GoalResponse> {
         return Response.success(
             GoalResponse.of(
@@ -34,7 +35,7 @@ class GoalController(
                     threshold = Threshold(request.threshold),
                     startDate = request.startDate,
                     endDate = request.endDate,
-                    user = user
+                    userId = userInfo.id
                 )
             )
         )
