@@ -1,6 +1,7 @@
 package com.whatever.raisedragon.domain.goalproof
 
 import com.whatever.raisedragon.domain.BaseEntity
+import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
@@ -17,13 +18,16 @@ class GoalProofEntity(
     @JoinColumn(name = "goal_id")
     val goalEntity: GoalEntity,
 
-    @Embedded
-    val document: Document
+    @Column(name = "url")
+    val url: URL,
+
+    @Column(name = "comment")
+    val comment: Comment
 
 ) : BaseEntity()
 
 @Embeddable
-data class Document(
-    @Column(name = "document")
-    val value: String
+data class Comment(
+    @Column(name = "comment")
+    val value: String,
 )

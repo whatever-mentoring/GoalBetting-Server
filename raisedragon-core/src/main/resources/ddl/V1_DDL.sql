@@ -82,6 +82,8 @@ create table if not exists goal_proof
     goal_id    bigint       not null,
     user_id    bigint       not null,
     document   varchar(255) not null,
+    url        varchar(255) not null,
+    comment    varchar(255) not null,
     deleted_at datetime(6)  null,
     created_at datetime(6)  not null,
     updated_at datetime(6)  not null

@@ -2,11 +2,11 @@ package com.whatever.raisedragon.applicationservice
 
 import com.whatever.raisedragon.controller.goalproof.GoalProofCreateUpdateResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
+import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.GoalService
-import com.whatever.raisedragon.domain.goalproof.Document
+import com.whatever.raisedragon.domain.goalproof.Comment
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
-import com.whatever.raisedragon.security.authentication.UserInfo
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -21,19 +21,22 @@ class GoalProofApplicationService(
     fun create(
         userId: Long,
         goalId: Long,
-        document: Document
+        url: String,
+        comment: String
     ): GoalProofCreateUpdateResponse {
         val goalProof = goalProofService.create(
             user = userService.loadById(userId),
             goal = goalService.loadById(goalId),
-            document = document
+            url = URL(url),
+            comment = Comment(comment)
         )
         return GoalProofCreateUpdateResponse(
             GoalProofRetrieveResponse(
                 id = goalProof.id,
                 userId = goalProof.userId,
                 goalId = goalProof.goalId,
-                document = document
+                url = goalProof.url,
+                comment = goalProof.comment
             )
         )
     }
@@ -43,7 +46,8 @@ class GoalProofApplicationService(
             id = 0L,
             userId = 0L,
             goalId = 0L,
-            document = Document("Fake Document")
+            url = URL("goalProof.url"),
+            comment = Comment("goalProof.comment")
         )
     }
 }
