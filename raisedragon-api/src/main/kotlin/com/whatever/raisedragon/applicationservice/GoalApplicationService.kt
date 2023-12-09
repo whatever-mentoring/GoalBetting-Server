@@ -3,7 +3,8 @@ package com.whatever.raisedragon.applicationservice
 import com.whatever.raisedragon.domain.gifticon.GifticonService
 import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
-import com.whatever.raisedragon.domain.user.User
+import com.whatever.raisedragon.domain.user.UserService
+import com.whatever.raisedragon.security.authentication.UserInfo
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -13,7 +14,8 @@ import java.time.LocalDateTime
 class GoalApplicationService(
     private val goalService: GoalService,
     private val gifticonService: GifticonService,
-    private val goalGifticonService: GoalGifticonService
+    private val goalGifticonService: GoalGifticonService,
+    private val userService: UserService,
 ) {
 
     fun createGoal(
@@ -22,9 +24,10 @@ class GoalApplicationService(
         threshold: Threshold,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
-        user: User,
+        userId: Long,
         presignedURL: String
     ): Goal {
+        val user = userService.loadById(userId)
         if (bettingType == BettingType.BILLING) {
             val goal = goalService.create(
                 content = content,
