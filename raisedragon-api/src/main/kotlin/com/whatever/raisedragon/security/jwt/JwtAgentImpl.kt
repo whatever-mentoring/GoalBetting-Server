@@ -18,11 +18,9 @@ import java.util.*
 @Component
 class JwtAgentImpl(
     private val jwtGenerator: JwtGenerator,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    @Value("\${jwt.secret-key}") private val key: String
 ) : JwtAgent {
-
-    @Value("\${jwt.secret-key}")
-    private var key: String? = null
 
     private val jwtParser: JwtParser = Jwts.parserBuilder().setSigningKey(getSigningKey()).build()
 
