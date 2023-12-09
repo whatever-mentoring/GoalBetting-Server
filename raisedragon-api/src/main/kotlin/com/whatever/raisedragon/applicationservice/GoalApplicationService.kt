@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 class GoalApplicationService(
     private val goalService: GoalService,
@@ -17,6 +17,7 @@ class GoalApplicationService(
     private val goalGifticonService: GoalGifticonService,
 ) {
 
+    @Transactional
     fun createGoal(
         content: Content,
         bettingType: BettingType,

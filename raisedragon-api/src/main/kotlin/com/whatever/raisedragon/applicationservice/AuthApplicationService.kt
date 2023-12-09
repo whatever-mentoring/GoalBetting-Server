@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 class AuthApplicationService(
     private val authService: AuthService,
     private val userService: UserService,
 ) {
 
+    @Transactional
     fun kakoLogin(accessToken: String): User {
         val kakaoId = authService.verifyKaKao(accessToken)
         return userService.loadByOAuthPayload(kakaoId) ?: return userService.create(
