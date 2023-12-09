@@ -1,6 +1,6 @@
 package com.whatever.raisedragon.security.authentication
 
-import com.whatever.raisedragon.common.config.SecurityConfig.Companion.DEFAULT_ROLE_NAME
+import com.whatever.raisedragon.config.SecurityConfig.Companion.DEFAULT_ROLE_NAME
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
