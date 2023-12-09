@@ -2,6 +2,9 @@ package com.whatever.raisedragon.controller.goalproof
 
 import com.whatever.raisedragon.applicationservice.GoalProofApplicationService
 import com.whatever.raisedragon.common.Response
+import com.whatever.raisedragon.domain.goalproof.Document
+import com.whatever.raisedragon.security.authentication.UserInfo
+import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -16,12 +19,19 @@ class GoalProofController(
 ) {
 
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "GoalProof create API", description = "Create GoalProof")
+    @Operation(summary = "GoalProof create API", description = "다짐 인증을 생성합니다.")
     @PostMapping
     fun create(
-        @Valid @RequestBody goalProofCreateRequest: GoalProofCreateRequest
+        @Valid @RequestBody goalProofCreateRequest: GoalProofCreateRequest,
+        @GetAuth userInfo: UserInfo
     ): Response<GoalProofCreateUpdateResponse> {
-        return Response.success(goalProofApplicationService.create())
+        return Response.success(
+            goalProofApplicationService.create(
+                userId = userInfo.id,
+                goalId = goalProofCreateRequest.goalId,
+                document = Document(goalProofCreateRequest.document)
+            )
+        )
     }
 
     @Operation(summary = "GoalProof retrieve API", description = "Retrieve GoalProof")
@@ -30,21 +40,5 @@ class GoalProofController(
         @PathVariable goalProofId: Long
     ): Response<GoalProofRetrieveResponse> {
         return Response.success(goalProofApplicationService.retrieve())
-    }
-
-    @Operation(summary = "GoalProof update API", description = "Update GoalProof")
-    @PutMapping
-    fun update(
-        @RequestBody goalProofUpdateRequest: GoalProofUpdateRequest
-    ): Response<GoalProofCreateUpdateResponse> {
-        return Response.success(goalProofApplicationService.create())
-    }
-
-    @Operation(summary = "GoalProof delete API", description = "Delete GoalProof")
-    @DeleteMapping("{goalProofId}")
-    fun delete(
-        @PathVariable goalProofId: Long
-    ): Response<Unit> {
-        return Response.success()
     }
 }
