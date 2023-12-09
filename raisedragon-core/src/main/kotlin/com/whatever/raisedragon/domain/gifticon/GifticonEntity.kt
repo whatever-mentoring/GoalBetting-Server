@@ -21,6 +21,15 @@ class GifticonEntity(
 
 ) : BaseEntity()
 
+fun Gifticon.fromDto(userEntity: UserEntity): GifticonEntity = GifticonEntity(
+    userEntity = userEntity,
+    url = url,
+    isValidated = isValidated,
+)
+
 @Embeddable
-data class URL(val url: String)
+data class URL(
+    @Column(name = "url")
+    val value: String
+)
 
