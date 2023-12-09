@@ -26,7 +26,7 @@ class BettingApplicationService(
 
         val betting = bettingService.create(
             user = userService.loadById(userId),
-            goal = goalService.loadbyId(goalId),
+            goal = goalService.loadById(goalId),
             predictionType = predictionType
         )
 
