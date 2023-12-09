@@ -2,7 +2,6 @@ package com.whatever.raisedragon.controller.goalproof
 
 import com.whatever.raisedragon.applicationservice.GoalProofApplicationService
 import com.whatever.raisedragon.common.Response
-import com.whatever.raisedragon.domain.goalproof.Document
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -29,7 +28,8 @@ class GoalProofController(
             goalProofApplicationService.create(
                 userId = userInfo.id,
                 goalId = goalProofCreateRequest.goalId,
-                document = Document(goalProofCreateRequest.document)
+                url = goalProofCreateRequest.url,
+                comment = goalProofCreateRequest.comment,
             )
         )
     }

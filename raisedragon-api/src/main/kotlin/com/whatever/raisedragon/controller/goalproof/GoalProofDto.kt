@@ -1,6 +1,7 @@
 package com.whatever.raisedragon.controller.goalproof
 
-import com.whatever.raisedragon.domain.goalproof.Document
+import com.whatever.raisedragon.domain.gifticon.URL
+import com.whatever.raisedragon.domain.goalproof.Comment
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "[Request] 인증내역 생성")
@@ -9,7 +10,10 @@ data class GoalProofCreateRequest(
     val goalId: Long,
 
     @Schema(description = "다짐 인증에 대한 PresignedURL")
-    val document: String
+    val url: String,
+
+    @Schema(description = "다짐 인증에 대한 부연설명")
+    val comment: String
 )
 
 @Schema(description = "[Request] 인증내역 수정")
@@ -36,6 +40,9 @@ data class GoalProofRetrieveResponse(
     @Schema(description = "GoalId")
     val goalId: Long,
 
-    @Schema(description = "인증 상세")
-    val document: Document
+    @Schema(description = "인증 사진")
+    val url: URL,
+
+    @Schema(description = "인증 부연설명")
+    val comment: Comment,
 )

@@ -35,7 +35,7 @@ class GoalController(
                     threshold = Threshold(request.threshold),
                     startDate = request.startDate,
                     endDate = request.endDate,
-                    userId = userInfo.id
+                    userId = userinfo.id
                 )
             )
         )

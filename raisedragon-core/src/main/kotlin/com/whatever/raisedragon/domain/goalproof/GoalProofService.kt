@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.domain.goalproof
 
+import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.fromDto
 import com.whatever.raisedragon.domain.user.User
@@ -16,13 +17,15 @@ class GoalProofService(
     fun create(
         user: User,
         goal: Goal,
-        document: Document
+        url: URL,
+        comment: Comment
     ): GoalProof {
         val goalProof = goalProofRepository.save(
             GoalProofEntity(
                 userEntity = user.fromDto(),
                 goalEntity = goal.fromDto(),
-                document = document
+                url = url,
+                comment = comment,
             )
         )
         return goalProof.toDto()
