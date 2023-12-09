@@ -34,11 +34,17 @@ class GoalProofController(
         )
     }
 
-    @Operation(summary = "GoalProof retrieve API", description = "Retrieve GoalProof")
+    @Operation(summary = "Retrieving single GoalProof API", description = "단건 다짐 인증을 조회합니다")
     @GetMapping("/{goalProofId}")
     fun retrieve(
         @PathVariable goalProofId: Long
     ): Response<GoalProofRetrieveResponse> {
-        return Response.success(goalProofApplicationService.retrieve())
+        return Response.success(goalProofApplicationService.retrieve(goalProofId))
+    }
+
+    @Operation(summary = "Retrieving single GoalProof API", description = "모든 다짐 인증을 조회합니다")
+    @GetMapping
+    fun retrieveAll(@GetAuth userInfo: UserInfo, @RequestBody request: GoalProofRetrieveAllRequest): Response<GoalProofListRetrieveResponse> {
+        return Response.success(goalProofApplicationService.retrieveAll(request.goalId, userInfo.id))
     }
 }

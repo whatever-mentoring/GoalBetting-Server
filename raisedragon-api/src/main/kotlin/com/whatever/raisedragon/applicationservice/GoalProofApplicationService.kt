@@ -1,6 +1,9 @@
 package com.whatever.raisedragon.applicationservice
 
+import com.whatever.raisedragon.common.exception.BaseException
+import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalproof.GoalProofCreateUpdateResponse
+import com.whatever.raisedragon.controller.goalproof.GoalProofListRetrieveResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
 import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.GoalService
@@ -30,24 +33,16 @@ class GoalProofApplicationService(
             url = URL(url),
             comment = Comment(comment)
         )
-        return GoalProofCreateUpdateResponse(
-            GoalProofRetrieveResponse(
-                id = goalProof.id,
-                userId = goalProof.userId,
-                goalId = goalProof.goalId,
-                url = goalProof.url,
-                comment = goalProof.comment
-            )
-        )
+        return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
     }
 
-    fun retrieve(): GoalProofRetrieveResponse {
-        return GoalProofRetrieveResponse(
-            id = 0L,
-            userId = 0L,
-            goalId = 0L,
-            url = URL("goalProof.url"),
-            comment = Comment("goalProof.comment")
-        )
+    fun retrieve(goalProofId: Long): GoalProofRetrieveResponse {
+        val goalProof = goalProofService.findById(goalProofId) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND)
+        return GoalProofRetrieveResponse.of(goalProof)
+    }
+
+    fun retrieveAll(goalId: Long, userId: Long): GoalProofListRetrieveResponse {
+        val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
+        return GoalProofListRetrieveResponse(goalProofs.map { GoalProofRetrieveResponse.of(it) })
     }
 }
