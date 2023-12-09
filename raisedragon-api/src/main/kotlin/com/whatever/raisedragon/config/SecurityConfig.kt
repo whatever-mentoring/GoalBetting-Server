@@ -6,6 +6,7 @@ import com.whatever.raisedragon.security.handler.HttpStatusAuthenticationEntryPo
 import com.whatever.raisedragon.security.jwt.JwtAgent
 import com.whatever.raisedragon.security.jwt.JwtFilter
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -16,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
+@Configuration
 @EnableWebSecurity
 class SecurityConfig(private val jwtAgent: JwtAgent, private val objectMapper: ObjectMapper) {
 
@@ -40,16 +42,7 @@ class SecurityConfig(private val jwtAgent: JwtAgent, private val objectMapper: O
     @Bean
     fun webSecurityCustomizer(): WebSecurityCustomizer {
         return WebSecurityCustomizer {
-            it.ignoring().requestMatchers(
-                // TODO: Remove after providing test accessToken api
-                "/**",
-                // swagger
-                "/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**",
-                // error page
-                "/error/**",
-                // Auth endpoints
-                "/v1/auth/**"
-            )
+            it.ignoring().requestMatchers(*WHITE_LIST.toTypedArray())
         }
     }
 
@@ -63,12 +56,22 @@ class SecurityConfig(private val jwtAgent: JwtAgent, private val objectMapper: O
         }
 
         return UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/api/**", configuration)
+            registerCorsConfiguration("/v1/**", configuration)
         }
     }
 
     companion object {
         const val DEFAULT_ROLE_NAME = "USER"
+        private val WHITE_LIST = listOf(
+            // TODO: Remove after providing test accessToken api
+            "/**",
+            // swagger
+            "/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**",
+            // error page
+            "/error/**",
+            // Auth endpoints
+            "/v1/auth/**"
+        )
     }
 
 }
