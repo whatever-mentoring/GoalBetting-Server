@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.applicationservice
 
+import com.whatever.raisedragon.aws.s3.S3Agent
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalgifticon.GoalGifticonResponse
@@ -8,7 +9,6 @@ import com.whatever.raisedragon.domain.goal.BettingType
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.GoalService
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
-import com.whatever.raisedragon.s3.S3Agent
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
