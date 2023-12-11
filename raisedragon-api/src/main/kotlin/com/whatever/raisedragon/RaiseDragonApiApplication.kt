@@ -7,6 +7,6 @@ import org.springframework.boot.runApplication
 class RaiseDragonApiApplication
 
 fun main(args: Array<String>) {
-    System.setProperty("spring.config.location", "classpath:/domain-config/,classpath:/")
+    System.setProperty("spring.config.additional-location", "classpath:/domain-config/,classpath:/external-config/")
     runApplication<RaiseDragonApiApplication>(*args)
 }
