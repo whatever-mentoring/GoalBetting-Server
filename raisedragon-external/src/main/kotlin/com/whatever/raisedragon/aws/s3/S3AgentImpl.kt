@@ -24,8 +24,8 @@ class S3AgentImpl(
             when (exception) {
                 is IOException -> throw IllegalStateException("S3 File I/O Error", exception)
                 is AmazonServiceException -> throw IllegalStateException(
-                    message = "Failed to upload the file ($fileName)",
-                    cause = exception
+                    "Failed to upload the file ($fileName)",
+                    exception
                 )
             }
         }
