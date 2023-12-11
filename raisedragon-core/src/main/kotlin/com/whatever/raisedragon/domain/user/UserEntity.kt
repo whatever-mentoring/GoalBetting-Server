@@ -2,6 +2,7 @@ package com.whatever.raisedragon.domain.user
 
 import com.whatever.raisedragon.domain.BaseEntity
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Table(name = "user")
 @Entity
@@ -14,7 +15,7 @@ class UserEntity(
     val fcmTokenPayload: String?,
 
     @Embedded
-    val nickname: Nickname
+    var nickname: Nickname
 
 ) : BaseEntity()
 
@@ -23,6 +24,10 @@ fun User.fromDto(): UserEntity = UserEntity(
     fcmTokenPayload = fcmTokenPayload,
     nickname = nickname,
 )
+
+fun UserEntity.disable() {
+    this.deletedAt = LocalDateTime.now()
+}
 
 @Embeddable
 data class Nickname(
