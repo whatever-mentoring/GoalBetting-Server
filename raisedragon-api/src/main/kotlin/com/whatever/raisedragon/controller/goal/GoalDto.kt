@@ -7,7 +7,6 @@ import com.whatever.raisedragon.domain.goal.Threshold
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.PositiveOrZero
-import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Schema(description = "[Request] 다짐 생성")
@@ -19,9 +18,6 @@ data class GoalCreateRequest(
     @Schema(description = "다짐 내용")
     @field:NotNull
     val content: String,
-
-    @Schema(description = "다짐 기프티콘의 Presigned URL")
-    val presig: String,
 
     @Schema(description = "다짐 인증 횟수")
     @field:NotNull

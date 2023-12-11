@@ -46,4 +46,12 @@ class GoalService(
             userRepository.findById(userId).get()
         )
     }
+
+    @Transactional(readOnly = true)
+    fun loadByGoalIdAndUserId(goalId: Long, userId: Long): GoalEntity? {
+        return goalRepository.findByIdAndUserEntity(
+            id = goalId,
+            userEntity = userRepository.findById(userId).get()
+        )
+    }
 }

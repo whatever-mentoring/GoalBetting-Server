@@ -13,12 +13,12 @@ class GifticonService(
 
     fun create(
         userId: Long,
-        presignedURL: String,
+        url: String,
     ): Gifticon {
         val gifticon = gifticonRepository.save(
             GifticonEntity(
                 userEntity = userRepository.findById(userId).get(),
-                url = URL(presignedURL)
+                url = URL(url)
             )
         )
         return gifticon.toDto()

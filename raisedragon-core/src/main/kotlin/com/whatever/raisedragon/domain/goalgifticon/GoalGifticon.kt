@@ -14,7 +14,7 @@ data class GoalGifticon(
 fun GoalGifticonEntity.toDto(): GoalGifticon = GoalGifticon(
     id = id,
     goalId = goalEntity.id,
-    gifticonId = gifticon.id,
+    gifticonId = gifticonEntity.id,
     createdAt = createdAt,
     updatedAt = updatedAt,
     deletedAt = deletedAt
