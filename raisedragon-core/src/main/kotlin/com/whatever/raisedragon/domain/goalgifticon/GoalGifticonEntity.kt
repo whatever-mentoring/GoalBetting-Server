@@ -15,5 +15,5 @@ class GoalGifticonEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gifticon_id")
-    val gifticon: GifticonEntity,
+    val gifticonEntity: GifticonEntity,
 ) : BaseEntity()

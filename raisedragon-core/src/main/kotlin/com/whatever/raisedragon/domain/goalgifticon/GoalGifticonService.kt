@@ -17,12 +17,13 @@ class GoalGifticonService(
         goalId: Long,
         gifticonId: Long,
         userId: Long,
-    ) {
-        goalGifticonRepository.save(
+    ): GoalGifticon {
+        val goalGifticon = goalGifticonRepository.save(
             GoalGifticonEntity(
                 goalEntity = goalRepository.findById(goalId).get(),
-                gifticon = gifticonRepository.findById(gifticonId).get()
+                gifticonEntity = gifticonRepository.findById(gifticonId).get()
             )
         )
+        return goalGifticon.toDto()
     }
 }

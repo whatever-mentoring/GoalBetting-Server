@@ -31,7 +31,6 @@ class GoalController(
                 goalApplicationService.createGoal(
                     bettingType = request.type,
                     content = Content(request.content),
-                    presignedURL = request.presig,
                     threshold = Threshold(request.threshold),
                     startDate = request.startDate,
                     endDate = request.endDate,

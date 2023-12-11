@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GoalRepository : JpaRepository<GoalEntity, Long> {
     fun findAllByUserEntity(userEntity: UserEntity): List<GoalEntity>
+
+    fun findByIdAndUserEntity(id: Long, userEntity: UserEntity): GoalEntity?
 }
