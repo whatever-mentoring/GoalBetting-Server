@@ -1,8 +1,6 @@
 package com.whatever.raisedragon.applicationservice
 
-import com.whatever.raisedragon.controller.user.UserCreateUpdateResponse
 import com.whatever.raisedragon.controller.user.UserRetrieveResponse
-import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,20 +10,24 @@ import org.springframework.transaction.annotation.Transactional
 class UserApplicationService(
     private val userService: UserService
 ) {
-    @Transactional
-    fun create(): UserCreateUpdateResponse {
-        return UserCreateUpdateResponse(
-            UserRetrieveResponse(
-                userId = 0L,
-                nickname = Nickname("sample")
-            )
+
+    fun retrieve(id: Long): UserRetrieveResponse {
+        val user = userService.loadById(id)
+        return UserRetrieveResponse(
+            userId = user.id!!,
+            nickname = user.nickname
         )
     }
 
-    fun retrieve(): UserRetrieveResponse {
+    fun updateNickname(id: Long, nickname: String): UserRetrieveResponse {
+        val user = userService.updateNickname(id, nickname)
         return UserRetrieveResponse(
-            userId = 0L,
-            nickname = Nickname("sample")
+            userId = user.id!!,
+            nickname = user.nickname
         )
+    }
+
+    fun delete(id: Long) {
+        userService.softDelete(id)
     }
 }

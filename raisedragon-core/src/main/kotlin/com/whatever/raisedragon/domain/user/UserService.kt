@@ -17,10 +17,21 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun loadById(id: Long): User {
-        return userRepository.findByIdOrNull(id)?.toDto() ?: throw Exception()
+        return userRepository.findByIdOrNull(id)?.toDto() ?: throw IllegalArgumentException("유저를 불러오는 중, 잘못된 값을 요청하셨습니다.")
     }
 
     fun create(user: User): User {
         return userRepository.save(user.fromDto()).toDto()
+    }
+
+    fun updateNickname(id: Long, nickname: String): User {
+        val userEntity = loadById(id).fromDto()
+        userEntity.nickname = Nickname(nickname)
+        return userEntity.toDto()
+    }
+
+    fun softDelete(id: Long) {
+        val userEntity = loadById(id).fromDto()
+        userEntity.disable()
     }
 }

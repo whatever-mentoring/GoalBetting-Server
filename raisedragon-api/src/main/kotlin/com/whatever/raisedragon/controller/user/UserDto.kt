@@ -12,10 +12,10 @@ data class UserCreateRequest(
     val fcmTokenPayload: String,
 )
 
-@Schema(description = "[Request] 유저 수정")
-data class UserUpdateRequest(
-    @Schema(description = "User Id")
-    val userId: Long
+@Schema(description = "[Request] 유저 닉네임 수정")
+data class UserNicknameUpdateRequest(
+    @Schema(description = "User Nickname")
+    val nickname: String
 )
 
 @Schema(description = "[Response] 유저 생성/수정")
