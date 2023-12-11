@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      access-key: ENC(uVScMy7+61nB+wiOCfG4pFyOeyQXW1730EZCDB0vtIs7J/y2feNtjeCNXVJiYNKdfQ+3clSFR1D+Cl0ZvlmgsA==)
+      secret-key: ENC(BerkXnt7d2v1GGrTWGsymOZW1uWh8WThM/BrRFLAMREBmyyCXrQtdVdDFBXD8MmdM1TucNgsw+//vUZZOmi3ronNLHw/+7a+WIE642jzWSU=)
+    s3:
+      domain: ENC(8yCtDWdZ+lkDlPlDp3X0CSSwWvmurvg83t8bjGVenejjoQ7lMcMqy4cic5UFOSUHthp3jdFlRiGhOjrPxPMhH4Rb36EPqSBQDgJ+O1QH3Qck2uxVumAnqqfyk5kR9ch7)
+      bucket-name: ENC(QuqgXeg8kYgbqdQV0NPE90mVHkktu2KEUSCptW1hhothQTO8BwPAIgwJNFXBnRA2)
+    region:
+      static: "ap-northeast-2"
+      auto: false
