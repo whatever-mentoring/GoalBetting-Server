@@ -1,9 +1,7 @@
-package com.whatever.raisedragon.s3
+package com.whatever.raisedragon.aws.s3
 
-import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 
-@Component
 interface S3Agent {
 
     /**
