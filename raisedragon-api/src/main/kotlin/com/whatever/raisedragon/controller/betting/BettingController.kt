@@ -40,20 +40,4 @@ class BettingController(
     ): Response<BettingRetrieveResponse> {
         return Response.success(bettingApplicationService.retrieve())
     }
-
-//    @Operation(summary = "Betting update API", description = "Update Betting")
-//    @PutMapping
-//    fun update(
-//        @RequestBody bettingUpdateRequest: BettingUpdateRequest
-//    ): Response<BettingCreateUpdateResponse> {
-//        return Response.success(bettingApplicationService.create())
-//    }
-
-    @Operation(summary = "Betting delete API", description = "Delete Betting")
-    @DeleteMapping("{bettingId}")
-    fun delete(
-        @PathVariable bettingId: Long
-    ): Response<Unit> {
-        return Response.success()
-    }
 }

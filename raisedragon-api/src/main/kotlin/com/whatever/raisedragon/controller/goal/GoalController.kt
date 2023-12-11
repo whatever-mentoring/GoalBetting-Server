@@ -27,23 +27,14 @@ class GoalController(
         @GetAuth userinfo: UserInfo
     ): Response<GoalResponse> {
         return Response.success(
-            GoalResponse.of(
-                goalApplicationService.createGoal(
-                    bettingType = request.type,
-                    content = Content(request.content),
-                    threshold = Threshold(request.threshold),
-                    startDate = request.startDate,
-                    endDate = request.endDate,
-                    userId = userinfo.id
-                )
+            goalApplicationService.createGoal(
+                bettingType = request.type,
+                content = Content(request.content),
+                threshold = Threshold(request.threshold),
+                startDate = request.startDate,
+                endDate = request.endDate,
+                userId = userinfo.id
             )
         )
-    }
-
-    @Operation(summary = "Deleting Goal API", description = "Delete Goal")
-    @DeleteMapping("/{goalId}")
-    fun delete(@PathVariable goalId: Long): Response<Unit> {
-        // TODO: To get user id for using jwt
-        return Response.success()
     }
 }

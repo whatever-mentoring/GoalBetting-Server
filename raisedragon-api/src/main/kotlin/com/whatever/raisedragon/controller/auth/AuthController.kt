@@ -14,11 +14,9 @@ class AuthController(
     private val authApplicationService: AuthApplicationService,
 ) {
 
-    @Operation(summary = "LoginAPI", description = "Kakao Login")
+    @Operation(summary = "Login API", description = "Kakao Login")
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): Response<LoginResponse> {
-        return Response.success(
-            LoginResponse(authApplicationService.kakoLogin(loginRequest.accessToken))
-        )
+        return Response.success(authApplicationService.kakoLogin(loginRequest.accessToken));
     }
 }

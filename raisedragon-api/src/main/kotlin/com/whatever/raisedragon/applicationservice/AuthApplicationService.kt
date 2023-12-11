@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.applicationservice
 
+import com.whatever.raisedragon.controller.auth.LoginResponse
 import com.whatever.raisedragon.domain.auth.AuthService
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.User
@@ -15,14 +16,16 @@ class AuthApplicationService(
 ) {
 
     @Transactional
-    fun kakoLogin(accessToken: String): User {
+    fun kakoLogin(accessToken: String): LoginResponse {
         val kakaoId = authService.verifyKaKao(accessToken)
-        return userService.loadByOAuthPayload(kakaoId) ?: return userService.create(
-            User(
-                oauthTokenPayload = kakaoId,
-                fcmTokenPayload = null,
-                nickname = Nickname.generateRandomNickname()
-            )
+        return LoginResponse(
+            userService.loadByOAuthPayload(kakaoId) ?: userService.create(
+                    User(
+                        oauthTokenPayload = kakaoId,
+                        fcmTokenPayload = null,
+                        nickname = Nickname.generateRandomNickname()
+                    )
+                )
         )
     }
 }
