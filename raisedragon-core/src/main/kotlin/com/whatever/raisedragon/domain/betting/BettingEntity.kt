@@ -4,9 +4,11 @@ import com.whatever.raisedragon.domain.BaseEntity
 import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 
 @Table(name = "betting")
 @Entity
+@SQLRestriction("deleted_at IS NULL")
 class BettingEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)

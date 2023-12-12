@@ -2,10 +2,12 @@ package com.whatever.raisedragon.domain.user
 
 import com.whatever.raisedragon.domain.BaseEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
 @Table(name = "user")
 @Entity
+@SQLRestriction("deleted_at IS NULL")
 class UserEntity(
 
     @Column(name = "oauth_token_payload", nullable = true, length = 255)

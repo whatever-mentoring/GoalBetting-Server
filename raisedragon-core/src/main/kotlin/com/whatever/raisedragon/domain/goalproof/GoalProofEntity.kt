@@ -5,9 +5,11 @@ import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.GoalEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 
 @Table(name = "goal_proof")
 @Entity
+@SQLRestriction("deleted_at IS NULL")
 class GoalProofEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)

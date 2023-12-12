@@ -3,10 +3,12 @@ package com.whatever.raisedragon.domain.goal
 import com.whatever.raisedragon.domain.BaseEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
 @Table(name = "goal")
 @Entity
+@SQLRestriction("deleted_at IS NULL")
 class GoalEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
