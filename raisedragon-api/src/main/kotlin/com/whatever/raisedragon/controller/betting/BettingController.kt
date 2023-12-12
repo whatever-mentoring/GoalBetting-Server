@@ -38,6 +38,28 @@ class BettingController(
     fun retrieve(
         @PathVariable bettingId: Long
     ): Response<BettingRetrieveResponse> {
-        return Response.success(bettingApplicationService.retrieve())
+        return Response.success(bettingApplicationService.retrieve(bettingId))
+    }
+
+    @Operation(summary = "Betting Update API", description = "베팅 내역을 수정합니다")
+    @PutMapping
+    fun update(
+        @Valid @RequestBody request: BettingUpdateRequest,
+        @GetAuth userInfo: UserInfo
+    ): Response<BettingRetrieveResponse> {
+        return Response.success(
+            bettingApplicationService.update(
+                userId = userInfo.id,
+                bettingId = request.bettingId,
+                predictionType = request.predictionType
+            )
+        )
+    }
+
+    @Operation(summary = "Betting Delete API", description = "베팅을 삭제합니다")
+    @DeleteMapping("{bettingId}")
+    fun delete(@PathVariable bettingId: Long, @GetAuth userInfo: UserInfo): Response<Unit> {
+        bettingApplicationService.delete(userInfo.id, bettingId)
+        return Response.success()
     }
 }
