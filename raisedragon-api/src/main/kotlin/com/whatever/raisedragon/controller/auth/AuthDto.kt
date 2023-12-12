@@ -1,6 +1,5 @@
 package com.whatever.raisedragon.controller.auth
 
-import com.whatever.raisedragon.domain.user.User
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 
@@ -11,7 +10,16 @@ data class LoginRequest(
     val accessToken: String
 )
 
-@Schema(description = "[Request] 카카오 로그인 응답")
+@Schema(description = "[Response] 카카오 로그인 응답")
 data class LoginResponse(
-    val user: User
+    val userId: Long,
+    val nickname: String,
+    val accessToken: String,
+    val refreshToken: String
+)
+
+@Schema(description = "[Response] 토큰 갱신 응답")
+data class TokenRefreshResponse(
+    val accessToken: String,
+    val refreshToken: String
 )

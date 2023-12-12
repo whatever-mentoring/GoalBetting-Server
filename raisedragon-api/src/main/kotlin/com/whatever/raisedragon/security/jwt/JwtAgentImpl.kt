@@ -3,9 +3,12 @@ package com.whatever.raisedragon.security.jwt
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
+import com.whatever.raisedragon.domain.refreshtoken.RefreshTokenService
 import com.whatever.raisedragon.domain.user.User
+import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.security.authentication.UserInfo
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -19,6 +22,8 @@ import java.util.*
 class JwtAgentImpl(
     private val jwtGenerator: JwtGenerator,
     private val objectMapper: ObjectMapper,
+    private val refreshTokenService: RefreshTokenService,
+    private val userService: UserService,
     @Value("\${jwt.secret-key}") private val key: String
 ) : JwtAgent {
 
@@ -44,6 +49,31 @@ class JwtAgentImpl(
         return jwtParser.parseClaimsJws(token).body?.let {
             objectMapper.convertValue(it[CLAIM_INFO_KEY], UserInfo::class.java)
         } ?: throw BaseException.of(ExceptionCode.E401_UNAUTHORIZED)
+    }
+
+    override fun reissueToken(refreshTokenPayload: String, user: User): JwtToken {
+        isNotExpired(refreshTokenPayload)
+        isExistRefreshToken(refreshTokenPayload)
+        return provide(user)
+    }
+
+    private fun isNotExpired(refreshTokenPayload: String) {
+        try {
+            jwtParser.parseClaimsJws(refreshTokenPayload)
+        } catch (expiredJwtException: ExpiredJwtException) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E401_UNAUTHORIZED,
+                executionMessage = "토큰을 갱신하는 중, 만료된 토큰을 요청하셨습니다. 다시 로그인해주세요."
+            )
+        }
+    }
+
+    private fun isExistRefreshToken(refreshTokenPayload: String) {
+        refreshTokenService.loadByPayload(refreshTokenPayload)
+            ?: throw BaseException.of(
+                exceptionCode = ExceptionCode.E400_BAD_REQUEST,
+                executionMessage = "토큰을 갱신하는 중, 유효하지 않은 토큰으로 요청하셨습니다."
+            )
     }
 
     private fun getSigningKey(): Key {

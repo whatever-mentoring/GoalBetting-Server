@@ -21,4 +21,6 @@ interface JwtAgent {
      * @return UserInfo 를 반환합니다.
      */
     fun extractUserFromToken(token: String): UserInfo?
+
+    fun reissueToken(refreshTokenPayload: String, user: User): JwtToken
 }
