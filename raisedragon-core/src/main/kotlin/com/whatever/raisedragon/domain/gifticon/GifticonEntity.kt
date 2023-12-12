@@ -3,9 +3,11 @@ package com.whatever.raisedragon.domain.gifticon
 import com.whatever.raisedragon.domain.BaseEntity
 import com.whatever.raisedragon.domain.user.UserEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 
 @Table(name = "gifticon")
 @Entity
+@SQLRestriction("deleted_at IS NULL")
 class GifticonEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)

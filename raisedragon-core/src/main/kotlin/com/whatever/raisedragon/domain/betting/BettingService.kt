@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 class BettingService(
     private val bettingRepository: BettingRepository,
     private val userRepository: UserRepository,
-    private val goalRepository: GoalRepository
+    private val goalRepository: GoalRepository,
 ) {
     @Transactional
     fun create(
