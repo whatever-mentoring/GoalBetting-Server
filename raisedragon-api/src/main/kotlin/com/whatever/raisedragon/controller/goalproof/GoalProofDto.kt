@@ -3,16 +3,25 @@ package com.whatever.raisedragon.controller.goalproof
 import com.whatever.raisedragon.domain.goalproof.GoalProof
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "[Request] 인증내역 생성")
+@Schema(description = "[Request] 다짐 인증 생성")
 data class GoalProofCreateRequest(
     @Schema(description = "Goal Id")
     val goalId: Long,
 
-    @Schema(description = "다짐 인증에 대한 PresignedURL")
+    @Schema(description = "다짐 인증에 사용한 이미지 url")
     val url: String,
 
     @Schema(description = "다짐 인증에 대한 부연설명")
     val comment: String
+)
+
+@Schema(description = "[Request] 다짐 인증 수정")
+data class GoalProofUpdateRequest(
+    @Schema(description = "다짐 인증에 사용한 이미지 url")
+    val url: String? = null,
+
+    @Schema(description = "다짐 인증에 대한 부연설명")
+    val comment: String? = null
 )
 
 @Schema(description = "[Request] 모든 다짐 인증 조회")
