@@ -16,3 +16,8 @@ class RefreshTokenEntity(
     val payload: String?
 
 ) : BaseEntity()
+
+fun RefreshToken.fromDto(userEntity: UserEntity): RefreshTokenEntity = RefreshTokenEntity(
+    userEntity = userEntity,
+    payload = payload,
+)

@@ -3,12 +3,12 @@ package com.whatever.raisedragon.domain.refreshtoken
 import java.time.LocalDateTime
 
 data class RefreshToken(
-    val id: Long,
-    val payload: String?,
+    val id: Long = 0L,
+    var payload: String?,
     val userId: Long,
-    var deletedAt: LocalDateTime?,
-    var createdAt: LocalDateTime?,
-    var updatedAt: LocalDateTime?
+    var deletedAt: LocalDateTime? = null,
+    var createdAt: LocalDateTime? = LocalDateTime.now(),
+    var updatedAt: LocalDateTime? = LocalDateTime.now()
 )
 
 fun RefreshTokenEntity.toDto(): RefreshToken = RefreshToken(
