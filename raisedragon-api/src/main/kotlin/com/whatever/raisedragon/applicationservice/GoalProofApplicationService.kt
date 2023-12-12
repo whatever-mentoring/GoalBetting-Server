@@ -11,6 +11,7 @@ import com.whatever.raisedragon.domain.goalproof.Comment
 import com.whatever.raisedragon.domain.goalproof.GoalProof
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
+import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -30,12 +31,15 @@ class GoalProofApplicationService(
         url: String,
         comment: String
     ): GoalProofCreateUpdateResponse {
+        val goal = goalService.loadById(goalId)
+        val user = userService.loadById(userId)
         val goalProof = goalProofService.create(
-            user = userService.loadById(userId),
-            goal = goalService.loadById(goalId),
+            user = user,
+            goal = goal,
             url = URL(url),
             comment = Comment(comment)
         )
+        goalService.increaseThreshold(goal, user.fromDto())
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
     }
 
