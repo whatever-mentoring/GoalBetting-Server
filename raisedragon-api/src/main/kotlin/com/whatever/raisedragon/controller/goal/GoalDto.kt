@@ -40,6 +40,13 @@ data class GoalModifyRequest(
     val content: String,
 )
 
+@Schema(description = "[Request] 다짐 삭제")
+data class GoalDeleteRequest(
+    @Schema(description = "다짐 내용")
+    @field:NotNull
+    val goalId: Long,
+)
+
 @Schema(description = "[Response] 단건 다짐(Goal) 조회")
 data class GoalResponse(
     @Schema(description = "다짐 id")

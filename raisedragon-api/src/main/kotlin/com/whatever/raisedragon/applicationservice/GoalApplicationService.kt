@@ -104,11 +104,26 @@ class GoalApplicationService(
         )
     }
 
+    @Transactional
+    fun deleteGoal(
+        userId: Long,
+        goalId: Long,
+    ) {
+        val goal = goalService.loadById(goalId)
+        isNotUsersGoal(goal, userId)
+        isAlreadyStarted(goal)
+
+        goalService.delete(
+            goal = goal,
+            userEntity = userService.loadById(userId).fromDto(),
+        )
+    }
+
     private fun isNotUsersGoal(goal: Goal, userId: Long) {
         if (goal.userId != userId) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
-                executionMessage = "다짐을 수정하는 중, 수정 권한이 없는 리소스에 대한 요청은 수행할 수 없습니다."
+                executionMessage = "다짐을 수정하는 중, 쓰기 권한이 없는 리소스에 대한 요청은 수행할 수 없습니다."
             )
         }
     }
@@ -117,7 +132,7 @@ class GoalApplicationService(
         if (goal.startDate < LocalDateTime.now()) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
-                executionMessage = "다짐을 수정하는 중, 이미 시작된 다짐은 수정할 수 없습니다."
+                executionMessage = "다짐에 쓰기작업을 하는 중, 이미 시작된 다짐은 수정/삭제할 수 없습니다."
             )
         }
     }
