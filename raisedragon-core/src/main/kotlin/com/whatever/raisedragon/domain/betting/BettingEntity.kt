@@ -11,6 +11,10 @@ import org.hibernate.annotations.SQLRestriction
 @SQLRestriction("deleted_at IS NULL")
 class BettingEntity(
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val userEntity: UserEntity,
@@ -22,7 +26,7 @@ class BettingEntity(
     @Enumerated(EnumType.STRING)
     var predictionType: PredictionType,
 
-) : BaseEntity()
+    ) : BaseEntity()
 
 enum class PredictionType {
     SUCCESS, FAIL
