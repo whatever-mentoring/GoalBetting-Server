@@ -70,4 +70,9 @@ class GoalService(
 
         return goalEntity.toDto()
     }
+
+    fun increaseThreshold(goal: Goal, userEntity: UserEntity) {
+        val goalEntity = goal.fromDto(userEntity)
+        goalEntity.threshold = Threshold(goalEntity.threshold.value + 1)
+    }
 }
