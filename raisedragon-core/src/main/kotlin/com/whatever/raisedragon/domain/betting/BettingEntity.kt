@@ -18,7 +18,7 @@ class BettingEntity(
     val goalEntity: GoalEntity,
 
     @Enumerated(EnumType.STRING)
-    val predictionType: PredictionType,
+    var predictionType: PredictionType,
 
 ) : BaseEntity()
 

@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.controller.betting
 
+import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.PredictionType
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -40,4 +41,13 @@ data class BettingRetrieveResponse(
 
     @Schema(description = "예측")
     val predictionType: PredictionType,
-)
+) {
+    companion object {
+        fun of(betting: Betting): BettingRetrieveResponse = BettingRetrieveResponse(
+            id = betting.id,
+            userId = betting.userId,
+            goalId = betting.goalId,
+            predictionType = betting.predictionType
+        )
+    }
+}
