@@ -14,7 +14,7 @@ class AuthController(
     @Operation(summary = "Login API", description = "Kakao Login")
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): Response<LoginResponse> {
-        return Response.success(authApplicationService.kakoLogin(loginRequest.accessToken))
+        return Response.success(authApplicationService.kakaoLogin(loginRequest.accessToken))
     }
 
     @Operation(summary = "Token Refresh API", description = "토큰 갱신")

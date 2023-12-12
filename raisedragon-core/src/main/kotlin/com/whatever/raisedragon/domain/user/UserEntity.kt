@@ -10,18 +10,25 @@ import java.time.LocalDateTime
 @SQLRestriction("deleted_at IS NULL")
 class UserEntity(
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+
     @Column(name = "oauth_token_payload", nullable = true, length = 255)
-    val oauthTokenPayload: String?,
+    var oauthTokenPayload: String?,
 
     @Column(name = "fcm_token_payload", nullable = true, length = 255)
-    val fcmTokenPayload: String?,
+    var fcmTokenPayload: String?,
 
     @Embedded
     var nickname: Nickname
 
-) : BaseEntity()
+) : BaseEntity() {
+
+}
 
 fun User.fromDto(): UserEntity = UserEntity(
+    id = id!!,
     oauthTokenPayload = oauthTokenPayload,
     fcmTokenPayload = fcmTokenPayload,
     nickname = nickname,
