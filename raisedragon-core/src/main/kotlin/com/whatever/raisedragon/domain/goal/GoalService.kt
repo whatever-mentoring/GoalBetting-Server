@@ -37,21 +37,22 @@ class GoalService(
 
     @Transactional(readOnly = true)
     fun loadById(id: Long): Goal {
-        return goalRepository.findByIdOrNull(id)?.toDto() ?: throw Exception()
+        return goalRepository.findByIdOrNull(id)?.toDto()
+            ?: throw IllegalArgumentException("다짐을 조회하는 중, 잘못된 내용을 요청하셨습니다.")
     }
 
     @Transactional(readOnly = true)
-    fun loadAllByUserId(userId: Long): List<GoalEntity> {
+    fun loadAllByUserId(userId: Long): List<Goal> {
         return goalRepository.findAllByUserEntity(
             userRepository.findById(userId).get()
-        )
+        ).map { it.toDto() }
     }
 
     @Transactional(readOnly = true)
-    fun loadByGoalIdAndUserId(goalId: Long, userId: Long): GoalEntity? {
+    fun loadByGoalIdAndUserId(goalId: Long, userId: Long): Goal {
         return goalRepository.findByIdAndUserEntity(
             id = goalId,
             userEntity = userRepository.findById(userId).get()
-        )
+        )?.toDto() ?: throw IllegalArgumentException("다짐을 조회하는 중, 잘못된 내용을 요청하셨습니다.")
     }
 }

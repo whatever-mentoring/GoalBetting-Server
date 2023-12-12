@@ -37,4 +37,22 @@ class GoalController(
             )
         )
     }
+
+    @Operation(summary = "Retrieving Goal API", description = "다짐 단일 조회")
+    @GetMapping("/{goalId}")
+    fun retrieveOne(
+        @PathVariable goalId: Long,
+        @GetAuth userInfo: UserInfo
+    ): Response<GoalResponse> {
+        return Response.success(goalApplicationService.retrieveGoal(goalId))
+    }
+
+    @Operation(summary = "Retrieving Multiple Goal API", description = "요청자의 모든 다짐 조회")
+    @GetMapping
+    fun retrieveMany(
+        @GetAuth userInfo: UserInfo
+    ): Response<List<GoalResponse>> {
+        return Response.success(goalApplicationService.retrieveAllByUserId(userInfo.id))
+    }
+
 }

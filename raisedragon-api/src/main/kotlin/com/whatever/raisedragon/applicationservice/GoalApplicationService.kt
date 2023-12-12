@@ -48,6 +48,36 @@ class GoalApplicationService(
         )
     }
 
+    fun retrieveGoal(goalId: Long): GoalResponse {
+        val goal = goalService.loadById(goalId)
+        return GoalResponse(
+            id = goal.id,
+            type = goal.type,
+            content = goal.content,
+            threshold = goal.threshold,
+            startDate = goal.startDate,
+            endDate = goal.endDate
+        )
+    }
+
+    fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
+        val goals = goalService.loadAllByUserId(userId)
+        val response: MutableList<GoalResponse> = mutableListOf()
+
+        goals.map {
+            val goalResponse = GoalResponse(
+                id = it.id,
+                type = it.type,
+                content = it.content,
+                threshold = it.threshold,
+                startDate = it.startDate,
+                endDate = it.endDate
+            )
+            response.add(goalResponse)
+        }
+        return response
+    }
+
 
     private fun isNumberOfGoalUnderOneHundred(userId: Long): Boolean {
         return goalService.loadAllByUserId(userId).size < 100
