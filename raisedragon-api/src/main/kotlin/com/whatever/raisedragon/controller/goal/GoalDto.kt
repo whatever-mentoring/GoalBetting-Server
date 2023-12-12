@@ -33,6 +33,13 @@ data class GoalCreateRequest(
     val endDate: LocalDateTime,
 )
 
+@Schema(description = "[Request] 다짐 수정")
+data class GoalModifyRequest(
+    @Schema(description = "다짐 내용")
+    @field:NotNull
+    val content: String,
+)
+
 @Schema(description = "[Response] 단건 다짐(Goal) 조회")
 data class GoalResponse(
     @Schema(description = "다짐 id")

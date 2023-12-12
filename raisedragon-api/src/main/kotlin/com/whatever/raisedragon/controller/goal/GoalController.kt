@@ -55,4 +55,19 @@ class GoalController(
         return Response.success(goalApplicationService.retrieveAllByUserId(userInfo.id))
     }
 
+    @Operation(summary = "Retrieving Multiple Goal API", description = "요청자의 모든 다짐 조회")
+    @PutMapping("{goalId}")
+    fun modifyGoal(
+        @GetAuth userInfo: UserInfo,
+        @PathVariable goalId: Long,
+        @RequestBody goalModifyRequest: GoalModifyRequest
+    ): Response<GoalResponse> {
+        return Response.success(
+            goalApplicationService.modifyGoal(
+                userId = userInfo.id,
+                goalId = goalId,
+                content = goalModifyRequest.content
+            )
+        )
+    }
 }

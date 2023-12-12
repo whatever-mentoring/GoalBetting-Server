@@ -18,11 +18,11 @@ class GoalEntity(
 
     @Embedded
     @Column(name = "content", nullable = false, length = 255)
-    val content: Content,
+    var content: Content,
 
     @Embedded
     @Column(name = "threshold", nullable = false)
-    val threshold: Threshold = Threshold(0),
+    var threshold: Threshold = Threshold(0),
 
     @Enumerated(EnumType.STRING)
     val result: Result,
