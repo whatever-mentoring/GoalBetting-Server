@@ -48,13 +48,6 @@ class GoalService(
         ).map { it.toDto() }
     }
 
-    fun loadByGoalIdAndUserId(goalId: Long, userId: Long): Goal {
-        return goalRepository.findByIdAndUserEntity(
-            id = goalId,
-            userEntity = userRepository.findById(userId).get()
-        )?.toDto() ?: throw IllegalArgumentException("다짐을 조회하는 중, 잘못된 내용을 요청하셨습니다.")
-    }
-
     @Transactional
     fun modify(
         goal: Goal,
@@ -63,6 +56,17 @@ class GoalService(
     ): Goal {
         val goalEntity = goal.fromDto(userEntity)
         goalEntity.content = Content(content)
+
+        return goalEntity.toDto()
+    }
+
+    @Transactional
+    fun delete(
+        goal: Goal,
+        userEntity: UserEntity,
+    ): Goal {
+        val goalEntity = goal.fromDto(userEntity)
+        goalEntity.deletedAt = LocalDateTime.now()
 
         return goalEntity.toDto()
     }

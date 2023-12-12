@@ -55,7 +55,7 @@ class GoalController(
         return Response.success(goalApplicationService.retrieveAllByUserId(userInfo.id))
     }
 
-    @Operation(summary = "Retrieving Multiple Goal API", description = "요청자의 모든 다짐 조회")
+    @Operation(summary = "Modify Goal API", description = "다짐 세부 내용 수정")
     @PutMapping("{goalId}")
     fun modifyGoal(
         @GetAuth userInfo: UserInfo,
@@ -67,6 +67,20 @@ class GoalController(
                 userId = userInfo.id,
                 goalId = goalId,
                 content = goalModifyRequest.content
+            )
+        )
+    }
+
+    @Operation(summary = "Delete Goal API", description = "다짐 삭제")
+    @DeleteMapping
+    fun modifyGoal(
+        @GetAuth userInfo: UserInfo,
+        @RequestBody goalDeleteRequest: GoalDeleteRequest
+    ): Response<Unit> {
+        return Response.success(
+            goalApplicationService.deleteGoal(
+                userId = userInfo.id,
+                goalId = goalDeleteRequest.goalId,
             )
         )
     }
