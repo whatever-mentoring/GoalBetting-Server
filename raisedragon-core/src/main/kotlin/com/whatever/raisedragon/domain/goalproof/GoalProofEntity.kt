@@ -19,10 +19,10 @@ class GoalProofEntity(
     val goalEntity: GoalEntity,
 
     @Column(name = "url")
-    val url: URL,
+    var url: URL,
 
     @Column(name = "comment")
-    val comment: Comment
+    var comment: Comment
 
 ) : BaseEntity()
 

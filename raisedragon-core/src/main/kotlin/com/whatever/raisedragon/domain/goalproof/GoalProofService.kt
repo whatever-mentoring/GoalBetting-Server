@@ -10,16 +10,16 @@ import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 class GoalProofService(
     private val goalRepository: GoalRepository,
     private val userRepository: UserRepository,
     private val goalProofRepository: GoalProofRepository
 ) {
 
+    @Transactional
     fun create(
         user: User,
         goal: Goal,
@@ -46,5 +46,14 @@ class GoalProofService(
         val userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException()
         return goalProofRepository.findAllByUserEntityAndGoalEntity(goalEntity = goalEntity, userEntity = userEntity)
             .map { it.toDto() }
+    }
+
+    @Transactional
+    fun update(goalProofId: Long, url: URL? = null, comment: Comment? = null): GoalProof {
+        val goalProof = goalProofRepository.findByIdOrNull(goalProofId)
+            ?: throw IllegalArgumentException("cannot find goalProof $goalProofId")
+        url?.let { goalProof.url = it }
+        comment?.let { goalProof.comment = it }
+        return goalProof.toDto()
     }
 }
