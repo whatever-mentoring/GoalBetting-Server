@@ -12,6 +12,7 @@ import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.domain.user.fromDto
 import com.whatever.raisedragon.security.jwt.JwtAgent
+import com.whatever.raisedragon.security.jwt.JwtToken
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -36,12 +37,12 @@ class AuthApplicationService(
                     nickname = Nickname.generateRandomNickname()
                 )
             )
-            return buildLoginResponseByUser(newUser)
+            return buildLoginResponseByNewUser(newUser)
         }
         return buildLoginResponseByUser(user)
     }
 
-    private fun buildLoginResponseByUser(newUser: User): LoginResponse {
+    private fun buildLoginResponseByNewUser(newUser: User): LoginResponse {
         val jwtToken = jwtAgent.provide(newUser)
         val refreshToken = RefreshToken(
             userId = newUser.id!!,
@@ -49,6 +50,20 @@ class AuthApplicationService(
         )
 
         refreshTokenService.create(refreshToken, newUser.fromDto())
+
+        return LoginResponse(
+            userId = newUser.id!!,
+            nickname = newUser.nickname.value,
+            accessToken = jwtToken.accessToken,
+            refreshToken = jwtToken.refreshToken
+        )
+    }
+
+    private fun buildLoginResponseByUser(newUser: User): LoginResponse {
+        val jwtToken = JwtToken(
+            accessToken = jwtAgent.provide(newUser).accessToken,
+            refreshToken = refreshTokenService.loadByUser(newUser)?.payload!!
+        )
 
         return LoginResponse(
             userId = newUser.id!!,
