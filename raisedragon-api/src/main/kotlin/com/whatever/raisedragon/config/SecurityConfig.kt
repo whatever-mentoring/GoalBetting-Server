@@ -29,9 +29,9 @@ class SecurityConfig(private val jwtAgent: JwtAgent, private val objectMapper: O
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
             .authorizeHttpRequests {
-                it.anyRequest().authenticated() // TODO: 추후 인가 추가
+                it.anyRequest().permitAll() // TODO: 추후 인가 추가
             }
-            .addFilterBefore(JwtFilter(jwtAgent, objectMapper), UsernamePasswordAuthenticationFilter::class.java)
+            //.addFilterBefore(JwtFilter(jwtAgent, objectMapper), UsernamePasswordAuthenticationFilter::class.java)
             .exceptionHandling {
                 it.authenticationEntryPoint(HttpStatusAuthenticationEntryPoint())
                 it.accessDeniedHandler(HttpStatusAccessDeniedHandler())

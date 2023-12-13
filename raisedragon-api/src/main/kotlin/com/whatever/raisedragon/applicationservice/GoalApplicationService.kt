@@ -138,6 +138,6 @@ class GoalApplicationService(
     }
 
     private fun isNumberOfGoalUnderOneHundred(userId: Long): Boolean {
-        return goalService.loadAllByUserId(userId).size < 100
+        return goalService.loadAllByUserId(userId).size > 99
     }
 }

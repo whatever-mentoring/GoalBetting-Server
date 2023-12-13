@@ -2,6 +2,8 @@ package com.whatever.raisedragon.controller.goalgifticon
 
 import com.whatever.raisedragon.applicationservice.GoalGifticonApplicationService
 import com.whatever.raisedragon.common.Response
+import com.whatever.raisedragon.common.aop.Auth
+import com.whatever.raisedragon.common.aop.AuthContext
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -19,6 +21,7 @@ class GoalGifticonController(
     private val goalGifticonApplicationService: GoalGifticonApplicationService
 ) {
 
+    @Auth
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Gifticon create API", description = "Create Gifticon")
     @PostMapping(
@@ -26,13 +29,13 @@ class GoalGifticonController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun create(
-        @GetAuth userInfo: UserInfo,
+        // @GetAuth userInfo: UserInfo,
         @Valid @RequestBody request: GoalGifticonCreateRequest,
         @RequestParam gifticonFile: MultipartFile
     ): Response<GoalGifticonResponse> {
             return Response.success(
                 goalGifticonApplicationService.createAndUploadGifticon(
-                    userId = userInfo.id,
+                    userId = AuthContext.getUser().id!!,
                     goalId = request.goalId,
                     gifticonFile = gifticonFile
                 )

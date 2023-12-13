@@ -22,5 +22,7 @@ interface JwtAgent {
      */
     fun extractUserFromToken(token: String): UserInfo?
 
+    fun extractUserId(token: String): Any?
+
     fun reissueToken(refreshTokenPayload: String, user: User): JwtToken
 }

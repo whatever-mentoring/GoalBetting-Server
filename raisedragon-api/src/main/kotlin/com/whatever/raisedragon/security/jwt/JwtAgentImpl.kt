@@ -5,7 +5,6 @@ import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.domain.refreshtoken.RefreshTokenService
 import com.whatever.raisedragon.domain.user.User
-import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.security.authentication.UserInfo
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
@@ -23,7 +22,6 @@ class JwtAgentImpl(
     private val jwtGenerator: JwtGenerator,
     private val objectMapper: ObjectMapper,
     private val refreshTokenService: RefreshTokenService,
-    private val userService: UserService,
     @Value("\${jwt.secret-key}") private val key: String
 ) : JwtAgent {
 
@@ -49,6 +47,13 @@ class JwtAgentImpl(
         return jwtParser.parseClaimsJws(token).body?.let {
             objectMapper.convertValue(it[CLAIM_INFO_KEY], UserInfo::class.java)
         } ?: throw BaseException.of(ExceptionCode.E401_UNAUTHORIZED)
+    }
+
+    override fun extractUserId(token: String): Any? {
+        val jwtParser = Jwts.parserBuilder()
+            .setSigningKey(getSigningKey())
+            .build()
+        return jwtParser.parseClaimsJws(token).body["id"]
     }
 
     override fun reissueToken(refreshTokenPayload: String, user: User): JwtToken {
@@ -83,7 +88,9 @@ class JwtAgentImpl(
 
     private fun buildClaims(user: User): Claims {
         val claims = Jwts.claims()
-        claims[CLAIM_INFO_KEY] = UserInfo.from(user)
+        claims["id"] = user.id
+        claims["nickname"] = user.nickname
+        // claims[CLAIM_INFO_KEY] = UserInfo.from(user)
         return claims
     }
 

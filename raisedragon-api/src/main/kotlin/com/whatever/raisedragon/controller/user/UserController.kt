@@ -2,6 +2,7 @@ package com.whatever.raisedragon.controller.user
 
 import com.whatever.raisedragon.applicationservice.UserApplicationService
 import com.whatever.raisedragon.common.Response
+import com.whatever.raisedragon.common.aop.AuthContext
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -35,13 +36,13 @@ class UserController(
     @Operation(summary = "User Nickname update API", description = "닉네임을 수정합니다.")
     @PutMapping
     fun updateNickname(
-        @GetAuth userInfo: UserInfo,
+        // @GetAuth userInfo: UserInfo,
         @RequestBody userNicknameUpdateRequest: UserNicknameUpdateRequest
     ): Response<UserRetrieveResponse> {
         return Response.success(
             userApplicationService.updateNickname(
-                userInfo.id,
-                userNicknameUpdateRequest.nickname
+                id = AuthContext.getUser().id!!,
+                nickname = userNicknameUpdateRequest.nickname
             )
         )
     }
@@ -49,8 +50,12 @@ class UserController(
     @Operation(summary = "User delete API", description = "회원탈퇴")
     @DeleteMapping
     fun delete(
-        @GetAuth userInfo: UserInfo,
+        // @GetAuth userInfo: UserInfo,
     ): Response<Unit> {
-        return Response.success(userApplicationService.delete(userInfo.id))
+        return Response.success(
+            userApplicationService.delete(
+                AuthContext.getUser().id!!
+            )
+        )
     }
 }
