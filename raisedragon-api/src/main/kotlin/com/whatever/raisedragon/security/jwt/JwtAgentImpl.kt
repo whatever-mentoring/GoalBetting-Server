@@ -31,12 +31,12 @@ class JwtAgentImpl(
         val now = Date().time
 
         return JwtToken(
-            accessToken = BEARER_PREFIX + jwtGenerator.generateAccessToken(
+            accessToken = jwtGenerator.generateAccessToken(
                 claims = buildClaims(user),
                 signedKey = getSigningKey(),
                 accessTokenExpiredAt = Date(now + ACCESS_TOKEN_EXPIRE_TIME)
             ),
-            refreshToken = BEARER_PREFIX + jwtGenerator.generateRefreshToken(
+            refreshToken = jwtGenerator.generateRefreshToken(
                 signedKey = getSigningKey(),
                 refreshTokenExpireIn = Date(now + REFRESH_TOKEN_EXPIRE_TIME)
             )
