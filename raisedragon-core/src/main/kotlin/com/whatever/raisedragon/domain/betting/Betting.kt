@@ -7,6 +7,7 @@ data class Betting(
     val userId: Long,
     val goalId: Long,
     val predictionType: PredictionType,
+    val result: Result,
     var deletedAt: LocalDateTime?,
     var createdAt: LocalDateTime?,
     var updatedAt: LocalDateTime?
@@ -17,6 +18,7 @@ fun BettingEntity.toDto(): Betting = Betting(
     userId = userEntity.id,
     goalId = goalEntity.id,
     predictionType = predictionType,
+    result = result,
     deletedAt = deletedAt,
     createdAt = createdAt,
     updatedAt = updatedAt

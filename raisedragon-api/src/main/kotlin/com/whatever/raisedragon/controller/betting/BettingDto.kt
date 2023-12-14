@@ -2,6 +2,7 @@ package com.whatever.raisedragon.controller.betting
 
 import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.PredictionType
+import com.whatever.raisedragon.domain.betting.Result
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "[Request] 배팅 생성")
@@ -41,13 +42,17 @@ data class BettingRetrieveResponse(
 
     @Schema(description = "예측")
     val predictionType: PredictionType,
+
+    @Schema(description = "당첨 여부")
+    val result: Result,
 ) {
     companion object {
         fun of(betting: Betting): BettingRetrieveResponse = BettingRetrieveResponse(
             id = betting.id,
             userId = betting.userId,
             goalId = betting.goalId,
-            predictionType = betting.predictionType
+            predictionType = betting.predictionType,
+            result = betting.result
         )
     }
 }

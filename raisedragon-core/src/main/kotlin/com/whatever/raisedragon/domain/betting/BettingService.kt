@@ -24,7 +24,8 @@ class BettingService(
             BettingEntity(
                 userEntity = userRepository.findById(userId).get(),
                 goalEntity = goalRepository.findById(goalId).get(),
-                predictionType = predictionType
+                predictionType = predictionType,
+                result = Result.PROCEEDING
             )
         )
         return betting.toDto()

@@ -37,7 +37,8 @@ class BettingApplicationService(
                     id = betting.id,
                     userId = betting.userId,
                     goalId = betting.goalId,
-                    predictionType = predictionType
+                    predictionType = betting.predictionType,
+                    result = betting.result
                 )
             )
         }

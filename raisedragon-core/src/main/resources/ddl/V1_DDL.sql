@@ -58,12 +58,13 @@ create table if not exists user
 create table if not exists betting
 (
     id              bigint auto_increment primary key,
-    goal_id         bigint                   not null,
-    user_id         bigint                   not null,
-    prediction_type enum ('SUCCESS', 'FAIL') not null,
-    deleted_at      datetime(6)              null,
-    created_at      datetime(6)              not null,
-    updated_at      datetime(6)              not null
+    goal_id         bigint                                 not null,
+    user_id         bigint                                 not null,
+    prediction_type enum ('SUCCESS', 'FAIL')               not null,
+    result          enum ('PROCEEDING', 'FAIL', 'GET_GIFTICON', 'NO_GIFTICON') not null,
+    deleted_at      datetime(6)                            null,
+    created_at      datetime(6)                            not null,
+    updated_at      datetime(6)                            not null
 );
 
 create table if not exists goal_cheering

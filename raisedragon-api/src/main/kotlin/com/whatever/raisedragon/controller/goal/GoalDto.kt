@@ -6,7 +6,6 @@ import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.Threshold
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.PositiveOrZero
 import java.time.LocalDateTime
 
 @Schema(description = "[Request] 다짐 생성")
@@ -18,11 +17,6 @@ data class GoalCreateRequest(
     @Schema(description = "다짐 내용")
     @field:NotNull
     val content: String,
-
-    @Schema(description = "다짐 인증 횟수")
-    @field:NotNull
-    @field:PositiveOrZero
-    val threshold: Int,
 
     @Schema(description = "다짐 시작 시간")
     @field:NotNull
@@ -73,8 +67,8 @@ data class GoalResponse(
             type = goal.type,
             content = goal.content,
             threshold = goal.threshold,
-            startDate = LocalDateTime.now().plusDays(1L),
-            endDate = LocalDateTime.now().plusMonths(1L)
+            startDate = goal.startDate,
+            endDate = goal.endDate
         )
     }
 }

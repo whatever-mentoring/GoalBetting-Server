@@ -5,7 +5,6 @@ import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.common.aop.Auth
 import com.whatever.raisedragon.common.aop.AuthContext
 import com.whatever.raisedragon.domain.goal.Content
-import com.whatever.raisedragon.domain.goal.Threshold
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -34,7 +33,6 @@ class GoalController(
             goalApplicationService.createGoal(
                 bettingType = request.type,
                 content = Content(request.content),
-                threshold = Threshold(request.threshold),
                 startDate = request.startDate,
                 endDate = request.endDate,
                 userId = AuthContext.getUser().id!!

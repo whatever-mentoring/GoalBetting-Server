@@ -55,15 +55,15 @@ enum class BettingType {
     FREE, BILLING
 }
 
+enum class Result {
+    PROCEEDING, SUCCESS, FAIL
+}
+
 @Embeddable
 data class Content(
     @Column(name = "content")
     val value: String
 )
-
-enum class Result {
-    PROCEEDING, SUCCESS, FAIL
-}
 
 @Embeddable
 data class Threshold(

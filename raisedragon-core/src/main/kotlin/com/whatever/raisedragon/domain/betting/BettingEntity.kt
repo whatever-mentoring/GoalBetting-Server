@@ -17,7 +17,7 @@ class BettingEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val userEntity: UserEntity,
+    val userEntity: UserEntity, // 배팅을 건 사람이다.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id")
@@ -26,8 +26,15 @@ class BettingEntity(
     @Enumerated(EnumType.STRING)
     var predictionType: PredictionType,
 
-    ) : BaseEntity()
+    @Enumerated(EnumType.STRING)
+    var result: Result,
+
+) : BaseEntity()
 
 enum class PredictionType {
     SUCCESS, FAIL
+}
+
+enum class Result {
+    PROCEEDING, FAIL, GET_GIFTICON, NO_GIFTICON
 }

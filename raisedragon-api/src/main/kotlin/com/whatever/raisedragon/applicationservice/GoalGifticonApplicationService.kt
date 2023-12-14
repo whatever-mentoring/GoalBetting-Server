@@ -37,12 +37,12 @@ class GoalGifticonApplicationService(
 
         if (isBrokenUserGoal(goal, userId)) throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
-            executionMessage = "기프티콘을 업르도하는 중, 요청한 유저가 생성한 다짐에 대한 요청이 아닙니다."
+            executionMessage = "기프티콘을 업로드하는 중, 요청한 유저가 생성한 다짐에 대한 요청이 아닙니다."
         )
 
         if (isBrokenTiming(goal)) throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
-            executionMessage = "기프티콘을 업르도하는 중, 이미 다짐 수행이 시작되어 업로드할 수 없습니다."
+            executionMessage = "기프티콘을 업로드하는 중, 이미 다짐 수행이 시작되어 업로드할 수 없습니다."
         )
 
         val uploadedURL = s3Agent.upload(S3_PREFIX_DIRECTORY, gifticonFile)

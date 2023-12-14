@@ -21,7 +21,6 @@ class GoalApplicationService(
     fun createGoal(
         content: Content,
         bettingType: BettingType,
-        threshold: Threshold,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
         userId: Long,
@@ -34,7 +33,7 @@ class GoalApplicationService(
             userId = userId,
             content = content,
             bettingType = bettingType,
-            threshold = threshold,
+            threshold = Threshold(0),
             startDate = startDate,
             endDate = endDate
         )
