@@ -82,8 +82,6 @@ class GoalApplicationService(
 
     fun retrieveGoalBettingParticipant(goalId: Long): List<GoalRetrieveParticipantResponse> {
         val bettingList = bettingService.loadAllByGoalId(goalId)
-        println("bettingList = ${bettingList}")
-        println("bettingList.size = ${bettingList.size}")
         val result = mutableListOf<GoalRetrieveParticipantResponse>()
 
         result.addAll(bettingList.map {
