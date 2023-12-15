@@ -2,6 +2,8 @@ package com.whatever.raisedragon.applicationservice
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
+import com.whatever.raisedragon.controller.goal.GoalBettingHost
+import com.whatever.raisedragon.controller.goal.GoalBettingParticipant
 import com.whatever.raisedragon.controller.goal.GoalResponse
 import com.whatever.raisedragon.controller.goal.GoalRetrieveParticipantResponse
 import com.whatever.raisedragon.domain.betting.BettingService
@@ -80,22 +82,33 @@ class GoalApplicationService(
         return response
     }
 
-    fun retrieveGoalBettingParticipant(goalId: Long): List<GoalRetrieveParticipantResponse> {
+    fun retrieveGoalBettingParticipant(
+        userId: Long,
+        goalId: Long
+    ): GoalRetrieveParticipantResponse {
+        val hostUser = userService.loadById(userId)
+        val goal = goalService.loadById(goalId)
         val bettingList = bettingService.loadAllByGoalId(goalId)
-        val result = mutableListOf<GoalRetrieveParticipantResponse>()
 
-        result.addAll(bettingList.map {
-            GoalRetrieveParticipantResponse(
-                id = it.goalId,
-                userId = it.userId,
-                nickname = userService.loadById(it.userId).nickname.value,
+        val hostDto = GoalBettingHost(
+            hostUserId = userId,
+            hostUserNickname = hostUser.nickname.value,
+            goalCreatedAt = goal.createdAt
+        )
+
+        val participants = bettingList.map {
+            GoalBettingParticipant(
                 bettingId = it.id,
-                predictionType = it.predictionType,
-                result = it.result,
-                createdAt = it.createdAt!!
+                bettingPredictionType = it.predictionType,
+                bettingResult = it.result,
+                bettingCreatedAt = it.createdAt!!
             )
-        })
-        return result
+        }
+
+        return GoalRetrieveParticipantResponse(
+            hostUser = hostDto,
+            participants = participants
+        )
     }
 
     @Transactional

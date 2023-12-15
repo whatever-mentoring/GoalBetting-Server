@@ -1,13 +1,11 @@
 package com.whatever.raisedragon.controller.goal
 
-import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.PredictionType
 import com.whatever.raisedragon.domain.betting.Result
 import com.whatever.raisedragon.domain.goal.BettingType
 import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.Threshold
-import com.whatever.raisedragon.domain.user.User
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
@@ -77,43 +75,33 @@ data class GoalResponse(
     }
 }
 
-@Schema(description = "[Response] 다짐 배팅 참가자들 조회")
-data class GoalRetrieveParticipantResponse(
-    @Schema(description = "GoalId")
-    val id: Long,
+data class GoalBettingHost(
+    @Schema(description = "호스트 유저 id")
+    val hostUserId: Long,
 
-    @Schema(description = "UserId")
-    val userId: Long,
+    @Schema(description = "호스트 유저 닉네임")
+    val hostUserNickname: String,
 
-    @Schema(description = "Nickname")
-    val nickname: String,
+    @Schema(description = "다짐 생성 시각")
+    val goalCreatedAt: LocalDateTime,
+)
 
+data class GoalBettingParticipant(
     @Schema(description = "BettingId")
     val bettingId: Long,
 
     @Schema(description = "예측")
-    val predictionType: PredictionType,
+    val bettingPredictionType: PredictionType,
 
     @Schema(description = "당첨 여부")
-    val result: Result,
+    val bettingResult: Result,
 
     @Schema(description = "배팅 한 시각")
-    val createdAt: LocalDateTime,
-) {
-    companion object {
-        fun of(
-            goal: Goal,
-            betting: Betting,
-            user: User,
-        ): GoalRetrieveParticipantResponse =
-            GoalRetrieveParticipantResponse(
-                id = goal.id,
-                userId = user.id!!,
-                nickname = user.nickname.value,
-                bettingId = betting.goalId,
-                predictionType = betting.predictionType,
-                result = betting.result,
-                createdAt = betting.createdAt!!
-            )
-    }
-}
+    val bettingCreatedAt: LocalDateTime,
+)
+
+@Schema(description = "[Response] 다짐 배팅 참가자들 조회")
+data class GoalRetrieveParticipantResponse(
+    val hostUser: GoalBettingHost,
+    val participants: List<GoalBettingParticipant>
+)
