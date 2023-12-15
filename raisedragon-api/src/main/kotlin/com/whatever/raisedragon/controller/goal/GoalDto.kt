@@ -77,24 +77,30 @@ data class GoalResponse(
 
 data class GoalBettingHost(
     @Schema(description = "호스트 유저 id")
-    val hostUserId: Long,
+    val id: Long,
 
     @Schema(description = "호스트 유저 닉네임")
-    val hostUserNickname: String,
+    val nickname: String,
 
     @Schema(description = "다짐 생성 시각")
     val goalCreatedAt: LocalDateTime,
 )
 
 data class GoalBettingParticipant(
+    @Schema(description = "참가자 유저 id")
+    val userId: Long,
+
+    @Schema(description = "참가자 유저 닉네임")
+    val nickname: String,
+
     @Schema(description = "BettingId")
     val bettingId: Long,
 
     @Schema(description = "예측")
-    val bettingPredictionType: PredictionType,
+    val predictionType: PredictionType,
 
     @Schema(description = "당첨 여부")
-    val bettingResult: Result,
+    val result: Result,
 
     @Schema(description = "배팅 한 시각")
     val bettingCreatedAt: LocalDateTime,

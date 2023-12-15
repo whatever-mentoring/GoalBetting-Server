@@ -91,16 +91,18 @@ class GoalApplicationService(
         val bettingList = bettingService.loadAllByGoalId(goalId)
 
         val hostDto = GoalBettingHost(
-            hostUserId = userId,
-            hostUserNickname = hostUser.nickname.value,
+            id = userId,
+            nickname = hostUser.nickname.value,
             goalCreatedAt = goal.createdAt
         )
 
         val participants = bettingList.map {
             GoalBettingParticipant(
+                userId = it.userId,
+                nickname = userService.loadById(it.userId).nickname.value,
                 bettingId = it.id,
-                bettingPredictionType = it.predictionType,
-                bettingResult = it.result,
+                predictionType = it.predictionType,
+                result = it.result,
                 bettingCreatedAt = it.createdAt!!
             )
         }
