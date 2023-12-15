@@ -4,6 +4,7 @@ import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.PredictionType
 import com.whatever.raisedragon.domain.betting.Result
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 
 @Schema(description = "[Request] 배팅 생성")
 data class BettingCreateRequest(

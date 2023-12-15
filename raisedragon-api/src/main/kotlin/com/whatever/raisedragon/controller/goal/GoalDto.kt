@@ -1,9 +1,13 @@
 package com.whatever.raisedragon.controller.goal
 
+import com.whatever.raisedragon.domain.betting.Betting
+import com.whatever.raisedragon.domain.betting.PredictionType
+import com.whatever.raisedragon.domain.betting.Result
 import com.whatever.raisedragon.domain.goal.BettingType
 import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.Threshold
+import com.whatever.raisedragon.domain.user.User
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
@@ -70,5 +74,46 @@ data class GoalResponse(
             startDate = goal.startDate,
             endDate = goal.endDate
         )
+    }
+}
+
+@Schema(description = "[Response] 다짐 배팅 참가자들 조회")
+data class GoalRetrieveParticipantResponse(
+    @Schema(description = "GoalId")
+    val id: Long,
+
+    @Schema(description = "UserId")
+    val userId: Long,
+
+    @Schema(description = "Nickname")
+    val nickname: String,
+
+    @Schema(description = "BettingId")
+    val bettingId: Long,
+
+    @Schema(description = "예측")
+    val predictionType: PredictionType,
+
+    @Schema(description = "당첨 여부")
+    val result: Result,
+
+    @Schema(description = "배팅 한 시각")
+    val createdAt: LocalDateTime,
+) {
+    companion object {
+        fun of(
+            goal: Goal,
+            betting: Betting,
+            user: User,
+        ): GoalRetrieveParticipantResponse =
+            GoalRetrieveParticipantResponse(
+                id = goal.id,
+                userId = user.id!!,
+                nickname = user.nickname.value,
+                bettingId = betting.goalId,
+                predictionType = betting.predictionType,
+                result = betting.result,
+                createdAt = betting.createdAt!!
+            )
     }
 }

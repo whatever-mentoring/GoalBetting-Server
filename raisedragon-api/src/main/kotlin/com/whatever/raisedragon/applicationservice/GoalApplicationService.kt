@@ -3,6 +3,8 @@ package com.whatever.raisedragon.applicationservice
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goal.GoalResponse
+import com.whatever.raisedragon.controller.goal.GoalRetrieveParticipantResponse
+import com.whatever.raisedragon.domain.betting.BettingService
 import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.domain.user.fromDto
@@ -14,7 +16,8 @@ import java.time.LocalDateTime
 @Service
 class GoalApplicationService(
     private val goalService: GoalService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val bettingService: BettingService
 ) {
 
     @Transactional
@@ -75,6 +78,26 @@ class GoalApplicationService(
             response.add(goalResponse)
         }
         return response
+    }
+
+    fun retrieveGoalBettingParticipant(goalId: Long): List<GoalRetrieveParticipantResponse> {
+        val bettingList = bettingService.loadAllByGoalId(goalId)
+        println("bettingList = ${bettingList}")
+        println("bettingList.size = ${bettingList.size}")
+        val result = mutableListOf<GoalRetrieveParticipantResponse>()
+
+        result.addAll(bettingList.map {
+            GoalRetrieveParticipantResponse(
+                id = it.goalId,
+                userId = it.userId,
+                nickname = userService.loadById(it.userId).nickname.value,
+                bettingId = it.id,
+                predictionType = it.predictionType,
+                result = it.result,
+                createdAt = it.createdAt!!
+            )
+        })
+        return result
     }
 
     @Transactional

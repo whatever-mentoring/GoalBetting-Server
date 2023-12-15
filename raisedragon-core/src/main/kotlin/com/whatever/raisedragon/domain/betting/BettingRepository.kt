@@ -12,4 +12,6 @@ interface BettingRepository : JpaRepository<BettingEntity, Long> {
         userEntity: UserEntity,
         goalEntity: GoalEntity
     ): BettingEntity?
+
+    fun findAllByGoalEntity(goalEntity: GoalEntity): List<BettingEntity>
 }

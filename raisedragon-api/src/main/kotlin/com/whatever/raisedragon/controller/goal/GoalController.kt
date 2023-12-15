@@ -4,6 +4,7 @@ import com.whatever.raisedragon.applicationservice.GoalApplicationService
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.common.aop.Auth
 import com.whatever.raisedragon.common.aop.AuthContext
+import com.whatever.raisedragon.controller.betting.BettingRetrieveResponse
 import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
@@ -59,6 +60,19 @@ class GoalController(
         return Response.success(
             goalApplicationService.retrieveAllByUserId(
                 AuthContext.getUser().id!!
+            )
+        )
+    }
+
+    @Auth
+    @Operation(summary = "Retrieving GoalBetting API", description = "해당 다짐에 대한 모든 배팅 조회")
+    @GetMapping("/betting/{goalId}")
+    fun retrieveParticipant(
+        @PathVariable goalId: Long
+    ): Response<List<GoalRetrieveParticipantResponse>> {
+        return Response.success(
+            goalApplicationService.retrieveGoalBettingParticipant(
+                goalId
             )
         )
     }

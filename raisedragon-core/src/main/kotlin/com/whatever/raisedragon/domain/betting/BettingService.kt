@@ -1,6 +1,7 @@
 package com.whatever.raisedragon.domain.betting
 
 import com.whatever.raisedragon.domain.goal.GoalRepository
+import com.whatever.raisedragon.domain.goal.toDto
 import com.whatever.raisedragon.domain.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -56,6 +57,14 @@ class BettingService(
             userEntity = userRepository.findById(userId).get(),
             goalEntity = goalRepository.findById(goalId).get()
         )?.toDto()
+    }
+
+    fun loadAllByGoalId(
+        goalId: Long
+    ): List<Betting> {
+        return bettingRepository.findAllByGoalEntity(
+            goalEntity = goalRepository.findById(goalId).get()
+        ).map { it.toDto() }
     }
 
     fun findByIdOrNull(bettingId: Long): Betting? {
