@@ -31,6 +31,9 @@ data class UserRetrieveResponse(
 
     @Schema(description = "닉네임")
     val nickname: Nickname,
+
+    @Schema(description = "닉네임 변경 이력")
+    val nicknameIsModified: Boolean
 )
 
 @Schema(description = "[Response] 유저 로그인")

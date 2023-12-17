@@ -15,7 +15,8 @@ class UserApplicationService(
         val user = userService.loadById(id)
         return UserRetrieveResponse(
             userId = user.id!!,
-            nickname = user.nickname
+            nickname = user.nickname,
+            nicknameIsModified = user.createdAt!! < user.updatedAt
         )
     }
 
@@ -23,7 +24,8 @@ class UserApplicationService(
         val user = userService.updateNickname(id, nickname)
         return UserRetrieveResponse(
             userId = user.id!!,
-            nickname = user.nickname
+            nickname = user.nickname,
+            nicknameIsModified = user.createdAt!! < user.updatedAt
         )
     }
 

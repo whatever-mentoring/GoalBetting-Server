@@ -55,21 +55,23 @@ class AuthApplicationService(
             userId = newUser.id!!,
             nickname = newUser.nickname.value,
             accessToken = jwtToken.accessToken,
-            refreshToken = jwtToken.refreshToken
+            refreshToken = jwtToken.refreshToken,
+            nicknameIsModified = newUser.createdAt!! < newUser.updatedAt
         )
     }
 
-    private fun buildLoginResponseByUser(newUser: User): LoginResponse {
+    private fun buildLoginResponseByUser(user: User): LoginResponse {
         val jwtToken = JwtToken(
-            accessToken = jwtAgent.provide(newUser).accessToken,
-            refreshToken = refreshTokenService.loadByUser(newUser)?.payload!!
+            accessToken = jwtAgent.provide(user).accessToken,
+            refreshToken = refreshTokenService.loadByUser(user)?.payload!!
         )
 
         return LoginResponse(
-            userId = newUser.id!!,
-            nickname = newUser.nickname.value,
+            userId = user.id!!,
+            nickname = user.nickname.value,
             accessToken = jwtToken.accessToken,
-            refreshToken = jwtToken.refreshToken
+            refreshToken = jwtToken.refreshToken,
+            nicknameIsModified = user.createdAt!! < user.updatedAt
         )
     }
 
