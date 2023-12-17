@@ -28,6 +28,7 @@ class UserController(
         )
     }
 
+    @Auth
     @Operation(summary = "User retrieve API", description = "특정 사용자를 조회합니다.")
     @GetMapping("{userId}")
     fun retrieveTarget(
@@ -41,6 +42,7 @@ class UserController(
         )
     }
 
+    @Auth
     @Operation(summary = "User Nickname update API", description = "닉네임을 수정합니다.")
     @PutMapping
     fun updateNickname(
@@ -55,6 +57,7 @@ class UserController(
         )
     }
 
+    @Auth
     @Operation(summary = "User delete API", description = "회원탈퇴")
     @DeleteMapping
     fun delete(
