@@ -3,8 +3,10 @@ package com.whatever.raisedragon.controller.auth
 import com.whatever.raisedragon.applicationservice.AuthApplicationService
 import com.whatever.raisedragon.common.Response
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
 
+@Tag(name = "Auth", description = "Auth API")
 @RestController
 @RequestMapping("/v1/auth")
 class AuthController(
