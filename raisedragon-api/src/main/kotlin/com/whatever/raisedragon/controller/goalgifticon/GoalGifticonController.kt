@@ -4,7 +4,6 @@ import com.whatever.raisedragon.applicationservice.GoalGifticonApplicationServic
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.common.aop.Auth
 import com.whatever.raisedragon.common.aop.AuthContext
-import com.whatever.raisedragon.domain.user.fromDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -43,7 +42,27 @@ class GoalGifticonController(
     fun retrieve(@PathVariable goalId: Long): Response<GoalGifticonResponse> {
         AuthContext.getUser()
         return Response.success(
-            goalGifticonApplicationService.retrieveByGoalId(goalId, AuthContext.getUser().fromDto())
+            goalGifticonApplicationService.retrieveByGoalId(
+                goalId = goalId,
+                userId = AuthContext.getUser().id!!,
+            )
+        )
+    }
+
+    @Auth
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "다짐 내 기프티콘 수정 API", description = "다짐 내 기프티콘 수정")
+    @PutMapping
+    fun update(
+        @RequestBody goalGifticonRequest: GoalGifticonRequest
+    ): Response<GoalGifticonResponse> {
+        AuthContext.getUser()
+        return Response.success(
+            goalGifticonApplicationService.updateGifticonURLByGoalId(
+                userId = AuthContext.getUser().id!!,
+                goalId = goalGifticonRequest.goalId,
+                gifticonURL = goalGifticonRequest.gifticonURL,
+            )
         )
     }
 }

@@ -4,9 +4,11 @@ import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalgifticon.GoalGifticonResponse
 import com.whatever.raisedragon.domain.gifticon.GifticonService
+import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
-import com.whatever.raisedragon.domain.user.UserEntity
+import com.whatever.raisedragon.domain.user.UserService
+import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -17,6 +19,7 @@ class GoalGifticonApplicationService(
     private val gifticonService: GifticonService,
     private val goalService: GoalService,
     private val goalGifticonService: GoalGifticonService,
+    private val userService: UserService
 ) {
 
     @Transactional
@@ -59,11 +62,14 @@ class GoalGifticonApplicationService(
     @Transactional
     fun retrieveByGoalId(
         goalId: Long,
-        userEntity: UserEntity
+        userId: Long
     ): GoalGifticonResponse {
-        val goal = goalService.loadById(goalId).fromDto(userEntity)
+        val userEntity = userService.loadById(userId).fromDto()
+        val goal = goalService.loadById(goalId).fromDto(userEntity).toDto()
+        isBrokenTiming(goal)
+
         val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
-            goal.toDto(),
+            goal,
             userEntity
         )
         val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
@@ -74,6 +80,39 @@ class GoalGifticonApplicationService(
             gifticonId = goalGifticon.gifticonId,
             gifticonURL = gifticon.url.value
         )
+    }
+
+    @Transactional
+    fun updateGifticonURLByGoalId(
+        userId: Long,
+        goalId: Long,
+        gifticonURL: String
+    ): GoalGifticonResponse {
+        val userEntity = userService.loadById(userId).fromDto()
+        val goal = goalService.loadById(goalId).fromDto(userEntity).toDto()
+        val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
+            goal,
+            userEntity
+        )
+        val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
+
+        validateIsRequestUserHasUpdateAuthority(goal, userId)
+
+        gifticon.url = URL(gifticonURL)
+
+        return GoalGifticonResponse(
+            goalGifticonId = goalGifticon.id,
+            goalId = goalGifticon.goalId,
+            gifticonId = goalGifticon.gifticonId,
+            gifticonURL = gifticon.url.value
+        )
+    }
+
+    private fun validateIsRequestUserHasUpdateAuthority(
+        goal: Goal,
+        userId: Long
+    ) {
+        if (goal.userId != userId) throw BaseException.of(ExceptionCode.E400_BAD_REQUEST)
     }
 
     private fun isBrokenTiming(goal: Goal) = LocalDateTime.now() > goal.startDate

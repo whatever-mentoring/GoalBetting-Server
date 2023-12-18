@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 data class Gifticon(
     val id: Long,
     val userId: Long,
-    val url: URL,
+    var url: URL,
     val isValidated: Boolean,
     var deletedAt: LocalDateTime?,
     var createdAt: LocalDateTime?,

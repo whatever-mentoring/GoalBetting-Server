@@ -14,6 +14,17 @@ data class GoalGifticonCreateRequest(
     val gifticonURL: String
 )
 
+@Schema(description = "[Request] 다짐 기프티콘 수정")
+data class GoalGifticonRequest(
+    @Schema(description = "기프티콘을 등록할 다짐의 Id")
+    @field:NotNull
+    val goalId: Long,
+
+    @Schema(description = "기프티콘 URL")
+    @field:NotNull
+    val gifticonURL: String
+)
+
 @Schema(description = "[Response] 다짐에 기프티콘 업로드")
 data class GoalGifticonResponse(
     @Schema(description = "생성된 Goal-Gifticon Id")
