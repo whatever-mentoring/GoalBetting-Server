@@ -20,15 +20,13 @@ class GoalGifticonController(
 
     @Auth
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Gifticon create API", description = "Create Gifticon")
-    @PostMapping(
-        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
+    @Operation(summary = "다짐 내 기프티콘 생성 API", description = "기프티콘 생성")
+    @PostMapping
     fun create(
         // @GetAuth userInfo: UserInfo,
         @Valid request: GoalGifticonCreateRequest,
     ): Response<GoalGifticonResponse> {
+        AuthContext.getUser()
         return Response.success(
             goalGifticonApplicationService.createAndUploadGifticon(
                 userId = AuthContext.getUser().id!!,

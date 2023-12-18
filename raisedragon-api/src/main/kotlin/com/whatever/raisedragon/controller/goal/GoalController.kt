@@ -47,6 +47,7 @@ class GoalController(
         @PathVariable goalId: Long,
         // @GetAuth userInfo: UserInfo
     ): Response<GoalResponse> {
+        AuthContext.getUser()
         return Response.success(goalApplicationService.retrieveGoal(goalId))
     }
 
@@ -56,6 +57,7 @@ class GoalController(
     fun retrieveMany(
         // @GetAuth userInfo: UserInfo
     ): Response<List<GoalResponse>> {
+        AuthContext.getUser()
         return Response.success(
             goalApplicationService.retrieveAllByUserId(
                 AuthContext.getUser().id!!
@@ -69,6 +71,7 @@ class GoalController(
     fun retrieveParticipant(
         @PathVariable goalId: Long
     ): Response<GoalRetrieveParticipantResponse> {
+        AuthContext.getUser()
         return Response.success(
             goalApplicationService.retrieveGoalBettingParticipant(
                 userId = AuthContext.getUser().id!!,
@@ -85,6 +88,7 @@ class GoalController(
         @PathVariable goalId: Long,
         @RequestBody goalModifyRequest: GoalModifyRequest
     ): Response<GoalResponse> {
+        AuthContext.getUser()
         return Response.success(
             goalApplicationService.modifyGoal(
                 userId = AuthContext.getUser().id!!,
@@ -101,6 +105,7 @@ class GoalController(
         @GetAuth userInfo: UserInfo,
         @RequestBody goalDeleteRequest: GoalDeleteRequest
     ): Response<Unit> {
+        AuthContext.getUser()
         return Response.success(
             goalApplicationService.deleteGoal(
                 userId = userInfo.id,

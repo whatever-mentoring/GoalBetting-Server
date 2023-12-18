@@ -35,14 +35,17 @@ class GoalProofController(
         )
     }
 
+    @Auth
     @Operation(summary = "Retrieving single GoalProof API", description = "단건 다짐 인증을 조회합니다")
     @GetMapping("/{goalProofId}")
     fun retrieve(
         @PathVariable goalProofId: Long
     ): Response<GoalProofRetrieveResponse> {
+        AuthContext.getUser()
         return Response.success(goalProofApplicationService.retrieve(goalProofId))
     }
 
+    @Auth
     @Operation(summary = "Retrieving GoalProofs API", description = "모든 다짐 인증을 조회합니다")
     @GetMapping
     fun retrieveAll(
@@ -57,6 +60,7 @@ class GoalProofController(
         )
     }
 
+    @Auth
     @Operation(summary = "Updating GoalProof API", description = "다짐 인증을 수정합니다")
     @PutMapping("/{goalProofId}")
     fun update(

@@ -42,6 +42,7 @@ class BettingController(
     fun retrieve(
         @PathVariable bettingId: Long
     ): Response<BettingRetrieveResponse> {
+        AuthContext.getUser()
         return Response.success(bettingApplicationService.retrieve(bettingId))
     }
 
