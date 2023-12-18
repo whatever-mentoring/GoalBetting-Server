@@ -50,6 +50,7 @@ class JwtAgentImpl(
     }
 
     override fun extractUserId(token: String): Any? {
+        isNotExpired(token)
         val jwtParser = Jwts.parserBuilder()
             .setSigningKey(getSigningKey())
             .build()
