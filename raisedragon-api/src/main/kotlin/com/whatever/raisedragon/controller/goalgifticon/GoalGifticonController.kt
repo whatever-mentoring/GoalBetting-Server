@@ -4,11 +4,11 @@ import com.whatever.raisedragon.applicationservice.GoalGifticonApplicationServic
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.common.aop.Auth
 import com.whatever.raisedragon.common.aop.AuthContext
+import com.whatever.raisedragon.domain.user.fromDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Goal-Gifticon", description = "Goal-Gifticon API")
@@ -33,6 +33,17 @@ class GoalGifticonController(
                 goalId = request.goalId,
                 uploadedURL = request.gifticonURL
             )
+        )
+    }
+
+    @Auth
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "다짐 내 기프티콘 조회 API", description = "다짐 내 기프티콘 조회")
+    @GetMapping("/{goalId}")
+    fun retrieve(@PathVariable goalId: Long): Response<GoalGifticonResponse> {
+        AuthContext.getUser()
+        return Response.success(
+            goalGifticonApplicationService.retrieveByGoalId(goalId, AuthContext.getUser().fromDto())
         )
     }
 }

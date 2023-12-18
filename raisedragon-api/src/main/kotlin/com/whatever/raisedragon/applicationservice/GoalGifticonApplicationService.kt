@@ -4,10 +4,9 @@ import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalgifticon.GoalGifticonResponse
 import com.whatever.raisedragon.domain.gifticon.GifticonService
-import com.whatever.raisedragon.domain.goal.BettingType
-import com.whatever.raisedragon.domain.goal.Goal
-import com.whatever.raisedragon.domain.goal.GoalService
+import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
+import com.whatever.raisedragon.domain.user.UserEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -54,6 +53,26 @@ class GoalGifticonApplicationService(
             goalId = goal.id,
             gifticonId = gifticon.id,
             gifticonURL = uploadedURL
+        )
+    }
+
+    @Transactional
+    fun retrieveByGoalId(
+        goalId: Long,
+        userEntity: UserEntity
+    ): GoalGifticonResponse {
+        val goal = goalService.loadById(goalId).fromDto(userEntity)
+        val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
+            goal.toDto(),
+            userEntity
+        )
+        val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
+
+        return GoalGifticonResponse(
+            goalGifticonId = goalGifticon.id,
+            goalId = goalGifticon.goalId,
+            gifticonId = goalGifticon.gifticonId,
+            gifticonURL = gifticon.url.value
         )
     }
 
