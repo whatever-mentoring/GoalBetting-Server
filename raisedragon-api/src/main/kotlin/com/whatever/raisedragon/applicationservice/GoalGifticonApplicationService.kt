@@ -1,6 +1,5 @@
 package com.whatever.raisedragon.applicationservice
 
-import com.whatever.raisedragon.aws.s3.S3Agent
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalgifticon.GoalGifticonResponse
@@ -11,7 +10,6 @@ import com.whatever.raisedragon.domain.goal.GoalService
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Transactional(readOnly = true)
@@ -20,14 +18,13 @@ class GoalGifticonApplicationService(
     private val gifticonService: GifticonService,
     private val goalService: GoalService,
     private val goalGifticonService: GoalGifticonService,
-    private val s3Agent: S3Agent
 ) {
 
     @Transactional
     fun createAndUploadGifticon(
         userId: Long,
         goalId: Long,
-        gifticonFile: MultipartFile
+        uploadedURL: String
     ): GoalGifticonResponse {
         val goal = goalService.loadById(goalId)
         if (isNotBettingTypeBilling(goal.type)) throw BaseException.of(
@@ -45,7 +42,7 @@ class GoalGifticonApplicationService(
             executionMessage = "기프티콘을 업로드하는 중, 이미 다짐 수행이 시작되어 업로드할 수 없습니다."
         )
 
-        val uploadedURL = s3Agent.upload(S3_PREFIX_DIRECTORY, gifticonFile)
+
         val gifticon = gifticonService.create(userId, uploadedURL)
         val goalGifticon = goalGifticonService.create(
             goalId = goalId,
@@ -63,9 +60,4 @@ class GoalGifticonApplicationService(
     private fun isBrokenTiming(goal: Goal) = LocalDateTime.now() > goal.startDate
     private fun isNotBettingTypeBilling(bettingType: BettingType) = bettingType != BettingType.BILLING
     private fun isBrokenUserGoal(goal: Goal, userId: Long) = goal.userId != userId
-
-
-    companion object {
-        private const val S3_PREFIX_DIRECTORY = "gifticon/"
-    }
 }

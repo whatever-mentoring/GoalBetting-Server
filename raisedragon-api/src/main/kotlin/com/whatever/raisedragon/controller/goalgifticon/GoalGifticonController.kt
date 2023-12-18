@@ -10,7 +10,6 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 
 @Tag(name = "Goal-Gifticon", description = "Goal-Gifticon API")
 @RestController
@@ -29,13 +28,12 @@ class GoalGifticonController(
     fun create(
         // @GetAuth userInfo: UserInfo,
         @Valid request: GoalGifticonCreateRequest,
-        @RequestPart gifticonFile: MultipartFile
     ): Response<GoalGifticonResponse> {
         return Response.success(
             goalGifticonApplicationService.createAndUploadGifticon(
                 userId = AuthContext.getUser().id!!,
                 goalId = request.goalId,
-                gifticonFile = gifticonFile
+                uploadedURL = request.gifticonURL
             )
         )
     }
