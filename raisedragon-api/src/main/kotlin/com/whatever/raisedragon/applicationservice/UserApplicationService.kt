@@ -20,6 +20,7 @@ class UserApplicationService(
         )
     }
 
+    @Transactional
     fun updateNickname(id: Long, nickname: String): UserRetrieveResponse {
         val user = userService.updateNickname(id, nickname)
         return UserRetrieveResponse(
