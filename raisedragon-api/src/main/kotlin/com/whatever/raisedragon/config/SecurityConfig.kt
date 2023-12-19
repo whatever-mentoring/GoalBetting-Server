@@ -24,7 +24,7 @@ class SecurityConfig(private val jwtAgent: JwtAgent, private val objectMapper: O
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-            .cors { it.configurationSource(corsConfigurationSource()) }
+            .cors { it.disable() }
             .csrf { it.disable() }
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
