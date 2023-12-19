@@ -45,6 +45,10 @@ data class GoalDeleteRequest(
 
 @Schema(description = "[Response] 단건 다짐(Goal) 조회")
 data class GoalResponse(
+
+    @Schema(description = "다짐 생성자 id")
+    val hostUserId: Long,
+
     @Schema(description = "다짐 id")
     val id: Long,
 
@@ -65,6 +69,7 @@ data class GoalResponse(
 ) {
     companion object {
         fun of(goal: Goal): GoalResponse = GoalResponse(
+            hostUserId = goal.userId,
             id = goal.id,
             type = goal.type,
             content = goal.content,

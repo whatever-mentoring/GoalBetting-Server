@@ -43,6 +43,7 @@ class GoalApplicationService(
             endDate = endDate
         )
         return GoalResponse(
+            hostUserId = goal.userId,
             id = goal.id,
             type = goal.type,
             content = goal.content,
@@ -55,6 +56,7 @@ class GoalApplicationService(
     fun retrieveGoal(goalId: Long): GoalResponse {
         val goal = goalService.loadById(goalId)
         return GoalResponse(
+            hostUserId = goal.userId,
             id = goal.id,
             type = goal.type,
             content = goal.content,
@@ -70,6 +72,7 @@ class GoalApplicationService(
 
         goals.map {
             val goalResponse = GoalResponse(
+                hostUserId = it.userId,
                 id = it.id,
                 type = it.type,
                 content = it.content,
@@ -130,6 +133,7 @@ class GoalApplicationService(
         )
 
         return GoalResponse(
+            hostUserId = modifiedGoal.userId,
             id = modifiedGoal.id,
             type = modifiedGoal.type,
             content = modifiedGoal.content,
