@@ -53,7 +53,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_KEY }}
-          source: "raisedragon-api-0.0.1-SNAPSHOT.jar"
+          source: "build/libs/raisedragon-api-0.0.1-SNAPSHOT.jar"
           target: "/home/ec2-user"
 
       - name: API EC2 인스턴스 접속 및 애플리케이션 실행
