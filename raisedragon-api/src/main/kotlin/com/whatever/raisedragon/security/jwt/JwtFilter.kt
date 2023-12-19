@@ -82,6 +82,8 @@ class JwtFilter(
             "/api-docs", "/swagger-ui", "/swagger-resources",
             // SignIn/SignUp Endpoints
             "/v1/auth",
+            // Providing test token
+            "/v1/token/**"
         )
     }
 }
