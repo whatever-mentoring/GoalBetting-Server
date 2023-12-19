@@ -83,7 +83,6 @@ create table if not exists goal_proof
     id         bigint auto_increment primary key,
     goal_id    bigint       not null,
     user_id    bigint       not null,
-    document   varchar(255) not null,
     url        varchar(255) not null,
     comment    varchar(255) not null,
     deleted_at datetime(6)  null,
