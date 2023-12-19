@@ -42,6 +42,7 @@ class GoalEntity(
 ) : BaseEntity()
 
 fun Goal.fromDto(userEntity: UserEntity): GoalEntity = GoalEntity(
+    id = id,
     userEntity = userEntity,
     type = type,
     content = content,
