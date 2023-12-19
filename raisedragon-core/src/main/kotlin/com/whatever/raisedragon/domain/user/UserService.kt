@@ -25,7 +25,7 @@ class UserService(
     }
 
     fun updateNickname(id: Long, nickname: String): User {
-        val userEntity = loadById(id).fromDto()
+        val userEntity = userRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("유저를 불러오는 중, 잘못된 값을 요청하셨습니다.")
         userEntity.nickname = Nickname(nickname)
         return userEntity.toDto()
     }
