@@ -31,7 +31,7 @@ class GoalGifticonService(
     }
 
     fun loadById(id: Long): GoalGifticon {
-        return goalGifticonRepository.findById(id).get().toDto() ?: throw IllegalArgumentException("리소스가 존재하지 않습니다.")
+        return goalGifticonRepository.findById(id).get().toDto()
     }
 
     fun loadByGoalAndUserEntity(

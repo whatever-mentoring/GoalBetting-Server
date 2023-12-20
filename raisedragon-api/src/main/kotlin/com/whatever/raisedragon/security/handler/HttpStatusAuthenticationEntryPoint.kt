@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 
-class HttpStatusAuthenticationEntryPoint() : AuthenticationEntryPoint {
+class HttpStatusAuthenticationEntryPoint : AuthenticationEntryPoint {
     private val log: Logger = LoggerFactory.getLogger(HttpStatusAuthenticationEntryPoint::class.java)
 
     override fun commence(

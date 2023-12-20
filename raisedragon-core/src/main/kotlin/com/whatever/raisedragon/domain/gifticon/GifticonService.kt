@@ -25,6 +25,6 @@ class GifticonService(
     }
 
     fun loadById(gifticonId: Long): Gifticon {
-        return gifticonRepository.findById(gifticonId).get().toDto() ?: throw IllegalArgumentException("리소스가 존재하지 않습니다.")
+        return gifticonRepository.findById(gifticonId).get().toDto()
     }
 }

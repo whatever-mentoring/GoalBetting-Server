@@ -23,9 +23,7 @@ class UserEntity(
     @Embedded
     var nickname: Nickname
 
-) : BaseEntity() {
-
-}
+) : BaseEntity()
 
 fun User.fromDto(): UserEntity = UserEntity(
     id = id!!,

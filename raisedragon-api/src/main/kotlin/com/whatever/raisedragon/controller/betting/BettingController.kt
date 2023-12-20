@@ -51,7 +51,7 @@ class BettingController(
     @PutMapping
     fun update(
         @Valid @RequestBody request: BettingUpdateRequest,
-        @GetAuth userInfo: UserInfo
+        // @GetAuth userInfo: UserInfo
     ): Response<BettingRetrieveResponse> {
         return Response.success(
             bettingApplicationService.update(
@@ -67,7 +67,7 @@ class BettingController(
     @DeleteMapping("{bettingId}")
     fun delete(
         @PathVariable bettingId: Long,
-        @GetAuth userInfo: UserInfo
+        // @GetAuth userInfo: UserInfo
     ): Response<Unit> {
         bettingApplicationService.delete(AuthContext.getUser().id!!, bettingId)
         return Response.success()

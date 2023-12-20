@@ -5,8 +5,6 @@ import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.common.aop.Auth
 import com.whatever.raisedragon.common.aop.AuthContext
 import com.whatever.raisedragon.domain.goal.Content
-import com.whatever.raisedragon.security.authentication.UserInfo
-import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -101,14 +99,14 @@ class GoalController(
     @Auth
     @Operation(summary = "Delete Goal API", description = "다짐 삭제")
     @DeleteMapping
-    fun modifyGoal(
-        @GetAuth userInfo: UserInfo,
+    fun deleteGoal(
+        // @GetAuth userInfo: UserInfo,
         @RequestBody goalDeleteRequest: GoalDeleteRequest
     ): Response<Unit> {
         AuthContext.getUser()
         return Response.success(
             goalApplicationService.deleteGoal(
-                userId = userInfo.id,
+                userId = AuthContext.getUser().id!!,
                 goalId = goalDeleteRequest.goalId,
             )
         )
