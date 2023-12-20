@@ -44,8 +44,8 @@ class JwtAgentImpl(
     }
 
     override fun extractUserFromToken(token: String): UserInfo {
-        return jwtParser.parseClaimsJws(token).body?.let {
-            objectMapper.convertValue(it[CLAIM_INFO_KEY], UserInfo::class.java)
+        return jwtParser.parseClaimsJws(token).body?.let { claims ->
+            objectMapper.convertValue(claims[CLAIM_INFO_KEY], UserInfo::class.java)
         } ?: throw BaseException.of(ExceptionCode.E401_UNAUTHORIZED)
     }
 
@@ -91,12 +91,12 @@ class JwtAgentImpl(
         val claims = Jwts.claims()
         claims["id"] = user.id
         claims["nickname"] = user.nickname
-        // claims[CLAIM_INFO_KEY] = UserInfo.from(user)
+        claims[CLAIM_INFO_KEY] = UserInfo.from(user)
         return claims
     }
 
     companion object {
-        const val BEARER_PREFIX = "Bearer "
+        const val BEARER_PREFIX = "Bearer"
 //        private const val ACCESS_TOKEN_EXPIRE_TIME = (1000 * 60 * 30).toLong()
         private const val ACCESS_TOKEN_EXPIRE_TIME = (1000 * 60 * 60 * 24 * 7).toLong() // 임시 JWT 만료기간
         private const val REFRESH_TOKEN_EXPIRE_TIME = (1000 * 60 * 60 * 24 * 7).toLong()

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import com.whatever.raisedragon.security.jwt.JwtAgentImpl.Companion.BEARER_PREFIX
 import com.whatever.raisedragon.security.authentication.JwtAuthentication
+import com.whatever.raisedragon.security.jwt.JwtAgentImpl.Companion.BEARER_PREFIX
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -62,7 +62,7 @@ class JwtFilter(
 
     private fun getToken(authorization: String): String? {
         val (provider, token) = authorization.split(AUTH_PROVIDER_SPLIT_DELIMITER)
-        if (provider != BEARER_PREFIX) return null
+        if (provider.uppercase() != BEARER_PREFIX.uppercase()) return null
         return token
     }
 
@@ -83,7 +83,7 @@ class JwtFilter(
             // SignIn/SignUp Endpoints
             "/v1/auth",
             // Providing test token
-            "/v1/token/**"
+            "/v1/token"
         )
     }
 }

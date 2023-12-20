@@ -15,7 +15,7 @@ class JwtAuthentication(private val userInfo: UserInfo) : Authentication {
 
     override fun getCredentials(): Any = userInfo.id
 
-    override fun getDetails(): Any = userInfo.getDetails()
+    override fun getDetails(): Any = userInfo.toDetails()
 
     override fun getPrincipal(): Any = userInfo
 
