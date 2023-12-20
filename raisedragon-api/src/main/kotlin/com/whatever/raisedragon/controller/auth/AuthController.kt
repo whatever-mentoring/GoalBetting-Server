@@ -3,6 +3,7 @@ package com.whatever.raisedragon.controller.auth
 import com.whatever.raisedragon.applicationservice.AuthApplicationService
 import com.whatever.raisedragon.common.Response
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
 
@@ -19,7 +20,11 @@ class AuthController(
         return Response.success(authApplicationService.kakaoLogin(loginRequest.accessToken))
     }
 
-    @Operation(summary = "Token Refresh API", description = "토큰 갱신")
+    @Operation(
+        summary = "Token Refresh API",
+        description = "토큰 갱신",
+        security = [SecurityRequirement(name = "Authorization")]
+    )
     @PostMapping("/refresh")
     fun reissue(@RequestHeader refreshToken: String): Response<TokenRefreshResponse> {
         return Response.success(authApplicationService.reissueToken(refreshToken))
