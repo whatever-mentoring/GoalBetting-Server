@@ -2,7 +2,6 @@ package com.whatever.raisedragon.controller.user
 
 import com.whatever.raisedragon.applicationservice.UserApplicationService
 import com.whatever.raisedragon.common.Response
-import com.whatever.raisedragon.common.aop.AuthContext
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -23,11 +22,7 @@ class UserController(
     fun retrieveMe(
         @GetAuth userInfo: UserInfo
     ): Response<UserRetrieveResponse> {
-        return Response.success(
-            userApplicationService.retrieve(
-                AuthContext.getUser().id!!
-            )
-        )
+        return Response.success(userApplicationService.retrieve(userInfo.id))
     }
 
     @Operation(summary = "User retrieve API", description = "특정 사용자를 조회합니다.")
@@ -36,11 +31,7 @@ class UserController(
         @GetAuth userInfo: UserInfo,
         @PathVariable userId: Long
     ): Response<UserRetrieveResponse> {
-        return Response.success(
-            userApplicationService.retrieve(
-                AuthContext.getUser().id!!
-            )
-        )
+        return Response.success(userApplicationService.retrieve(userInfo.id))
     }
 
     @Operation(
