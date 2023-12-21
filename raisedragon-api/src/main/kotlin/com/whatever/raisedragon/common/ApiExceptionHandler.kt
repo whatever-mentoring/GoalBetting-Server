@@ -65,7 +65,10 @@ class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     private fun handleInternalServerException(exception: Exception): Response<Any> {
-        return Response.fail(E500_INTERNAL_SERVER_ERROR)
+        return Response.fail(
+            E500_INTERNAL_SERVER_ERROR,
+            if (Constants.profile == "dev") exception.stackTraceToString() else null
+        )
     }
 
     companion object {
