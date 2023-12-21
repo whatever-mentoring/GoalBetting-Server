@@ -116,6 +116,12 @@ class GoalApplicationService(
         )
     }
 
+    fun retrieveGoalsByBetUserId(userId: Long): List<GoalResponse> {
+        val betGoalIds = bettingService.findAllGoalIdsByUserId(userId)
+        val betGoals = goalService.findAllByIds(betGoalIds)
+        return betGoals.map { goal -> GoalResponse.of(goal) }
+    }
+
     @Transactional
     fun modifyGoal(
         userId: Long,
