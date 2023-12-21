@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @Tag(name = "GoalProof", description = "GoalProof API")
 @RestController
-@RequestMapping("/v1/goal-proof")
+@RequestMapping("/v1")
 @SecurityRequirement(name = "Authorization")
 class GoalProofController(
     private val goalProofApplicationService: GoalProofApplicationService
@@ -21,7 +21,7 @@ class GoalProofController(
 
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "GoalProof create API", description = "다짐 인증을 생성합니다.")
-    @PostMapping
+    @PostMapping("/goal-proof")
     fun create(
         @Valid @RequestBody goalProofCreateRequest: GoalProofCreateRequest,
         @GetAuth userInfo: UserInfo
@@ -37,7 +37,7 @@ class GoalProofController(
     }
 
     @Operation(summary = "Retrieving single GoalProof API", description = "단건 다짐 인증을 조회합니다")
-    @GetMapping("/{goalProofId}")
+    @GetMapping("/goal-proof/{goalProofId}")
     fun retrieve(
         @PathVariable goalProofId: Long
     ): Response<GoalProofRetrieveResponse> {
@@ -45,16 +45,16 @@ class GoalProofController(
     }
 
     @Operation(summary = "Retrieving GoalProofs API", description = "모든 다짐 인증을 조회합니다")
-    @GetMapping
+    @GetMapping("goal/{goalId}/goal-proof")
     fun retrieveAll(
         @GetAuth userInfo: UserInfo,
-        @RequestBody request: GoalProofRetrieveAllRequest
+        @PathVariable goalId: Long
     ): Response<GoalProofListRetrieveResponse> {
-        return Response.success(goalProofApplicationService.retrieveAll(request.goalId, userInfo.id))
+        return Response.success(goalProofApplicationService.retrieveAll(goalId, userInfo.id))
     }
 
     @Operation(summary = "Updating GoalProof API", description = "다짐 인증을 수정합니다")
-    @PutMapping("/{goalProofId}")
+    @PutMapping("/goal-proof/{goalProofId}")
     fun update(
         @PathVariable goalProofId: Long,
         @RequestBody request: GoalProofUpdateRequest,
