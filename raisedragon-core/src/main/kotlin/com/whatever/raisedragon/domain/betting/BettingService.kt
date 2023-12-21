@@ -1,7 +1,6 @@
 package com.whatever.raisedragon.domain.betting
 
 import com.whatever.raisedragon.domain.goal.GoalRepository
-import com.whatever.raisedragon.domain.goal.toDto
 import com.whatever.raisedragon.domain.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -69,5 +68,15 @@ class BettingService(
 
     fun findByIdOrNull(bettingId: Long): Betting? {
         return bettingRepository.findByIdOrNull(bettingId)?.toDto()
+    }
+
+    fun findAllGoalIdsByUserId(userId: Long): Set<Long> {
+        return findAllByUserId(userId).map { betting -> betting.goalId }.toSet()
+    }
+
+    private fun findAllByUserId(userId: Long): List<Betting> {
+        val userEntity =
+            userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
+        return bettingRepository.findAllByUserEntity(userEntity).map { it.toDto() }
     }
 }

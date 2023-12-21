@@ -48,6 +48,10 @@ class GoalService(
         ).map { it.toDto() }
     }
 
+    fun findAllByIds(goalIds: Set<Long>): List<Goal> {
+        return goalRepository.findAllById(goalIds).map { it.toDto() }
+    }
+
     @Transactional
     fun modify(
         goal: Goal,

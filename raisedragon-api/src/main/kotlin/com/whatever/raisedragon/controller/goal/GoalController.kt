@@ -54,18 +54,6 @@ class GoalController(
     }
 
     @Operation(
-        summary = "Retrieving Multiple Goal API",
-        description = "요청자의 모든 다짐 조회",
-        security = [SecurityRequirement(name = "Authorization")]
-    )
-    @GetMapping
-    fun retrieveMany(
-        @GetAuth userInfo: UserInfo
-    ): Response<List<GoalResponse>> {
-        return Response.success(goalApplicationService.retrieveAllByUserId(userInfo.id))
-    }
-
-    @Operation(
         summary = "Retrieving GoalBetting API",
         description = "해당 다짐에 대한 모든 배팅 조회",
         security = [SecurityRequirement(name = "Authorization")]
