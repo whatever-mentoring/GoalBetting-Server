@@ -80,6 +80,47 @@ data class GoalResponse(
     }
 }
 
+@Schema(description = "[Response] 단건 다짐 조회 (내기 참여 여부 포함)")
+data class GoalDetailResponse(
+
+    @Schema(description = "다짐 생성자 id")
+    val hostUserId: Long,
+
+    @Schema(description = "다짐 id")
+    val id: Long,
+
+    @Schema(description = "다짐 타입")
+    val type: BettingType,
+
+    @Schema(description = "다짐 내용")
+    val content: Content,
+
+    @Schema(description = "다짐 인증 횟수")
+    val threshold: Threshold,
+
+    @Schema(description = "다짐 시작 시간")
+    val startDate: LocalDateTime,
+
+    @Schema(description = "다짐 마감 시간")
+    val endDate: LocalDateTime,
+
+    @Schema(description = "참여한 베팅 아이디")
+    val bettingId: Long?
+) {
+    companion object {
+        fun of(goal: Goal, bettingId: Long? = null): GoalDetailResponse = GoalDetailResponse(
+            hostUserId = goal.userId,
+            id = goal.id,
+            type = goal.type,
+            content = goal.content,
+            threshold = goal.threshold,
+            startDate = goal.startDate,
+            endDate = goal.endDate,
+            bettingId = bettingId
+        )
+    }
+}
+
 data class GoalBettingHost(
     @Schema(description = "호스트 유저 id")
     val id: Long,

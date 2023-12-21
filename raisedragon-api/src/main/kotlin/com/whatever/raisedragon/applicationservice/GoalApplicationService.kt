@@ -2,10 +2,7 @@ package com.whatever.raisedragon.applicationservice
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import com.whatever.raisedragon.controller.goal.GoalBettingHost
-import com.whatever.raisedragon.controller.goal.GoalBettingParticipant
-import com.whatever.raisedragon.controller.goal.GoalResponse
-import com.whatever.raisedragon.controller.goal.GoalRetrieveParticipantResponse
+import com.whatever.raisedragon.controller.goal.*
 import com.whatever.raisedragon.domain.betting.BettingService
 import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.user.UserService
@@ -53,7 +50,7 @@ class GoalApplicationService(
         )
     }
 
-    fun retrieveGoal(goalId: Long): GoalResponse {
+    private fun retrieveGoal(goalId: Long): GoalResponse {
         val goal = goalService.loadById(goalId)
         return GoalResponse(
             hostUserId = goal.userId,
@@ -64,6 +61,12 @@ class GoalApplicationService(
             startDate = goal.startDate,
             endDate = goal.endDate
         )
+    }
+
+    fun retrieveGoalDetail(goalId: Long, userId: Long): GoalDetailResponse {
+        val goal = goalService.loadById(goalId)
+        val bettingId = bettingService.loadUserAndGoal(userId, goalId)?.id
+        return GoalDetailResponse.of(goal, bettingId)
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
