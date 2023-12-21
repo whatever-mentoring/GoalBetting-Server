@@ -52,6 +52,7 @@ class SecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration().apply {
+            addAllowedOriginPattern("*")
             addAllowedMethod("*")
             addAllowedHeader("*")
             exposedHeaders = listOf(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE)
