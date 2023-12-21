@@ -83,7 +83,9 @@ class BettingApplicationService(
     }
 
     private fun Betting.validateStartDate() {
-        if (goalService.loadById(goalId).startDate > LocalDateTime.now()) {
+        val now = LocalDateTime.now()
+        val goalStartDate = goalService.loadById(goalId).startDate
+        if (now.toLocalDate() >= goalStartDate.toLocalDate()) {
             throw BaseException.of(ExceptionCode.E400_BAD_REQUEST, "이미 시작한 내기 입니다.")
         }
     }
