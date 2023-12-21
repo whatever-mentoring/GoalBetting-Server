@@ -1,0 +1,3 @@
+package com.whatever.raisedragon.scheduler
+
+interface SchedulerBasePackage
