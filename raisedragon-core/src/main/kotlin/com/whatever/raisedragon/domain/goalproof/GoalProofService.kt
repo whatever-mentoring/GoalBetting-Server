@@ -42,8 +42,10 @@ class GoalProofService(
     }
 
     fun findAllByGoalIdAndUserId(goalId: Long, userId: Long): List<GoalProof> {
-        val goalEntity = goalRepository.findByIdOrNull(goalId) ?: throw IllegalArgumentException()
-        val userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException()
+        val goalEntity =
+            goalRepository.findByIdOrNull(goalId) ?: throw IllegalArgumentException("cannot find goal $goalId")
+        val userEntity =
+            userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("cannot find user $userId")
         return goalProofRepository.findAllByUserEntityAndGoalEntity(goalEntity = goalEntity, userEntity = userEntity)
             .map { it.toDto() }
     }

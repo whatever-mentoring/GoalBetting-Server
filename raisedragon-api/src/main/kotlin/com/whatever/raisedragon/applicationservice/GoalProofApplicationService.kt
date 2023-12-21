@@ -4,6 +4,7 @@ import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalproof.GoalProofCreateUpdateResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofListRetrieveResponse
+import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveAllResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
 import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.GoalService
@@ -49,7 +50,11 @@ class GoalProofApplicationService(
 
     fun retrieveAll(goalId: Long, userId: Long): GoalProofListRetrieveResponse {
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
-        return GoalProofListRetrieveResponse(goalProofs.map { GoalProofRetrieveResponse.of(it) })
+            .sortedBy { goalProof -> goalProof.createdAt }
+            .mapIndexed { index, goalProof ->
+                GoalProofRetrieveAllResponse.of(goalProof, index + 1)
+            }
+        return GoalProofListRetrieveResponse(goalProofs)
     }
 
     @Transactional
