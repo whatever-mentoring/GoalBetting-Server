@@ -29,9 +29,11 @@ class WinnerService(
         return winnerEntity.toDto()
     }
 
-    fun findByGoalId(goalId: Long): Winner? {
+    fun findByGoalIdAndUserId(goalId: Long, userId: Long): Winner? {
         val goalEntity =
             goalRepository.findByIdOrNull(goalId) ?: throw IllegalStateException("cannot find goal $goalId")
-        return winnerRepository.findByGoalEntity(goalEntity)?.toDto()
+        val userEntity =
+            userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
+        return winnerRepository.findByGoalEntityAndUserEntity(goalEntity, userEntity)?.toDto()
     }
 }
