@@ -1,5 +1,7 @@
 package com.whatever.raisedragon.controller.goal
 
+import com.whatever.raisedragon.controller.betting.BettingRetrieveResponse
+import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.PredictionType
 import com.whatever.raisedragon.domain.betting.Result
 import com.whatever.raisedragon.domain.goal.BettingType
@@ -49,6 +51,9 @@ data class GoalResponse(
     @Schema(description = "다짐 생성자 id")
     val hostUserId: Long,
 
+    @Schema(description = "다짐 생성자 nickname")
+    val hostUserNickname: String,
+
     @Schema(description = "다짐 id")
     val id: Long,
 
@@ -68,8 +73,9 @@ data class GoalResponse(
     val endDate: LocalDateTime
 ) {
     companion object {
-        fun of(goal: Goal): GoalResponse = GoalResponse(
+        fun of(goal: Goal, hostUserNickname: String): GoalResponse = GoalResponse(
             hostUserId = goal.userId,
+            hostUserNickname = hostUserNickname,
             id = goal.id,
             type = goal.type,
             content = goal.content,
@@ -80,43 +86,19 @@ data class GoalResponse(
     }
 }
 
-@Schema(description = "[Response] 단건 다짐 조회 (내기 참여 여부 포함)")
-data class GoalDetailResponse(
+@Schema(description = "[Response] Goal과 Betting을 같이 조회합니다")
+data class GoalWithBettingResponse(
+    @Schema(description = "다짐 정보")
+    val goal: GoalResponse,
 
-    @Schema(description = "다짐 생성자 id")
-    val hostUserId: Long,
-
-    @Schema(description = "다짐 id")
-    val id: Long,
-
-    @Schema(description = "다짐 타입")
-    val type: BettingType,
-
-    @Schema(description = "다짐 내용")
-    val content: Content,
-
-    @Schema(description = "다짐 인증 횟수")
-    val threshold: Threshold,
-
-    @Schema(description = "다짐 시작 시간")
-    val startDate: LocalDateTime,
-
-    @Schema(description = "다짐 마감 시간")
-    val endDate: LocalDateTime,
-
-    @Schema(description = "참여한 베팅 아이디")
-    val bettingId: Long?
+    @Schema(description = "내가 참가한 베팅")
+    val myBetting: BettingRetrieveResponse? = null
 ) {
     companion object {
-        fun of(goal: Goal, bettingId: Long? = null): GoalDetailResponse = GoalDetailResponse(
-            hostUserId = goal.userId,
-            id = goal.id,
-            type = goal.type,
-            content = goal.content,
-            threshold = goal.threshold,
-            startDate = goal.startDate,
-            endDate = goal.endDate,
-            bettingId = bettingId
+        fun of(goal: Goal, hostUserNickname: String, betting: Betting? = null): GoalWithBettingResponse =
+            GoalWithBettingResponse(
+                goal = GoalResponse.of(goal, hostUserNickname),
+                myBetting = betting?.let { BettingRetrieveResponse.of(it) }
         )
     }
 }

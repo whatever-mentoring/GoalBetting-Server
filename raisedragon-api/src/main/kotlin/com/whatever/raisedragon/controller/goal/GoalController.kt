@@ -50,7 +50,7 @@ class GoalController(
     fun retrieveOne(
         @PathVariable goalId: Long,
         @GetAuth userInfo: UserInfo
-    ): Response<GoalDetailResponse> {
+    ): Response<GoalWithBettingResponse> {
         return Response.success(goalApplicationService.retrieveGoalDetail(goalId, userInfo.id))
     }
 

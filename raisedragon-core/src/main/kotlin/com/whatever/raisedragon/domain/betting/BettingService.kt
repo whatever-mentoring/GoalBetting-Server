@@ -60,11 +60,7 @@ class BettingService(
         return bettingRepository.findByIdOrNull(bettingId)?.toDto()
     }
 
-    fun findAllGoalIdsByUserId(userId: Long): Set<Long> {
-        return findAllByUserId(userId).map { betting -> betting.goalId }.toSet()
-    }
-
-    private fun findAllByUserId(userId: Long): List<Betting> {
+    fun findAllByUserId(userId: Long): List<Betting> {
         val userEntity =
             userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
         return bettingRepository.findAllByUserEntity(userEntity).map { it.toDto() }
