@@ -3,6 +3,7 @@ package com.whatever.raisedragon.controller.me
 import com.whatever.raisedragon.applicationservice.GoalApplicationService
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.controller.goal.GoalResponse
+import com.whatever.raisedragon.controller.goal.GoalWithBettingResponse
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -37,7 +38,7 @@ class MeController(
         security = [SecurityRequirement(name = "Authorization")]
     )
     @GetMapping("/bet-goal")
-    fun retrieveMyBetGoals(@GetAuth userInfo: UserInfo): Response<List<GoalResponse>> {
-        return Response.success(goalApplicationService.retrieveGoalsByBetUserId(userInfo.id))
+    fun retrieveMyBetGoals(@GetAuth userInfo: UserInfo): Response<List<GoalWithBettingResponse>> {
+        return Response.success(goalApplicationService.retrieveGoalWithBettingByBetUserId(userInfo.id))
     }
 }

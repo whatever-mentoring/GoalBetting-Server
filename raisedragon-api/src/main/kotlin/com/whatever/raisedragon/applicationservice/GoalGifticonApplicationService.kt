@@ -2,6 +2,7 @@ package com.whatever.raisedragon.applicationservice
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
+import com.whatever.raisedragon.controller.goalgifticon.GifticonResponse
 import com.whatever.raisedragon.controller.goalgifticon.GoalGifticonResponse
 import com.whatever.raisedragon.domain.gifticon.GifticonService
 import com.whatever.raisedragon.domain.gifticon.URL
@@ -9,6 +10,7 @@ import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.domain.user.fromDto
+import com.whatever.raisedragon.domain.winner.WinnerService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -19,7 +21,8 @@ class GoalGifticonApplicationService(
     private val gifticonService: GifticonService,
     private val goalService: GoalService,
     private val goalGifticonService: GoalGifticonService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val winnerService: WinnerService
 ) {
 
     @Transactional
@@ -59,25 +62,32 @@ class GoalGifticonApplicationService(
         )
     }
 
-    @Transactional
     fun retrieveByGoalId(
         goalId: Long,
         userId: Long
-    ): GoalGifticonResponse {
-        val userEntity = userService.loadById(userId).fromDto()
-        val goal = goalService.loadById(goalId).fromDto(userEntity).toDto()
+    ): GifticonResponse {
+        val user = userService.loadById(userId)
+        val goal = goalService.loadById(goalId)
         isBrokenTiming(goal)
 
-        val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
-            goal,
-            userEntity
+        val goalGifticon = if (userId != goal.userId) {
+            null
+        } else {
+            goalGifticonService.loadByGoalAndUserEntity(
+                goal = goal,
+                userEntity = user.fromDto()
+            )
+        }
+        val winnerGifticonId = winnerService.findByGoalIdAndUserId(goalId, userId)?.gifticonId
+        val actualGifticonId = goalGifticon?.gifticonId ?: winnerGifticonId ?: throw BaseException.of(
+            ExceptionCode.E403_FORBIDDEN,
+            "접근할 수 없는 기프티콘입니다."
         )
-        val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
+        val gifticon = gifticonService.loadById(actualGifticonId)
 
-        return GoalGifticonResponse(
-            goalGifticonId = goalGifticon.id,
-            goalId = goalGifticon.goalId,
-            gifticonId = goalGifticon.gifticonId,
+        return GifticonResponse(
+            goalId = goalId,
+            gifticonId = actualGifticonId,
             gifticonURL = gifticon.url.value
         )
     }
@@ -91,9 +101,9 @@ class GoalGifticonApplicationService(
         val userEntity = userService.loadById(userId).fromDto()
         val goal = goalService.loadById(goalId).fromDto(userEntity).toDto()
         val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
-            goal,
-            userEntity
-        )
+            goal = goal,
+            userEntity = userEntity
+        ) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
         val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
 
         validateIsRequestUserHasUpdateAuthority(goal, userId)

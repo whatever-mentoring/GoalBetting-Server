@@ -89,3 +89,14 @@ create table if not exists goal_proof
     created_at datetime(6)  not null,
     updated_at datetime(6)  not null
 );
+
+create table if not exists winner
+(
+    id          bigint auto_increment primary key,
+    goal_id     bigint       not null,
+    user_id     bigint       not null,
+    gifticon_id bigint       not null,
+    deleted_at  datetime(6)  null,
+    created_at  datetime(6)  not null,
+    updated_at  datetime(6)  not null
+);

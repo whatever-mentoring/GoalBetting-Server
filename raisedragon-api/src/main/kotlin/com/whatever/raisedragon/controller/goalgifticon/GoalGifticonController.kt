@@ -41,11 +41,11 @@ class GoalGifticonController(
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
         summary = "다짐 내 기프티콘 조회 API",
-        description = "다짐 내 기프티콘 조회",
+        description = "다짐 내 기프티콘 조회 (나의 기프티콘 이거나 승리한 경우 조회 가능)",
         security = [SecurityRequirement(name = "Authorization")]
     )
     @GetMapping("/{goalId}")
-    fun retrieve(@GetAuth userInfo: UserInfo, @PathVariable goalId: Long): Response<GoalGifticonResponse> {
+    fun retrieve(@GetAuth userInfo: UserInfo, @PathVariable goalId: Long): Response<GifticonResponse> {
         return Response.success(
             goalGifticonApplicationService.retrieveByGoalId(
                 goalId = goalId,

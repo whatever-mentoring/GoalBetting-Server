@@ -52,6 +52,18 @@ class GoalService(
         return goalRepository.findAllById(goalIds).map { it.toDto() }
     }
 
+    fun findAllByEndDateLessThanEqualAndResultIsProceeding(endDate: LocalDateTime): List<Goal> {
+        return goalRepository.findAllByEndDateLessThanEqualAndResultIs(endDate, Result.PROCEEDING).map { it.toDto() }
+    }
+
+    @Transactional
+    fun updateResult(goalId: Long, result: Result): Goal {
+        val goalEntity =
+            goalRepository.findByIdOrNull(goalId) ?: throw IllegalStateException("cannot find goal $goalId")
+        goalEntity.result = result
+        return goalEntity.toDto()
+    }
+
     @Transactional
     fun modify(
         goal: Goal,

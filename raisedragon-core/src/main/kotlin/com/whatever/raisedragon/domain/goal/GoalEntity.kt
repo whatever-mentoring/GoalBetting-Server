@@ -31,7 +31,7 @@ class GoalEntity(
     var threshold: Threshold = Threshold(0),
 
     @Enumerated(EnumType.STRING)
-    val result: Result,
+    var result: Result,
 
     @Column(name = "start_date", nullable = false)
     val startDate: LocalDateTime,

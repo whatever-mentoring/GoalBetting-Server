@@ -31,23 +31,6 @@ class BettingService(
         return betting.toDto()
     }
 
-    @Transactional
-    fun update(bettingId: Long, predictionType: PredictionType): Betting {
-        val betting = bettingRepository.findByIdOrNull(bettingId)
-            ?: throw IllegalStateException("Cannot find betting $bettingId")
-        if (betting.predictionType != predictionType) {
-            betting.predictionType = predictionType
-        }
-        return betting.toDto()
-    }
-
-    @Transactional
-    fun softDelete(bettingId: Long) {
-        val betting = bettingRepository.findByIdOrNull(bettingId)
-            ?: throw IllegalStateException("Cannot find betting $bettingId")
-        betting.deletedAt = LocalDateTime.now()
-    }
-
     fun loadUserAndGoal(
         userId: Long,
         goalId: Long
@@ -56,6 +39,13 @@ class BettingService(
             userEntity = userRepository.findById(userId).get(),
             goalEntity = goalRepository.findById(goalId).get()
         )?.toDto()
+    }
+
+    fun findAllByGoalIdAndNotDeleted(goalId: Long): List<Betting> {
+        return bettingRepository.findAllByGoalEntityAndDeletedAtIsNull(
+            goalEntity = goalRepository.findByIdOrNull(goalId)
+                ?: throw IllegalStateException("cannot find goal $goalId")
+        ).map { it.toDto() }
     }
 
     fun loadAllByGoalId(
@@ -70,13 +60,41 @@ class BettingService(
         return bettingRepository.findByIdOrNull(bettingId)?.toDto()
     }
 
-    fun findAllGoalIdsByUserId(userId: Long): Set<Long> {
-        return findAllByUserId(userId).map { betting -> betting.goalId }.toSet()
-    }
-
-    private fun findAllByUserId(userId: Long): List<Betting> {
+    fun findAllByUserId(userId: Long): List<Betting> {
         val userEntity =
             userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
         return bettingRepository.findAllByUserEntity(userEntity).map { it.toDto() }
+    }
+
+    @Transactional
+    fun update(bettingId: Long, predictionType: PredictionType): Betting {
+        val betting = bettingRepository.findByIdOrNull(bettingId)
+            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        if (betting.predictionType != predictionType) {
+            betting.predictionType = predictionType
+        }
+        return betting.toDto()
+    }
+
+    @Transactional
+    fun updateResult(bettingId: Long, result: Result): Betting {
+        val betting = bettingRepository.findByIdOrNull(bettingId)
+            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        if (betting.result != result) {
+            betting.result = result
+        }
+        return betting.toDto()
+    }
+
+    @Transactional
+    fun bulkModifyingByResultWhereIdInIds(bettingIds: Set<Long>, result: Result): Int {
+        return bettingRepository.bulkModifyingByResultWhereIdInIds(result, bettingIds)
+    }
+
+    @Transactional
+    fun softDelete(bettingId: Long) {
+        val betting = bettingRepository.findByIdOrNull(bettingId)
+            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        betting.deletedAt = LocalDateTime.now()
     }
 }

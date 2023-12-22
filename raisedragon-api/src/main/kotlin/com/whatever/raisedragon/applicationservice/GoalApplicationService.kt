@@ -39,53 +39,28 @@ class GoalApplicationService(
             startDate = startDate,
             endDate = endDate
         )
-        return GoalResponse(
-            hostUserId = goal.userId,
-            id = goal.id,
-            type = goal.type,
-            content = goal.content,
-            threshold = goal.threshold,
-            startDate = goal.startDate,
-            endDate = goal.endDate
-        )
+        val hostUser = userService.loadById(userId)
+        return GoalResponse.of(goal, hostUser.nickname.value)
     }
 
-    private fun retrieveGoal(goalId: Long): GoalResponse {
+    fun retrieveGoalDetail(goalId: Long, userId: Long): GoalWithBettingResponse {
         val goal = goalService.loadById(goalId)
-        return GoalResponse(
-            hostUserId = goal.userId,
-            id = goal.id,
-            type = goal.type,
-            content = goal.content,
-            threshold = goal.threshold,
-            startDate = goal.startDate,
-            endDate = goal.endDate
-        )
-    }
-
-    fun retrieveGoalDetail(goalId: Long, userId: Long): GoalDetailResponse {
-        val goal = goalService.loadById(goalId)
-        val bettingId = bettingService.loadUserAndGoal(userId, goalId)?.id
-        return GoalDetailResponse.of(goal, bettingId)
+        val hostUser = userService.loadById(goal.userId)
+        val betting = bettingService.loadUserAndGoal(userId, goalId)
+        return GoalWithBettingResponse.of(goal, hostUser.nickname.value, betting)
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
         val goals = goalService.loadAllByUserId(userId)
-        val response: MutableList<GoalResponse> = mutableListOf()
+        val users = userService.findAllByIdInIds(goals.map { it.userId }.toSet())
 
-        goals.map {
-            val goalResponse = GoalResponse(
-                hostUserId = it.userId,
-                id = it.id,
-                type = it.type,
-                content = it.content,
-                threshold = it.threshold,
-                startDate = it.startDate,
-                endDate = it.endDate
+        return goals.map { goal ->
+            val hostUser = users.firstOrNull { user -> user.id == goal.userId } ?: throw BaseException.of(
+                exceptionCode = ExceptionCode.E404_NOT_FOUND,
+                executionMessage = "Goal(${goal.id}에 해당하는 유저를 찾을 수 없습니다. ${goal.userId}"
             )
-            response.add(goalResponse)
+            GoalResponse.of(goal, hostUser.nickname.value)
         }
-        return response
     }
 
     fun retrieveGoalBettingParticipant(
@@ -119,10 +94,21 @@ class GoalApplicationService(
         )
     }
 
-    fun retrieveGoalsByBetUserId(userId: Long): List<GoalResponse> {
-        val betGoalIds = bettingService.findAllGoalIdsByUserId(userId)
-        val betGoals = goalService.findAllByIds(betGoalIds)
-        return betGoals.map { goal -> GoalResponse.of(goal) }
+    fun retrieveGoalWithBettingByBetUserId(userId: Long): List<GoalWithBettingResponse> {
+        val bettingList = bettingService.findAllByUserId(userId)
+        val betGoals = goalService.findAllByIds(bettingList.map { it.goalId }.toSet())
+        val hostUsers = userService.findAllByIdInIds(betGoals.map { it.userId }.toSet())
+
+        return betGoals.map { goal ->
+            val hostUser = hostUsers.firstOrNull { user -> user.id == goal.userId } ?: throw BaseException.of(
+                exceptionCode = ExceptionCode.E404_NOT_FOUND,
+                executionMessage = "Goal(${goal.id}에 해당하는 유저를 찾을 수 없습니다. ${goal.userId}"
+            )
+            GoalWithBettingResponse.of(
+                goal = goal,
+                hostUserNickname = hostUser.nickname.value,
+                betting = bettingList.firstOrNull { betting -> betting.userId == userId })
+        }
     }
 
     @Transactional
@@ -141,15 +127,8 @@ class GoalApplicationService(
             content = content
         )
 
-        return GoalResponse(
-            hostUserId = modifiedGoal.userId,
-            id = modifiedGoal.id,
-            type = modifiedGoal.type,
-            content = modifiedGoal.content,
-            threshold = modifiedGoal.threshold,
-            startDate = modifiedGoal.startDate,
-            endDate = modifiedGoal.endDate
-        )
+        val hostUser = userService.loadById(userId)
+        return GoalResponse.of(modifiedGoal, hostUser.nickname.value)
     }
 
     @Transactional
