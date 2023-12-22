@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GoalGifticonRepository : JpaRepository<GoalGifticonEntity, Long> {
-    fun findByGoalEntity(goalEntity: GoalEntity): GoalGifticonEntity
+    fun findByGoalEntity(goalEntity: GoalEntity): GoalGifticonEntity?
 }

@@ -71,7 +71,7 @@ class GoalGifticonApplicationService(
         val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
             goal,
             userEntity
-        )
+        ) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
         val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
 
         return GoalGifticonResponse(
@@ -91,9 +91,9 @@ class GoalGifticonApplicationService(
         val userEntity = userService.loadById(userId).fromDto()
         val goal = goalService.loadById(goalId).fromDto(userEntity).toDto()
         val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
-            goal,
-            userEntity
-        )
+            goal = goal,
+            userEntity = userEntity
+        ) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
         val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
 
         validateIsRequestUserHasUpdateAuthority(goal, userId)

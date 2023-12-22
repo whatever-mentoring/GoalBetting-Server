@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GoalProofRepository : JpaRepository<GoalProofEntity, Long> {
     fun findAllByUserEntityAndGoalEntity(userEntity: UserEntity, goalEntity: GoalEntity): List<GoalProofEntity>
+
+    fun countAllByGoalEntity(goalEntity: GoalEntity): Int
 }

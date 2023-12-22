@@ -41,6 +41,12 @@ class GoalProofService(
         return goalProofRepository.findByIdOrNull(goalProofId)?.toDto()
     }
 
+    fun countAllByGoalId(goalId: Long): Int {
+        val goalEntity =
+            goalRepository.findByIdOrNull(goalId) ?: throw IllegalArgumentException("cannot find goal $goalId")
+        return goalProofRepository.countAllByGoalEntity(goalEntity)
+    }
+
     fun findAllByGoalIdAndUserId(goalId: Long, userId: Long): List<GoalProof> {
         val goalEntity =
             goalRepository.findByIdOrNull(goalId) ?: throw IllegalArgumentException("cannot find goal $goalId")
