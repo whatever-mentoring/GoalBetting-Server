@@ -48,9 +48,10 @@ class GoalController(
     )
     @GetMapping("/{goalId}")
     fun retrieveOne(
-        @PathVariable goalId: Long
-    ): Response<GoalResponse> {
-        return Response.success(goalApplicationService.retrieveGoal(goalId))
+        @PathVariable goalId: Long,
+        @GetAuth userInfo: UserInfo
+    ): Response<GoalDetailResponse> {
+        return Response.success(goalApplicationService.retrieveGoalDetail(goalId, userInfo.id))
     }
 
     @Operation(
