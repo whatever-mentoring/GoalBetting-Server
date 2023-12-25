@@ -72,7 +72,9 @@ class SecurityConfig(
             // error page
             "/error/**",
             // Auth endpoints
-            "/v1/auth/**"
+            "/v1/auth/**",
+            // don't need an authorization
+            "/v1/goal/*/simple"
         )
     }
 

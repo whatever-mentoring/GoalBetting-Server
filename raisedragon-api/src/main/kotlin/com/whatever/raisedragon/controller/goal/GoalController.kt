@@ -43,15 +43,26 @@ class GoalController(
 
     @Operation(
         summary = "Retrieving Goal API",
-        description = "다짐 단일 조회",
+        description = "다짐 단일 조회 및 요청한 사용자에 관한 정보 제공",
         security = [SecurityRequirement(name = "Authorization")]
     )
     @GetMapping("/{goalId}")
-    fun retrieveOne(
+    fun retrieveDetail(
         @PathVariable goalId: Long,
         @GetAuth userInfo: UserInfo
     ): Response<GoalWithBettingResponse> {
         return Response.success(goalApplicationService.retrieveGoalDetail(goalId, userInfo.id))
+    }
+
+    @Operation(
+        summary = "Retrieving Goal API",
+        description = "다짐 단일 조회"
+    )
+    @GetMapping("/{goalId}/simple")
+    fun retrieveOne(
+        @PathVariable goalId: Long
+    ): Response<GoalResponse> {
+        return Response.success(goalApplicationService.retrieveGoal(goalId))
     }
 
     @Operation(
