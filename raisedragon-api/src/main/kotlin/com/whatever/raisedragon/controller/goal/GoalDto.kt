@@ -92,13 +92,21 @@ data class GoalWithBettingResponse(
     val goal: GoalResponse,
 
     @Schema(description = "내가 참가한 베팅")
-    val myBetting: BettingRetrieveResponse? = null
+    val myBetting: BettingRetrieveResponse? = null,
+
+    @Schema(description = "다짐 성공여부")
+    val isSuccess: Boolean = false
 ) {
     companion object {
-        fun of(goal: Goal, hostUserNickname: String, betting: Betting? = null): GoalWithBettingResponse =
-            GoalWithBettingResponse(
-                goal = GoalResponse.of(goal, hostUserNickname),
-                myBetting = betting?.let { BettingRetrieveResponse.of(it) }
+        fun of(
+            goal: Goal,
+            hostUserNickname: String,
+            betting: Betting? = null,
+            isSuccess: Boolean = false
+        ): GoalWithBettingResponse = GoalWithBettingResponse(
+            goal = GoalResponse.of(goal, hostUserNickname),
+            myBetting = betting?.let { BettingRetrieveResponse.of(it) },
+            isSuccess = isSuccess
         )
     }
 }
