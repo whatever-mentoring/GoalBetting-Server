@@ -57,6 +57,12 @@ class GoalProofApplicationService(
         return GoalProofListRetrieveResponse(goalProofs)
     }
 
+    fun isSuccess(goalId: Long, userId: Long): Boolean {
+        val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
+        // TODO : Number 7 must be changed after adjusting goal's threshold
+        return goalProofs.size >= 7
+    }
+
     @Transactional
     fun update(
         goalProofId: Long,
