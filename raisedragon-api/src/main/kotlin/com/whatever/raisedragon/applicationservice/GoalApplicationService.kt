@@ -43,6 +43,12 @@ class GoalApplicationService(
         return GoalResponse.of(goal, hostUser.nickname.value)
     }
 
+    fun retrieveGoal(goalId: Long): GoalResponse {
+        val goal = goalService.loadById(goalId)
+        val hostUser = userService.loadById(goal.userId)
+        return GoalResponse.of(goal, hostUser.nickname.value)
+    }
+
     fun retrieveGoalDetail(goalId: Long, userId: Long): GoalWithBettingResponse {
         val goal = goalService.loadById(goalId)
         val hostUser = userService.loadById(goal.userId)
