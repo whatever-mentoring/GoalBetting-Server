@@ -5,6 +5,7 @@ import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goal.*
 import com.whatever.raisedragon.domain.betting.BettingService
 import com.whatever.raisedragon.domain.goal.*
+import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.stereotype.Service
@@ -15,6 +16,7 @@ import java.time.LocalDateTime
 @Service
 class GoalApplicationService(
     private val goalService: GoalService,
+    private val goalProofService: GoalProofService,
     private val userService: UserService,
     private val bettingService: BettingService
 ) {
@@ -53,7 +55,14 @@ class GoalApplicationService(
         val goal = goalService.loadById(goalId)
         val hostUser = userService.loadById(goal.userId)
         val betting = bettingService.loadUserAndGoal(userId, goalId)
-        return GoalWithBettingResponse.of(goal, hostUser.nickname.value, betting)
+        val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
+        // TODO : Number 7 must be changed after adjusting goal's threshold
+        val isSuccess = goalProofs.size >= 7
+        return GoalWithBettingResponse.of(
+            goal = goal,
+            hostUserNickname = hostUser.nickname.value,
+            betting = betting,
+            isSuccess = isSuccess)
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
@@ -110,10 +119,15 @@ class GoalApplicationService(
                 exceptionCode = ExceptionCode.E404_NOT_FOUND,
                 executionMessage = "Goal(${goal.id}에 해당하는 유저를 찾을 수 없습니다. ${goal.userId}"
             )
+            val goalProofs = goalProofService.findAllByGoalIdAndUserId(goal.id, userId)
+            // TODO : Number 7 must be changed after adjusting goal's threshold
+            val isSuccess = goalProofs.size >= 7
             GoalWithBettingResponse.of(
                 goal = goal,
                 hostUserNickname = hostUser.nickname.value,
-                betting = bettingList.firstOrNull { betting -> betting.userId == userId })
+                betting = bettingList.firstOrNull { betting -> betting.userId == userId },
+                isSuccess = isSuccess
+            )
         }
     }
 
