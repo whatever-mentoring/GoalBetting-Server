@@ -2,6 +2,7 @@ package com.whatever.raisedragon.domain.winner
 
 import com.whatever.raisedragon.domain.gifticon.GifticonRepository
 import com.whatever.raisedragon.domain.goal.GoalRepository
+import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -35,5 +36,12 @@ class WinnerService(
         val userEntity =
             userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
         return winnerRepository.findByGoalEntityAndUserEntity(goalEntity, userEntity)?.toDto()
+    }
+
+    fun findWinnerNicknameByGoalId(goalId: Long): Nickname? {
+        return winnerRepository
+            .findByGoalEntity(goalRepository.findByIdOrNull(goalId)
+                ?: throw IllegalStateException("cannot find goal $goalId"))
+            ?.userEntity?.nickname
     }
 }
