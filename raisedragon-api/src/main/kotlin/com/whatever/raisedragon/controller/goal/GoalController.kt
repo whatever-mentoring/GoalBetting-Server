@@ -36,7 +36,8 @@ class GoalController(
                 content = Content(request.content),
                 startDate = request.startDate,
                 endDate = request.endDate,
-                userId = userinfo.id
+                userId = userinfo.id,
+                gifticonUrl = request.gifticonUrl
             )
         )
     }

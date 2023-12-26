@@ -29,6 +29,9 @@ data class GoalCreateRequest(
     @Schema(description = "다짐 마감 시간")
     @field:NotNull
     val endDate: LocalDateTime,
+
+    @Schema(description = "내기에 걸 기프티콘 URL")
+    val gifticonUrl: String?
 )
 
 @Schema(description = "[Request] 다짐 수정")
