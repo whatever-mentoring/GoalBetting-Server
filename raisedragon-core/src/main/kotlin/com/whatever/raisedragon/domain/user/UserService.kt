@@ -43,4 +43,10 @@ class UserService(
         val userEntity = loadById(id).fromDto()
         userEntity.disable()
     }
+
+    @Transactional
+    fun convertBySoftDeleteToEntity(id: Long) {
+        val userEntity = loadById(id).fromDto()
+        userEntity.able()
+    }
 }

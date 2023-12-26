@@ -36,6 +36,10 @@ fun UserEntity.disable() {
     this.deletedAt = LocalDateTime.now()
 }
 
+fun UserEntity.able() {
+    this.deletedAt = null
+}
+
 @Embeddable
 data class Nickname(
     @Column(name = "nickname")

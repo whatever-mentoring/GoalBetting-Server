@@ -29,6 +29,7 @@ class AuthApplicationService(
     fun kakaoLogin(accessToken: String): LoginResponse {
         val kakaoId = authService.verifyKaKao(accessToken)
         val user = userService.loadByOAuthPayload(kakaoId)
+
         if (user == null) {
             val newUser = userService.create(
                 User(
@@ -39,6 +40,11 @@ class AuthApplicationService(
             )
             return buildLoginResponseByNewUser(newUser)
         }
+
+        if (user.deletedAt != null) {
+            userService.convertBySoftDeleteToEntity(user.id!!)
+        }
+
         return buildLoginResponseByUser(user)
     }
 
