@@ -7,6 +7,7 @@ import com.whatever.raisedragon.controller.goalproof.GoalProofListRetrieveRespon
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveAllResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
 import com.whatever.raisedragon.domain.gifticon.URL
+import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.GoalService
 import com.whatever.raisedragon.domain.goalproof.Comment
 import com.whatever.raisedragon.domain.goalproof.GoalProof
@@ -16,6 +17,8 @@ import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 
 @Service
 @Transactional(readOnly = true)
@@ -34,6 +37,7 @@ class GoalProofApplicationService(
     ): GoalProofCreateUpdateResponse {
         val goal = goalService.loadById(goalId)
         val user = userService.loadById(userId)
+        validateIsCreateTimeToday(goal)
         val goalProof = goalProofService.create(
             user = user,
             goal = goal,
@@ -42,6 +46,15 @@ class GoalProofApplicationService(
         )
         goalService.increaseThreshold(goal, user.fromDto())
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
+    }
+
+    private fun validateIsCreateTimeToday(goal: Goal) {
+        if (abs(ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate)) != 0L) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E400_BAD_REQUEST,
+                executionMessage = "오늘 날짜에 대한 인증이 아니면 인증을 생성할 수 없습니다."
+            )
+        }
     }
 
     fun retrieve(goalProofId: Long): GoalProofRetrieveResponse {
