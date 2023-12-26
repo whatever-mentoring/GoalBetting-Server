@@ -102,18 +102,23 @@ data class GoalWithBettingResponse(
     val myBetting: BettingRetrieveResponse? = null,
 
     @Schema(description = "다짐 성공여부")
-    val isSuccess: Boolean = false
+    val isSuccess: Boolean = false,
+
+    @Schema(description = "기프티콘에 당첨된 Winner Nickname")
+    val winnerNickname: String? = null
 ) {
     companion object {
         fun of(
             goal: Goal,
             hostUserNickname: String,
             betting: Betting? = null,
-            isSuccess: Boolean = false
+            isSuccess: Boolean = false,
+            winnerNickname: String? = null
         ): GoalWithBettingResponse = GoalWithBettingResponse(
             goal = GoalResponse.of(goal, hostUserNickname),
             myBetting = betting?.let { BettingRetrieveResponse.of(it) },
-            isSuccess = isSuccess
+            isSuccess = isSuccess,
+            winnerNickname = winnerNickname
         )
     }
 }

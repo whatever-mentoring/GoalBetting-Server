@@ -10,6 +10,7 @@ import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.domain.user.fromDto
+import com.whatever.raisedragon.domain.winner.WinnerService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -21,6 +22,7 @@ class GoalApplicationService(
     private val gifticonService: GifticonService,
     private val goalGifticonService: GoalGifticonService,
     private val goalProofService: GoalProofService,
+    private val winnerService: WinnerService,
     private val userService: UserService,
     private val bettingService: BettingService
 ) {
@@ -73,13 +75,15 @@ class GoalApplicationService(
         val hostUser = userService.loadById(goal.userId)
         val betting = bettingService.loadUserAndGoal(userId, goalId)
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
+        val winnerNickname = winnerService.findWinnerNicknameByGoalId(goalId)?.value
         // TODO : Number 7 must be changed after adjusting goal's threshold
         val isSuccess = goalProofs.size >= 7
         return GoalWithBettingResponse.of(
             goal = goal,
             hostUserNickname = hostUser.nickname.value,
             betting = betting,
-            isSuccess = isSuccess)
+            isSuccess = isSuccess,
+            winnerNickname = winnerNickname)
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
@@ -137,13 +141,15 @@ class GoalApplicationService(
                 executionMessage = "Goal(${goal.id}에 해당하는 유저를 찾을 수 없습니다. ${goal.userId}"
             )
             val goalProofs = goalProofService.findAllByGoalIdAndUserId(goal.id, userId)
+            val winnerNickname = winnerService.findWinnerNicknameByGoalId(goal.id)?.value
             // TODO : Number 7 must be changed after adjusting goal's threshold
             val isSuccess = goalProofs.size >= 7
             GoalWithBettingResponse.of(
                 goal = goal,
                 hostUserNickname = hostUser.nickname.value,
                 betting = bettingList.firstOrNull { betting -> betting.userId == userId },
-                isSuccess = isSuccess
+                isSuccess = isSuccess,
+                winnerNickname = winnerNickname
             )
         }
     }
