@@ -70,7 +70,10 @@ data class GoalResponse(
     val startDate: LocalDateTime,
 
     @Schema(description = "다짐 마감 시간")
-    val endDate: LocalDateTime
+    val endDate: LocalDateTime,
+
+    @Schema(description = "다짐 상태 (시작 전이거나 시작 중인 경우 PROCEEDING 사용)")
+    val result: com.whatever.raisedragon.domain.goal.Result
 ) {
     companion object {
         fun of(goal: Goal, hostUserNickname: String): GoalResponse = GoalResponse(
@@ -81,7 +84,8 @@ data class GoalResponse(
             content = goal.content,
             threshold = goal.threshold,
             startDate = goal.startDate,
-            endDate = goal.endDate
+            endDate = goal.endDate,
+            result = goal.result
         )
     }
 }
