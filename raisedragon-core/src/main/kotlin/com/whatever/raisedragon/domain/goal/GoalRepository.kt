@@ -12,4 +12,6 @@ interface GoalRepository : JpaRepository<GoalEntity, Long> {
     fun findByIdAndUserEntity(id: Long, userEntity: UserEntity): GoalEntity?
 
     fun findAllByEndDateLessThanEqualAndResultIs(endDate: LocalDateTime, result: Result): List<GoalEntity>
+
+    fun findAllByUserEntityAndResult(userEntity: UserEntity, result: Result): List<GoalEntity>
 }
