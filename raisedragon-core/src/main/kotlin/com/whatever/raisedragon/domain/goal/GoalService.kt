@@ -42,6 +42,12 @@ class GoalService(
             ?: throw IllegalArgumentException("다짐을 조회하는 중, 잘못된 내용을 요청하셨습니다.")
     }
 
+    fun existsByUserIdAndAnyResult(userId: Long, result: Result): Boolean {
+        val userEntity = userRepository.findByIdOrNull(userId)
+            ?: throw IllegalArgumentException("cannot find user $userId")
+        return goalRepository.findAllByUserEntityAndResult(userEntity, result).isNotEmpty()
+    }
+
     fun loadAllByUserId(userId: Long): List<Goal> {
         return goalRepository.findAllByUserEntity(
             userRepository.findById(userId).get()

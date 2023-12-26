@@ -38,6 +38,10 @@ class GoalApplicationService(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 생성할 수 있는 다짐 갯수를 초과하였습니다."
         )
+        if (goalService.existsByUserIdAndAnyResult(userId, Result.PROCEEDING)) throw BaseException.of(
+            exceptionCode = ExceptionCode.E409_CONFLICT,
+            executionMessage = "다짐을 생성하는 중, 이미 생성한 다짐이 있어 생성이 불가합니다."
+        )
         val goal = goalService.create(
             userId = userId,
             content = content,
