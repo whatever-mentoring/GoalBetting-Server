@@ -4,7 +4,9 @@ import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goal.*
 import com.whatever.raisedragon.domain.betting.BettingService
+import com.whatever.raisedragon.domain.gifticon.GifticonService
 import com.whatever.raisedragon.domain.goal.*
+import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.domain.user.fromDto
@@ -16,6 +18,8 @@ import java.time.LocalDateTime
 @Service
 class GoalApplicationService(
     private val goalService: GoalService,
+    private val gifticonService: GifticonService,
+    private val goalGifticonService: GoalGifticonService,
     private val goalProofService: GoalProofService,
     private val userService: UserService,
     private val bettingService: BettingService
@@ -28,6 +32,7 @@ class GoalApplicationService(
         startDate: LocalDateTime,
         endDate: LocalDateTime,
         userId: Long,
+        gifticonUrl: String? = null
     ): GoalResponse {
         if (isNumberOfGoalUnderOneHundred(userId)) throw BaseException.of(
             exceptionCode = ExceptionCode.E409_CONFLICT,
@@ -41,6 +46,14 @@ class GoalApplicationService(
             startDate = startDate,
             endDate = endDate
         )
+        if (!gifticonUrl.isNullOrBlank() && bettingType == BettingType.BILLING) {
+            val gifticon = gifticonService.create(userId, gifticonUrl)
+            goalGifticonService.create(
+                goalId = goal.id,
+                gifticonId = gifticon.id,
+                userId = userId
+            )
+        }
         val hostUser = userService.loadById(userId)
         return GoalResponse.of(goal, hostUser.nickname.value)
     }
