@@ -28,7 +28,9 @@ class GoalProofEntity(
     var url: URL,
 
     @Column(name = "comment")
-    var comment: Comment
+    var comment: Comment,
+
+
 
 ) : BaseEntity()
 
