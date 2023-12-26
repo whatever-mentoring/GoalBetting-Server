@@ -49,5 +49,3 @@ data class Nickname(
         }
     }
 }
-
-

@@ -22,6 +22,10 @@ class UserService(
         return userRepository.findAllById(ids).map { it.toDto() }
     }
 
+    fun isNicknameDuplicated(nickname: String): Boolean {
+        return userRepository.existsByNickname(Nickname(nickname))
+    }
+
     @Transactional
     fun create(user: User): User {
         return userRepository.save(user.fromDto()).toDto()

@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.applicationservice
 
+import com.whatever.raisedragon.controller.user.UserNicknameDuplicatedResponse
 import com.whatever.raisedragon.controller.user.UserRetrieveResponse
 import com.whatever.raisedragon.domain.user.UserService
 import org.springframework.stereotype.Service
@@ -32,5 +33,13 @@ class UserApplicationService(
 
     fun delete(id: Long) {
         userService.softDelete(id)
+    }
+
+    fun isNicknameDuplicated(
+        nickname: String
+    ): UserNicknameDuplicatedResponse {
+        return UserNicknameDuplicatedResponse(
+            nicknameIsDuplicated = userService.isNicknameDuplicated(nickname)
+        )
     }
 }

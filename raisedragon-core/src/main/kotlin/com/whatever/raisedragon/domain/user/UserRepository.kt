@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserRepository : JpaRepository<UserEntity, Long> {
     fun findByOauthTokenPayload(payload: String): UserEntity?
+
+    fun existsByNickname(nickname: Nickname): Boolean
 }

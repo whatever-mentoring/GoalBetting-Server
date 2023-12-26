@@ -17,6 +17,18 @@ class UserController(
     private val userApplicationService: UserApplicationService
 ) {
 
+    @Operation(summary = "Validate User Nickname API", description = "닉네임 중복 검증")
+    @PostMapping("/nickname")
+    fun validateNickname(
+        @RequestBody userNicknameDuplicatedRequest: UserNicknameDuplicatedRequest
+    ): Response<UserNicknameDuplicatedResponse> {
+        return Response.success(
+            userApplicationService.isNicknameDuplicated(
+                nickname = userNicknameDuplicatedRequest.nickname
+            )
+        )
+    }
+
     @Operation(summary = "Request User retrieve API", description = "요청한 사용자를 조회합니다.")
     @GetMapping
     fun retrieveMe(

@@ -44,3 +44,15 @@ data class UserLoginResponse(
     @Schema(description = "Refresh Token")
     val refreshToken: String,
 )
+
+@Schema(description = "[Response] 유저 닉네임 중복체크")
+data class UserNicknameDuplicatedRequest(
+    @Schema(description = "닉네임")
+    val nickname: String,
+)
+
+@Schema(description = "[Response] 유저 닉네임 중복체크")
+data class UserNicknameDuplicatedResponse(
+    @Schema(description = "닉네임 변경 이력")
+    val nicknameIsDuplicated: Boolean
+)
