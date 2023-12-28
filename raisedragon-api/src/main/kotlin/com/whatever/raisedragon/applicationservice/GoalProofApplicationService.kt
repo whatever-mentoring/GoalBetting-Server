@@ -48,15 +48,6 @@ class GoalProofApplicationService(
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
     }
 
-    private fun validateIsCreateTimeToday(goal: Goal) {
-        if (abs(ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate)) != 0L) {
-            throw BaseException.of(
-                exceptionCode = ExceptionCode.E400_BAD_REQUEST,
-                executionMessage = "오늘 날짜에 대한 인증이 아니면 인증을 생성할 수 없습니다."
-            )
-        }
-    }
-
     fun retrieve(goalProofId: Long): GoalProofRetrieveResponse {
         return GoalProofRetrieveResponse.of(findByIdOrThrowException(goalProofId))
     }
@@ -90,6 +81,15 @@ class GoalProofApplicationService(
         return GoalProofRetrieveResponse.of(
             goalProofService.update(goalProofId, url?.let { URL(it) }, comment?.let { Comment(it) })
         )
+    }
+
+    private fun validateIsCreateTimeToday(goal: Goal) {
+        if (abs(ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate)) != 0L) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E400_BAD_REQUEST,
+                executionMessage = "오늘 날짜에 대한 인증이 아니면 인증을 생성할 수 없습니다."
+            )
+        }
     }
 
     private fun findByIdOrThrowException(goalProofId: Long): GoalProof {
