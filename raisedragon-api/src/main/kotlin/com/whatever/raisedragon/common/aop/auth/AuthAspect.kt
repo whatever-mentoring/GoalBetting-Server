@@ -1,4 +1,4 @@
-package com.whatever.raisedragon.common.aop
+package com.whatever.raisedragon.common.aop.auth
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
@@ -51,6 +51,6 @@ class AuthAspect(
     companion object {
         private const val AUTHORIZATION = "Authorization"
         private const val PREFIX_BEARER = "Bearer "
-        private const val BASE_PACKAGE = "com.whatever.raisedragon.common.aop.Auth"
+        private const val BASE_PACKAGE = "com.whatever.raisedragon.common.aop.auth.Auth"
     }
 }

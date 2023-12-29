@@ -1,4 +1,4 @@
-package com.whatever.raisedragon.common.aop
+package com.whatever.raisedragon.common.aop.auth
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode

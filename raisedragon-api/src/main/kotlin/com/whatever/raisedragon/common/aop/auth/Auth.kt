@@ -1,4 +1,4 @@
-package com.whatever.raisedragon.common.aop
+package com.whatever.raisedragon.common.aop.auth
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

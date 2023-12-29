@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.controller.user
 
+import com.whatever.raisedragon.common.aop.badwordfilter.BadWordFilter
 import com.whatever.raisedragon.domain.user.Nickname
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -14,6 +15,7 @@ data class UserCreateRequest(
 
 @Schema(description = "[Request] 유저 닉네임 수정")
 data class UserNicknameUpdateRequest(
+    @BadWordFilter
     @Schema(description = "User Nickname")
     val nickname: String
 )
@@ -53,6 +55,6 @@ data class UserNicknameDuplicatedRequest(
 
 @Schema(description = "[Response] 유저 닉네임 중복체크")
 data class UserNicknameDuplicatedResponse(
-    @Schema(description = "닉네임 변경 이력")
+    @Schema(description = "닉네임 중복 여부")
     val nicknameIsDuplicated: Boolean
 )
