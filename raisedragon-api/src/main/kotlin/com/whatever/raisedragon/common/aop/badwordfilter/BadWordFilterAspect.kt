@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 @Aspect
 @Component
-class AuthAspect {
+class BadWordFilterAspect {
 
     @Around("@annotation($BASE_PACKAGE)")
     fun filter(pjp: ProceedingJoinPoint): Any {
