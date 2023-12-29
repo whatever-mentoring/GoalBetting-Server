@@ -42,8 +42,8 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            echo `sudo fuser 8080/tcp`
-            sudo fuser -k 8080/tcp
+            sudo cd /home/ec2-user
+            sudo ./checkProcess.sh
 
       - name: API 빌드 파일 복사
         uses: appleboy/scp-action@master
