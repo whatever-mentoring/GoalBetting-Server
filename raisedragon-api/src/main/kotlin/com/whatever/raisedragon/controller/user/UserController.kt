@@ -7,6 +7,7 @@ import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "User", description = "User API")
@@ -53,7 +54,7 @@ class UserController(
     @PutMapping
     fun updateNickname(
         @GetAuth userInfo: UserInfo,
-        @RequestBody userNicknameUpdateRequest: UserNicknameUpdateRequest
+        @RequestBody @Valid userNicknameUpdateRequest: UserNicknameUpdateRequest
     ): Response<UserRetrieveResponse> {
         return Response.success(
             userApplicationService.updateNickname(

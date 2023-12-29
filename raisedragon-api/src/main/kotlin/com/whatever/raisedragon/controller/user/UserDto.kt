@@ -1,6 +1,6 @@
 package com.whatever.raisedragon.controller.user
 
-import com.whatever.raisedragon.common.aop.badwordfilter.BadWordFilter
+import com.whatever.raisedragon.common.aop.badwordfilter.ValidateBadWord
 import com.whatever.raisedragon.domain.user.Nickname
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -15,7 +15,7 @@ data class UserCreateRequest(
 
 @Schema(description = "[Request] 유저 닉네임 수정")
 data class UserNicknameUpdateRequest(
-    @BadWordFilter
+    @field:ValidateBadWord
     @Schema(description = "User Nickname")
     val nickname: String
 )

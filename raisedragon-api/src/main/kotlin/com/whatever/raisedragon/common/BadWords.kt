@@ -2,7 +2,7 @@ package com.whatever.raisedragon.common
 
 object BadWords {
 
-    internal fun containsExplicit(
+    internal fun containsBadWords(
         content: String
     ): Boolean {
         contents.map {
@@ -17,7 +17,7 @@ object BadWords {
         return false
     }
 
-    internal val contents = listOf(
+    private val contents = listOf(
         "시발", "새끼", "쌔끼", "후장뚫어18세키", "dogbaby", "18ㅅㅐㄲㅣ", "18ㅅㅔㅋㅣ", "yadong", "ㅌㅓㄹㅐㄱㅣ",
         "따아알따아리", "막대쑤셔줘?", "보지머리박기", "보지에자지껴", "보지에자지너", "보지핧아줄까", "여자ㄸㅏ먹기", "여자ㄸㅏ묵기",
         "조개마셔줘?", "조개벌려조?", "조개쑤셔줘?", "조개핧아줘?", "터래기터래기", "혀로보지핧기", "18nom", "18num",

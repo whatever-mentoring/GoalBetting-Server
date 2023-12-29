@@ -6,14 +6,28 @@ import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 
 @RestControllerAdvice
 class ApiExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    private fun handlerMethodArgumentNotValidException(
+        exception: MethodArgumentNotValidException,
+        request: WebRequest
+    ): Response<Any> {
+        val error = exception.fieldErrors.map { error -> error.defaultMessage }.toString()
+        return Response.fail(
+            exceptionCode = E400_BAD_REQUEST,
+            detailMessage = error
+        )
+    }
 
     @ExceptionHandler(ConstraintViolationException::class)
     private fun handlerConstraintViolationException(

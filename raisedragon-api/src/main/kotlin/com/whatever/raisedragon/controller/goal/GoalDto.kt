@@ -1,6 +1,6 @@
 package com.whatever.raisedragon.controller.goal
 
-import com.whatever.raisedragon.common.aop.badwordfilter.BadWordFilter
+import com.whatever.raisedragon.common.aop.badwordfilter.ValidateBadWord
 import com.whatever.raisedragon.controller.betting.BettingRetrieveResponse
 import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.PredictionType
@@ -19,7 +19,7 @@ data class GoalCreateRequest(
     @field:NotNull
     val type: BettingType,
 
-    @BadWordFilter
+    @ValidateBadWord
     @Schema(description = "다짐 내용")
     @field:NotNull
     val content: String,
@@ -38,7 +38,7 @@ data class GoalCreateRequest(
 
 @Schema(description = "[Request] 다짐 수정")
 data class GoalModifyRequest(
-    @BadWordFilter
+    @ValidateBadWord
     @Schema(description = "다짐 내용")
     @field:NotNull
     val content: String,
