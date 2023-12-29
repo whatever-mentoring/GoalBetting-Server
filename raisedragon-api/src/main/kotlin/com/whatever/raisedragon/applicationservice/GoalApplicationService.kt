@@ -183,7 +183,7 @@ class GoalApplicationService(
         isNotUsersGoal(goal, userId)
         isAlreadyStarted(goal)
 
-        goalService.delete(
+        goalService.softDelete(
             goal = goal,
             userEntity = userService.loadById(userId).fromDto(),
         )

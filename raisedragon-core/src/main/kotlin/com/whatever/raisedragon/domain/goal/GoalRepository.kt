@@ -14,4 +14,5 @@ interface GoalRepository : JpaRepository<GoalEntity, Long> {
     fun findAllByEndDateLessThanEqualAndResultIs(endDate: LocalDateTime, result: Result): List<GoalEntity>
 
     fun findAllByUserEntityAndResult(userEntity: UserEntity, result: Result): List<GoalEntity>
+    fun existsByUserEntityAndEndDateIsAfter(userEntity: UserEntity, now: LocalDateTime): Boolean
 }

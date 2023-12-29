@@ -1,7 +1,9 @@
 package com.whatever.raisedragon.domain.goal
 
+import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
+import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -83,7 +85,7 @@ class GoalService(
     }
 
     @Transactional
-    fun delete(
+    fun softDelete(
         goal: Goal,
         userEntity: UserEntity,
     ): Goal {
@@ -93,8 +95,19 @@ class GoalService(
         return goalEntity.toDto()
     }
 
+    @Transactional
+    fun hardDelete(user: User) {
+        val goals = goalRepository.findAllByUserEntity(user.fromDto())
+        goalRepository.deleteAll(goals)
+    }
+
+    @Transactional
     fun increaseThreshold(goal: Goal, userEntity: UserEntity) {
         val goalEntity = goal.fromDto(userEntity)
         goalEntity.threshold = Threshold(goalEntity.threshold.value + 1)
+    }
+
+    fun findProceedingGoalIsExistsByUser(user: User): Boolean {
+        return goalRepository.existsByUserEntityAndEndDateIsAfter(user.fromDto(), LocalDateTime.now())
     }
 }

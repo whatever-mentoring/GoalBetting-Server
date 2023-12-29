@@ -64,4 +64,10 @@ class GoalProofService(
         comment?.let { goalProof.comment = it }
         return goalProof.toDto()
     }
+
+    @Transactional
+    fun hardDelete(user: User) {
+        val goalProofs = goalProofRepository.findAllByUserEntity(user.fromDto())
+        goalProofRepository.deleteAll(goalProofs)
+    }
 }

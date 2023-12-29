@@ -45,6 +45,12 @@ class UserService(
     }
 
     @Transactional
+    fun hardDelete(id: Long) {
+        val userEntity = loadById(id).fromDto()
+        userRepository.delete(userEntity)
+    }
+
+    @Transactional
     fun convertBySoftDeleteToEntity(id: Long) {
         val userEntity = loadById(id).fromDto()
         userEntity.able()

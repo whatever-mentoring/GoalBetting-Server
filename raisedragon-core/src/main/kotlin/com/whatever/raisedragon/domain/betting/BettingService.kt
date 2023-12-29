@@ -1,7 +1,9 @@
 package com.whatever.raisedragon.domain.betting
 
 import com.whatever.raisedragon.domain.goal.GoalRepository
+import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserRepository
+import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -96,5 +98,11 @@ class BettingService(
         val betting = bettingRepository.findByIdOrNull(bettingId)
             ?: throw IllegalStateException("Cannot find betting $bettingId")
         betting.deletedAt = LocalDateTime.now()
+    }
+
+    @Transactional
+    fun hardDelete(user: User) {
+        val bettings = bettingRepository.findAllByUserEntity(user.fromDto())
+        bettingRepository.deleteAll(bettings)
     }
 }

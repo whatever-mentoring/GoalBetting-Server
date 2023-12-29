@@ -29,4 +29,10 @@ class RefreshTokenService(
     fun updatePayloadByVo(refreshToken: RefreshToken, userEntity: UserEntity) {
         val refreshTokenEntity = refreshToken.fromDto(userEntity)
     }
+
+    @Transactional
+    fun hardDelete(user: User) {
+        val refreshTokenEntity = refreshTokenRepository.findByUserEntity(user.fromDto())!!
+        refreshTokenRepository.delete(refreshTokenEntity)
+    }
 }
