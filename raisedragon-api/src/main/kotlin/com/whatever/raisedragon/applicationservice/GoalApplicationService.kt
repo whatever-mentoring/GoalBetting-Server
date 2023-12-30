@@ -130,6 +130,36 @@ class GoalApplicationService(
         )
     }
 
+    fun retrieveGoalBettingParticipant(
+        goalId: Long
+    ): GoalRetrieveParticipantResponse {
+        val goal = goalService.loadById(goalId)
+        val hostUser = userService.loadById(goal.userId)
+        val bettingList = bettingService.loadAllByGoalId(goalId)
+
+        val hostDto = GoalBettingHost(
+            id = hostUser.id!!,
+            nickname = hostUser.nickname.value,
+            goalCreatedAt = goal.createdAt
+        )
+
+        val participants = bettingList.map {
+            GoalBettingParticipant(
+                userId = it.userId,
+                nickname = userService.loadById(it.userId).nickname.value,
+                bettingId = it.id,
+                predictionType = it.predictionType,
+                result = it.result,
+                bettingCreatedAt = it.createdAt!!
+            )
+        }
+
+        return GoalRetrieveParticipantResponse(
+            hostUser = hostDto,
+            participants = participants
+        )
+    }
+
     fun retrieveGoalWithBettingByBetUserId(userId: Long): List<GoalWithBettingResponse> {
         val bettingList = bettingService.findAllByUserId(userId)
         val betGoals = goalService.findAllByIds(bettingList.map { it.goalId }.toSet())

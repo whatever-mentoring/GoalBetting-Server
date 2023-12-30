@@ -85,6 +85,21 @@ class GoalController(
     }
 
     @Operation(
+        summary = "Retrieving GoalBetting API [No Auth]",
+        description = "해당 다짐에 대한 모든 배팅 조회 [No Auth]",
+    )
+    @GetMapping("/betting/{goalId}/no-auth")
+    fun retrieveParticipantNoAuth(
+        @PathVariable goalId: Long,
+    ): Response<GoalRetrieveParticipantResponse> {
+        return Response.success(
+            goalApplicationService.retrieveGoalBettingParticipant(
+                goalId = goalId
+            )
+        )
+    }
+
+    @Operation(
         summary = "Modify Goal API",
         description = "다짐 세부 내용 수정",
         security = [SecurityRequirement(name = "Authorization")]
