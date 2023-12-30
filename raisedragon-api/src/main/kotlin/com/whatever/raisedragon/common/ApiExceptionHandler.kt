@@ -19,13 +19,11 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     private fun handlerMethodArgumentNotValidException(
-        exception: MethodArgumentNotValidException,
-        request: WebRequest
+        exception: MethodArgumentNotValidException
     ): Response<Any> {
-        val error = exception.fieldErrors.map { error -> error.defaultMessage }.toString()
         return Response.fail(
             exceptionCode = E400_BAD_REQUEST,
-            detailMessage = error
+            detailMessage = exception.fieldErrors[0].defaultMessage
         )
     }
 
