@@ -9,8 +9,8 @@ tasks.jar {
 val swaggerVersion: String by project.extra
 
 dependencies {
-    api(project(":raisedragon-core"))
-    api(project(":raisedragon-external"))
+    implementation(project(":raisedragon-core"))
+    implementation(project(":raisedragon-external"))
     api("org.springframework.boot:spring-boot-starter-data-jpa:3.0.4")
 
     implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
