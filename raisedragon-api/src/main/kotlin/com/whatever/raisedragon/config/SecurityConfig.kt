@@ -75,7 +75,8 @@ class SecurityConfig(
             "/v1/auth/**",
             // don't need an authorization
             "/v1/goal/*/simple",
-            "/v1/user/nickname"
+            "/v1/user/nickname",
+            "/v1/goal/betting/*/no-auth"
         )
     }
 
