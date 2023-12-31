@@ -78,7 +78,6 @@ class GoalController(
     ): Response<GoalRetrieveParticipantResponse> {
         return Response.success(
             goalApplicationService.retrieveGoalBettingParticipant(
-                hostUserId = userInfo.id,
                 goalId = goalId
             )
         )
@@ -93,7 +92,7 @@ class GoalController(
         @PathVariable goalId: Long,
     ): Response<GoalRetrieveParticipantResponse> {
         return Response.success(
-            goalApplicationService.retrieveGoalBettingParticipant(
+            goalApplicationService.retrieveGoalBettingParticipantNoAuth(
                 goalId = goalId
             )
         )
