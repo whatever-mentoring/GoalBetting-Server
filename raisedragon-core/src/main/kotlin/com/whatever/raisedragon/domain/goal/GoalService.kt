@@ -96,8 +96,19 @@ class GoalService(
     }
 
     @Transactional
-    fun hardDelete(user: User) {
-        val goals = goalRepository.findAllByUserEntity(user.fromDto())
+    fun hardDelete(
+        goal: Goal,
+        userEntity: UserEntity,
+    ) {
+        val goalEntity = goal.fromDto(userEntity)
+        goalRepository.delete(goalEntity)
+    }
+
+    @Transactional
+    fun hardDeleteByUserId(userId: Long) {
+        val goals = goalRepository.findAllByUserEntity(
+            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        )
         goalRepository.deleteAll(goals)
     }
 
@@ -108,6 +119,10 @@ class GoalService(
     }
 
     fun findProceedingGoalIsExistsByUser(user: User): Boolean {
-        return goalRepository.existsByUserEntityAndEndDateIsAfter(user.fromDto(), LocalDateTime.now())
+        val existsByUserEntityAndEndDateIsAfter = goalRepository.existsByUserEntityAndEndDateIsAfter(
+            userEntity = user.fromDto(),
+            now = LocalDateTime.now()
+        )
+        return existsByUserEntityAndEndDateIsAfter
     }
 }

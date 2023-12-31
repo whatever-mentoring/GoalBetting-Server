@@ -45,7 +45,7 @@ class UserService(
     }
 
     @Transactional
-    fun hardDelete(id: Long) {
+    fun hardDeleteById(id: Long) {
         val userEntity = loadById(id).fromDto()
         userRepository.delete(userEntity)
     }

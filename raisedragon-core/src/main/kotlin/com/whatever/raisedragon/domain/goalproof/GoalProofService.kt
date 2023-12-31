@@ -66,8 +66,10 @@ class GoalProofService(
     }
 
     @Transactional
-    fun hardDelete(user: User) {
-        val goalProofs = goalProofRepository.findAllByUserEntity(user.fromDto())
+    fun hardDeleteByUserId(userId: Long) {
+        val goalProofs = goalProofRepository.findAllByUserEntity(
+            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        )
         goalProofRepository.deleteAll(goalProofs)
     }
 }

@@ -1,8 +1,7 @@
 package com.whatever.raisedragon.domain.gifticon
 
-import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserRepository
-import com.whatever.raisedragon.domain.user.fromDto
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,8 +31,10 @@ class GifticonService(
     }
 
     @Transactional
-    fun hardDelete(user: User) {
-        val gifticons = gifticonRepository.findAllByUserEntity(user.fromDto())
+    fun hardDeleteByUserId(userId: Long) {
+        val gifticons = gifticonRepository.findAllByUserEntity(
+            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        )
         gifticonRepository.deleteAll(gifticons)
     }
 }

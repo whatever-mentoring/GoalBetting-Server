@@ -52,12 +52,18 @@ class UserApplicationService(
                 executionMessage = "아직 진행중인 다짐이 있어 회원탈퇴에 실패했습니다."
             )
         }
-        userService.hardDelete(id)
-        refreshTokenService.hardDelete(user)
-        goalService.hardDelete(user)
-        goalProofService.hardDelete(user)
-        gifticonService.hardDelete(user)
-        bettingService.hardDelete(user)
+        else if (bettingService.existsBettingParticipantUser(id)) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E400_BAD_REQUEST,
+                executionMessage = "아직 진행중인 다짐에 대한 내기가 있어 회원탈퇴에 실패했습니다."
+            )
+        }
+        bettingService.hardDeleteByUserId(id)
+        gifticonService.hardDeleteByUserId(id)
+        goalProofService.hardDeleteByUserId(id)
+        goalService.hardDeleteByUserId(id)
+        refreshTokenService.hardDeleteByUserId(id)
+        userService.hardDeleteById(id)
     }
 
     fun isNicknameDuplicated(

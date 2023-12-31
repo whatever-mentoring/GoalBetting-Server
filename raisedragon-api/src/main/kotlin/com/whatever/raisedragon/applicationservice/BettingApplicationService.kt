@@ -66,7 +66,7 @@ class BettingApplicationService(
         val betting = findByIdOrThrowException(bettingId)
         betting.validateOwnerId(userId)
         betting.validateStartDate()
-        bettingService.softDelete(bettingId)
+        bettingService.hardDelete(bettingId)
     }
 
     private fun findByIdOrThrowException(bettingId: Long): Betting {

@@ -68,6 +68,17 @@ class BettingService(
         return bettingRepository.findAllByUserEntity(userEntity).map { it.toDto() }
     }
 
+    fun existsBettingParticipantUser(userId: Long): Boolean {
+        val userEntity =
+            userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
+        val bettings = bettingRepository.findAllByUserEntity(userEntity)
+
+        for (betting in bettings) {
+            if (betting.goalEntity.endDate > LocalDateTime.now()) return true
+        }
+        return false
+    }
+
     @Transactional
     fun update(bettingId: Long, predictionType: PredictionType): Betting {
         val betting = bettingRepository.findByIdOrNull(bettingId)
@@ -101,8 +112,17 @@ class BettingService(
     }
 
     @Transactional
-    fun hardDelete(user: User) {
-        val bettings = bettingRepository.findAllByUserEntity(user.fromDto())
+    fun hardDelete(bettingId: Long) {
+        val betting = bettingRepository.findByIdOrNull(bettingId)
+            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        bettingRepository.delete(betting)
+    }
+
+    @Transactional
+    fun hardDeleteByUserId(userId: Long) {
+        val bettings = bettingRepository.findAllByUserEntity(
+            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        )
         bettingRepository.deleteAll(bettings)
     }
 }

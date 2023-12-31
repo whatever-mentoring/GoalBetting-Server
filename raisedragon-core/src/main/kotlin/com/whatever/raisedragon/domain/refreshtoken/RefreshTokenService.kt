@@ -2,14 +2,17 @@ package com.whatever.raisedragon.domain.refreshtoken
 
 import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserEntity
+import com.whatever.raisedragon.domain.user.UserRepository
 import com.whatever.raisedragon.domain.user.fromDto
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
 class RefreshTokenService(
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val userRepository: UserRepository
 ) {
 
     @Transactional
@@ -31,8 +34,10 @@ class RefreshTokenService(
     }
 
     @Transactional
-    fun hardDelete(user: User) {
-        val refreshTokenEntity = refreshTokenRepository.findByUserEntity(user.fromDto())!!
+    fun hardDeleteByUserId(userId: Long) {
+        val refreshTokenEntity = refreshTokenRepository.findByUserEntity(
+            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        )!!
         refreshTokenRepository.delete(refreshTokenEntity)
     }
 }
