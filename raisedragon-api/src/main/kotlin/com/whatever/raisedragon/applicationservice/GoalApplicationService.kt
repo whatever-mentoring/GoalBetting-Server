@@ -100,10 +100,10 @@ class GoalApplicationService(
     }
 
     fun retrieveGoalBettingParticipant(
-        userId: Long,
+        hostUserId: Long,
         goalId: Long
     ): GoalRetrieveParticipantResponse {
-        val hostUser = userService.loadById(userId)
+        val hostUser = userService.loadById(hostUserId)
         val goal = goalService.loadById(goalId)
         val bettingList = bettingService.loadAllByGoalId(goalId)
 

@@ -78,7 +78,7 @@ class GoalController(
     ): Response<GoalRetrieveParticipantResponse> {
         return Response.success(
             goalApplicationService.retrieveGoalBettingParticipant(
-                userId = userInfo.id,
+                hostUserId = userInfo.id,
                 goalId = goalId
             )
         )
