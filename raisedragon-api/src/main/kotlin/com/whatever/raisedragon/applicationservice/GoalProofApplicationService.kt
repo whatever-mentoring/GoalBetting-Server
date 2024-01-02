@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import kotlin.math.abs
 
 @Service
 @Transactional(readOnly = true)
@@ -53,10 +52,14 @@ class GoalProofApplicationService(
     }
 
     fun retrieveAll(goalId: Long, userId: Long): GoalProofListRetrieveResponse {
+        val goal = goalService.loadById(goalId)
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
             .sortedBy { goalProof -> goalProof.createdAt }
-            .mapIndexed { index, goalProof ->
-                GoalProofRetrieveAllResponse.of(goalProof, index + 1)
+            .mapIndexed { _, goalProof ->
+                GoalProofRetrieveAllResponse.of(
+                    goalProof,
+                    ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate).toInt()
+                )
             }
         return GoalProofListRetrieveResponse(goalProofs)
     }
@@ -84,7 +87,11 @@ class GoalProofApplicationService(
     }
 
     private fun validateIsCreateTimeToday(goal: Goal) {
-        if (ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) > 7L && ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) < 0L) {
+        if (ChronoUnit.DAYS.between(
+                LocalDateTime.now(),
+                goal.startDate
+            ) > 7L && ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) < 0L
+        ) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
                 executionMessage = "오늘 날짜에 대한 인증이 아니면 인증을 생성할 수 없습니다."
