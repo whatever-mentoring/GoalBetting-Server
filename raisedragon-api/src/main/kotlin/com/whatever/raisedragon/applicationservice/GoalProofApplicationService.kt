@@ -84,7 +84,7 @@ class GoalProofApplicationService(
     }
 
     private fun validateIsCreateTimeToday(goal: Goal) {
-        if (abs(ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate)) != 0L) {
+        if (ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) > 7L && ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) < 0L) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
                 executionMessage = "오늘 날짜에 대한 인증이 아니면 인증을 생성할 수 없습니다."
