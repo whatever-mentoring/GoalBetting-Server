@@ -4,7 +4,6 @@ import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.controller.goalproof.GoalProofCreateUpdateResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofListRetrieveResponse
-import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveAllResponse
 import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
 import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.Goal
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import kotlin.math.abs
 
 @Service
 @Transactional(readOnly = true)
@@ -37,7 +35,7 @@ class GoalProofApplicationService(
     ): GoalProofCreateUpdateResponse {
         val goal = goalService.loadById(goalId)
         val user = userService.loadById(userId)
-        validateIsCreateTimeToday(goal)
+        validateGoalProofCreateTiming(goal)
         val goalProof = goalProofService.create(
             user = user,
             goal = goal,
@@ -53,13 +51,21 @@ class GoalProofApplicationService(
     }
 
     fun retrieveAll(goalId: Long, userId: Long): GoalProofListRetrieveResponse {
-        val goal = goalService.loadById(goalId)
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
             .sortedBy { goalProof -> goalProof.createdAt }
-            .mapIndexed { index, goalProof ->
-                GoalProofRetrieveAllResponse.of(goalProof, index + 1)
-            }
-        return GoalProofListRetrieveResponse(goalProofs)
+
+        val progressDays = goalProofs.map {
+            it.createdAt!!.dayOfMonth.minus(LocalDateTime.now().dayOfMonth) + 1
+        }
+
+        val goalProofRetrieveResponses = goalProofs.map {
+            GoalProofRetrieveResponse.of(it)
+        }
+
+        return GoalProofListRetrieveResponse(
+            goalProofs = goalProofRetrieveResponses,
+            progressDays = progressDays
+        )
     }
 
     fun isSuccess(goalId: Long, userId: Long): Boolean {
@@ -84,11 +90,14 @@ class GoalProofApplicationService(
         )
     }
 
-    private fun validateIsCreateTimeToday(goal: Goal) {
-        if (ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) > 7L && ChronoUnit.DAYS.between(LocalDateTime.now(), goal.startDate) < 0L) {
+    private fun validateGoalProofCreateTiming(goal: Goal) {
+        val now = LocalDateTime.now()
+        val daysBetween = ChronoUnit.DAYS.between(goal.startDate, now) + 1
+
+        if (1 > daysBetween || daysBetween > 7) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
-                executionMessage = "오늘 날짜에 대한 인증이 아니면 인증을 생성할 수 없습니다."
+                executionMessage = "인증 날짜가 올바르지 않습니다."
             )
         }
     }
