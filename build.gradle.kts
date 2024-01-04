@@ -45,6 +45,8 @@ subprojects {
         // SpringMockk
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("com.ninja-squad:springmockk:3.1.1")
+
+        testRuntimeOnly("com.h2database:h2")
     }
 
     tasks.withType<KotlinCompile> {
