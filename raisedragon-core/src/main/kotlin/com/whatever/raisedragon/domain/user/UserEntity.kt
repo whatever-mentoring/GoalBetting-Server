@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
-@Table(name = "user")
+@Table(name = "users")
 @Entity
 @SQLRestriction("deleted_at IS NULL")
 class UserEntity(
