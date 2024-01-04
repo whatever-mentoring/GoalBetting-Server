@@ -35,7 +35,10 @@ class GoalProofApplicationService(
     ): GoalProofCreateUpdateResponse {
         val goal = goalService.loadById(goalId)
         val user = userService.loadById(userId)
+
+        isGoalProofAlreadyExists(goalId)
         validateGoalProofCreateTiming(goal)
+
         val goalProof = goalProofService.create(
             user = user,
             goal = goal,
@@ -44,6 +47,20 @@ class GoalProofApplicationService(
         )
         goalService.increaseThreshold(goal, user.fromDto())
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
+    }
+
+    private fun isGoalProofAlreadyExists(goalId: Long) {
+        if (
+            goalProofService.existsGoalIdAndDateTimeBetween(
+                goalId = goalId,
+                targetDateTime = LocalDateTime.now()
+            )
+        ) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E409_CONFLICT,
+                executionMessage = "해당 날짜에 대한 인증은 이미 생성되어있습니다."
+            )
+        }
     }
 
     fun retrieve(goalProofId: Long): GoalProofRetrieveResponse {
@@ -93,6 +110,7 @@ class GoalProofApplicationService(
     private fun validateGoalProofCreateTiming(goal: Goal) {
         val now = LocalDateTime.now()
         val daysBetween = ChronoUnit.DAYS.between(goal.startDate, now) + 1
+
 
         if (1 > daysBetween || daysBetween > 7) {
             throw BaseException.of(
