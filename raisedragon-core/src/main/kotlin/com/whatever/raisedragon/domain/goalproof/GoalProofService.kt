@@ -10,6 +10,7 @@ import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 @Transactional(readOnly = true)
@@ -35,6 +36,31 @@ class GoalProofService(
             )
         )
         return goalProof.toDto()
+    }
+
+    fun existsGoalIdAndDateTimeBetween(goalId: Long, targetDateTime: LocalDateTime): Boolean {
+        val todayStartDateTime = LocalDateTime.of(
+            targetDateTime.year,
+            targetDateTime.month,
+            targetDateTime.dayOfMonth,
+            0,
+            0,
+            0
+        )
+        val todayEndDateTime = LocalDateTime.of(
+            targetDateTime.year,
+            targetDateTime.month,
+            targetDateTime.dayOfMonth,
+            23,
+            59,
+            59
+        )
+        return goalProofRepository.existsByGoalEntityAndCreatedAtBetween(
+            goalEntity = goalRepository.findByIdOrNull(goalId)
+                ?: throw throw IllegalArgumentException("cannot find goal $goalId"),
+            todayStartDateTime = todayStartDateTime,
+            todayEndDateTime = todayEndDateTime
+        )
     }
 
     fun findById(goalProofId: Long): GoalProof? {
@@ -68,7 +94,8 @@ class GoalProofService(
     @Transactional
     fun hardDeleteByUserId(userId: Long) {
         val goalProofs = goalProofRepository.findAllByUserEntity(
-            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+            userEntity = userRepository.findByIdOrNull(userId)
+                ?: throw IllegalArgumentException("Cannot find user $userId")
         )
         goalProofRepository.deleteAll(goalProofs)
     }
