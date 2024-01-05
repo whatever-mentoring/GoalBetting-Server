@@ -30,7 +30,7 @@ class GoalProofController(
             goalProofApplicationService.create(
                 userId = userInfo.id,
                 goalId = goalProofCreateRequest.goalId,
-                url = goalProofCreateRequest.url,
+                url = goalProofCreateRequest.url ?: "",
                 comment = goalProofCreateRequest.comment,
             )
         )

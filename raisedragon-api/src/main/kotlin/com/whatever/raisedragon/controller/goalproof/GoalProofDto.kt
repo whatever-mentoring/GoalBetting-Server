@@ -9,7 +9,7 @@ data class GoalProofCreateRequest(
     val goalId: Long,
 
     @Schema(description = "다짐 인증에 사용한 이미지 url")
-    val url: String,
+    val url: String?,
 
     @Schema(description = "다짐 인증에 대한 부연설명")
     val comment: String
