@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 
 @Service
 @Transactional(readOnly = true)
@@ -69,10 +70,10 @@ class GoalProofApplicationService(
 
     fun retrieveAll(goalId: Long, userId: Long): GoalProofListRetrieveResponse {
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
-            .sortedBy { goalProof -> goalProof.createdAt }
+        val goalStartDateTime = goalService.loadById(goalId).startDate
 
         val progressDays = goalProofs.map {
-            it.createdAt!!.dayOfMonth.minus(LocalDateTime.now().dayOfMonth) + 1
+            abs(goalStartDateTime.dayOfMonth.minus(it.createdAt!!.dayOfMonth)) + 1
         }
 
         val goalProofRetrieveResponses = goalProofs.map {
