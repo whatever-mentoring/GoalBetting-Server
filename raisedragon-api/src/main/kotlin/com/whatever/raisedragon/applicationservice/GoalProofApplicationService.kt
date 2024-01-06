@@ -73,7 +73,7 @@ class GoalProofApplicationService(
         val goalStartDateTime = goalService.loadById(goalId).startDate
 
         val progressDays = goalProofs.map {
-            abs(goalStartDateTime.dayOfMonth.minus(it.createdAt!!.dayOfMonth)) + 1
+            it.createdAt!!.dayOfMonth.minus(goalStartDateTime.dayOfMonth) + 1
         }
 
         val goalProofRetrieveResponses = goalProofs.map {
