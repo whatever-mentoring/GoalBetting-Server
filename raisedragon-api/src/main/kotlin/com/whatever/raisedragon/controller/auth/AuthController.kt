@@ -1,6 +1,8 @@
 package com.whatever.raisedragon.controller.auth
 
-import com.whatever.raisedragon.applicationservice.AuthApplicationService
+import com.whatever.raisedragon.applicationservice.auth.AuthApplicationService
+import com.whatever.raisedragon.applicationservice.auth.dto.LoginResponse
+import com.whatever.raisedragon.applicationservice.auth.dto.TokenRefreshResponse
 import com.whatever.raisedragon.common.Response
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -17,7 +19,7 @@ class AuthController(
     @Operation(summary = "Login API", description = "Kakao Login")
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): Response<LoginResponse> {
-        return Response.success(authApplicationService.kakaoLogin(loginRequest.accessToken))
+        return Response.success(authApplicationService.kakaoLogin(loginRequest.toServiceRequest()))
     }
 
     @Operation(

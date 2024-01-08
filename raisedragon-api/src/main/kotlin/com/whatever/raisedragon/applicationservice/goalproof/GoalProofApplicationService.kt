@@ -1,10 +1,8 @@
-package com.whatever.raisedragon.applicationservice
+package com.whatever.raisedragon.applicationservice.goalproof
 
+import com.whatever.raisedragon.applicationservice.goalproof.dto.*
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import com.whatever.raisedragon.controller.goalproof.GoalProofCreateUpdateResponse
-import com.whatever.raisedragon.controller.goalproof.GoalProofListRetrieveResponse
-import com.whatever.raisedragon.controller.goalproof.GoalProofRetrieveResponse
 import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.GoalService
@@ -28,23 +26,18 @@ class GoalProofApplicationService(
 ) {
 
     @Transactional
-    fun create(
-        userId: Long,
-        goalId: Long,
-        url: String,
-        comment: String
-    ): GoalProofCreateUpdateResponse {
-        val goal = goalService.loadById(goalId)
-        val user = userService.loadById(userId)
+    fun create(request: GoalProofCreateServiceRequest): GoalProofCreateUpdateResponse {
+        val goal = goalService.loadById(request.goalId)
+        val user = userService.loadById(request.userId)
 
-        isGoalProofAlreadyExists(goalId)
+        isGoalProofAlreadyExists(request.goalId)
         validateGoalProofCreateTiming(goal)
 
         val goalProof = goalProofService.create(
             user = user,
             goal = goal,
-            url = URL(url),
-            comment = Comment(comment)
+            url = URL(request.url),
+            comment = request.comment
         )
         goalService.increaseThreshold(goal, user.fromDto())
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
@@ -93,18 +86,13 @@ class GoalProofApplicationService(
     }
 
     @Transactional
-    fun update(
-        goalProofId: Long,
-        userId: Long,
-        url: String? = null,
-        comment: String? = null
-    ): GoalProofRetrieveResponse {
-        validateUpdatable(url, comment)
-        findByIdOrThrowException(goalProofId)
-            .also { it.validateOwnerId(userId) }
+    fun update(request: GoalProofUpdateServiceRequest): GoalProofRetrieveResponse {
+        validateUpdatable(request.url, request.comment)
+        findByIdOrThrowException(request.goalProofId)
+            .also { it.validateOwnerId(request.userId) }
             .also { it.validateEndDate() }
         return GoalProofRetrieveResponse.of(
-            goalProofService.update(goalProofId, url?.let { URL(it) }, comment?.let { Comment(it) })
+            goalProofService.update(request.goalProofId, request.url?.let { URL(it) }, request.comment)
         )
     }
 
@@ -125,7 +113,7 @@ class GoalProofApplicationService(
         return goalProofService.findById(goalProofId) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND)
     }
 
-    private fun validateUpdatable(url: String?, comment: String?) {
+    private fun validateUpdatable(url: String?, comment: Comment?) {
         if (url == null && comment == null) {
             throw BaseException.of(ExceptionCode.E400_BAD_REQUEST)
         }
