@@ -22,7 +22,7 @@ fun GoalProofCreateRequest.toServiceRequest(
 ): GoalProofCreateServiceRequest = GoalProofCreateServiceRequest(
     userId = userId,
     goalId = goalId,
-    url = url,
+    url = url ?: "",
     comment = Comment(comment)
 )
 

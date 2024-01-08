@@ -5,7 +5,7 @@ import com.whatever.raisedragon.domain.goalproof.Comment
 data class GoalProofCreateServiceRequest(
     val userId: Long,
     val goalId: Long,
-    val url: String? = null,
+    val url: String,
     val comment: Comment
 )
 
