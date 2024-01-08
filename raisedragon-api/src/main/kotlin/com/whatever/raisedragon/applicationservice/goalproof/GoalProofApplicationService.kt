@@ -36,7 +36,7 @@ class GoalProofApplicationService(
         val goalProof = goalProofService.create(
             user = user,
             goal = goal,
-            url = URL(request.url),
+            url = request.url?.let { URL(it) },
             comment = request.comment
         )
         goalService.increaseThreshold(goal, user.fromDto())
