@@ -21,7 +21,7 @@ class GoalEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "goal_type", nullable = false)
-    val type: GoalType,
+    val goalType: GoalType,
 
     @Embedded
     @Column(name = "content", nullable = false, length = 255)
@@ -46,7 +46,7 @@ class GoalEntity(
 fun Goal.fromDto(userEntity: UserEntity): GoalEntity = GoalEntity(
     id = id,
     userEntity = userEntity,
-    type = type,
+    goalType = type,
     content = content,
     threshold = threshold,
     goalResult = goalResult,

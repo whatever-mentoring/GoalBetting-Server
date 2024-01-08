@@ -1,6 +1,5 @@
 package com.whatever.raisedragon.scheduler
 
-import com.whatever.raisedragon.controller.goal.GoalResponse
 import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.BettingPredictionType
 import com.whatever.raisedragon.domain.betting.BettingService
@@ -26,7 +25,7 @@ class GoalResultScheduler(
     private val bettingService: BettingService,
     private val winnerService: WinnerService
 ) {
-    private val logger = LoggerFactory.getLogger(GoalResponse::class.java)
+    private val logger = LoggerFactory.getLogger(GoalResultScheduler::class.java)
 
     @Scheduled(cron = "0 0 0 * * *")
     @Async("asyncSchedulerExecutor")

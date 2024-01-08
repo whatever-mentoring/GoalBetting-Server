@@ -8,7 +8,6 @@ import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
-import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.groups.Tuple.tuple
 import org.junit.jupiter.api.DisplayName
@@ -34,7 +33,6 @@ class BettingRepositoryTest : RepositoryTestSupport() {
         val userEntity1 = UserEntity(nickname = Nickname("User1"))
         val userEntity2 = UserEntity(nickname = Nickname("User2"))
         userRepository.saveAll(listOf(userEntity1, userEntity2))
-
 
         val goalEntity1 = createGoalEntity(userEntity1, GoalType.BILLING, GoalResult.PROCEEDING)
         val goalEntity2 = createGoalEntity(userEntity1, GoalType.FREE, GoalResult.SUCCESS)
@@ -236,7 +234,7 @@ class BettingRepositoryTest : RepositoryTestSupport() {
         val endDateTime = startDateTime.plusDays(7)
         return GoalEntity(
             userEntity = userEntity,
-            type = goalType,
+            goalType = goalType,
             content = Content("sampleContent"),
             goalResult = goalResult,
             startDate = startDateTime,

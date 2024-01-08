@@ -28,7 +28,7 @@ class GoalService(
         val goal = goalRepository.save(
             GoalEntity(
                 userEntity = userRepository.findById(userId).get(),
-                type = goalType,
+                goalType = goalType,
                 content = content,
                 threshold = threshold,
                 goalResult = GoalResult.PROCEEDING,
@@ -76,10 +76,10 @@ class GoalService(
     fun modify(
         goal: Goal,
         userEntity: UserEntity,
-        content: String,
+        content: Content,
     ): Goal {
         val goalEntity = goal.fromDto(userEntity)
-        goalEntity.content = Content(content)
+        goalEntity.content = content
 
         return goalEntity.toDto()
     }

@@ -1,8 +1,10 @@
 package com.whatever.raisedragon.controller.goal
 
-import com.whatever.raisedragon.applicationservice.GoalApplicationService
+import com.whatever.raisedragon.applicationservice.goal.GoalApplicationService
+import com.whatever.raisedragon.applicationservice.goal.dto.GoalResponse
+import com.whatever.raisedragon.applicationservice.goal.dto.GoalRetrieveParticipantResponse
+import com.whatever.raisedragon.applicationservice.goal.dto.GoalWithBettingResponse
 import com.whatever.raisedragon.common.Response
-import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
@@ -31,14 +33,7 @@ class GoalController(
         @GetAuth userinfo: UserInfo
     ): Response<GoalResponse> {
         return Response.success(
-            goalApplicationService.createGoal(
-                bettingType = request.type,
-                content = Content(request.content),
-                startDate = request.startDate,
-                endDate = request.endDate,
-                userId = userinfo.id,
-                gifticonUrl = request.gifticonUrl
-            )
+            goalApplicationService.createGoal(request.toServiceRequest(userinfo.id))
         )
     }
 
@@ -111,9 +106,10 @@ class GoalController(
     ): Response<GoalResponse> {
         return Response.success(
             goalApplicationService.modifyGoal(
-                userId = userInfo.id,
-                goalId = goalId,
-                content = goalModifyRequest.content
+                goalModifyRequest.toServiceRequest(
+                    userId = userInfo.id,
+                    goalId = goalId,
+                )
             )
         )
     }
@@ -130,8 +126,7 @@ class GoalController(
     ): Response<Unit> {
         return Response.success(
             goalApplicationService.deleteGoal(
-                userId = userInfo.id,
-                goalId = goalDeleteRequest.goalId,
+                goalDeleteRequest.toServiceRequest(userInfo.id)
             )
         )
     }

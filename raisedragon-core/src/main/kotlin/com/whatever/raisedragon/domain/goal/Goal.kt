@@ -19,7 +19,7 @@ data class Goal(
 fun GoalEntity.toDto(): Goal = Goal(
     id = id,
     userId = userEntity.id,
-    type = type,
+    type = goalType,
     content = content,
     threshold = threshold,
     goalResult = goalResult,
