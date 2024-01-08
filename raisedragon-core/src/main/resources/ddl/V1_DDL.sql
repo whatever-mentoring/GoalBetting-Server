@@ -11,17 +11,17 @@ create table if not exists gifticon
 
 create table if not exists goal
 (
-    id         bigint auto_increment primary key,
-    user_id    bigint                                 not null,
-    content    varchar(255)                           not null,
-    type       enum ('FREE', 'BILLING')               not null,
-    threshold  int                                    not null,
-    result     enum ('PROCEEDING', 'SUCCESS', 'FAIL') not null,
-    start_date datetime(6)                            not null,
-    end_date   datetime(6)                            not null,
-    deleted_at datetime(6)                            null,
-    created_at datetime(6)                            not null,
-    updated_at datetime(6)                            not null
+    id          bigint auto_increment primary key,
+    user_id     bigint                                 not null,
+    content     varchar(255)                           not null,
+    goal_type   enum ('FREE', 'BILLING')               not null,
+    threshold   int                                    not null,
+    goal_result enum ('PROCEEDING', 'SUCCESS', 'FAIL') not null,
+    start_date  datetime(6)                            not null,
+    end_date    datetime(6)                            not null,
+    deleted_at  datetime(6)                            null,
+    created_at  datetime(6)                            not null,
+    updated_at  datetime(6)                            not null
 );
 
 create table if not exists goal_gifticon
@@ -57,14 +57,14 @@ create table if not exists user
 
 create table if not exists betting
 (
-    id              bigint auto_increment primary key,
-    goal_id         bigint                                 not null,
-    user_id         bigint                                 not null,
-    prediction_type enum ('SUCCESS', 'FAIL')               not null,
-    result          enum ('PROCEEDING', 'FAIL', 'GET_GIFTICON', 'NO_GIFTICON') not null,
-    deleted_at      datetime(6)                            null,
-    created_at      datetime(6)                            not null,
-    updated_at      datetime(6)                            not null
+    id                      bigint auto_increment primary key,
+    goal_id                 bigint                                 not null,
+    user_id                 bigint                                 not null,
+    betting_prediction_type enum ('SUCCESS', 'FAIL')               not null,
+    betting_result          enum ('PROCEEDING', 'FAIL', 'GET_GIFTICON', 'NO_GIFTICON') not null,
+    deleted_at              datetime(6)                            null,
+    created_at              datetime(6)                            not null,
+    updated_at              datetime(6)                            not null
 );
 
 create table if not exists goal_cheering
