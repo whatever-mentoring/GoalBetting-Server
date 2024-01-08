@@ -1,8 +1,8 @@
-package com.whatever.raisedragon.applicationservice
+package com.whatever.raisedragon.applicationservice.goal
 
+import com.whatever.raisedragon.applicationservice.goal.dto.*
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import com.whatever.raisedragon.controller.goal.*
 import com.whatever.raisedragon.domain.betting.BettingService
 import com.whatever.raisedragon.domain.gifticon.GifticonService
 import com.whatever.raisedragon.domain.goal.*
@@ -28,39 +28,32 @@ class GoalApplicationService(
 ) {
 
     @Transactional
-    fun createGoal(
-        content: Content,
-        bettingType: BettingType,
-        startDate: LocalDateTime,
-        endDate: LocalDateTime,
-        userId: Long,
-        gifticonUrl: String? = null
-    ): GoalResponse {
-        if (isNumberOfGoalUnderOneHundred(userId)) throw BaseException.of(
+    fun createGoal(request: GoalCreateServiceRequest): GoalResponse {
+        if (isNumberOfGoalUnderOneHundred(request.userId)) throw BaseException.of(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 생성할 수 있는 다짐 갯수를 초과하였습니다."
         )
-        if (goalService.existsByUserIdAndAnyResult(userId, Result.PROCEEDING)) throw BaseException.of(
+        if (goalService.existsByUserIdAndAnyResult(request.userId, GoalResult.PROCEEDING)) throw BaseException.of(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 이미 생성한 다짐이 있어 생성이 불가합니다."
         )
         val goal = goalService.create(
-            userId = userId,
-            content = content,
-            bettingType = bettingType,
+            userId = request.userId,
+            content = request.content,
+            goalType = request.goalType,
             threshold = Threshold(0),
-            startDate = startDate,
-            endDate = endDate
+            startDate = request.startDate,
+            endDate = request.endDate
         )
-        if (!gifticonUrl.isNullOrBlank() && bettingType == BettingType.BILLING) {
-            val gifticon = gifticonService.create(userId, gifticonUrl)
+        if (!request.gifticonUrl.isNullOrBlank() && request.goalType == GoalType.BILLING) {
+            val gifticon = gifticonService.create(request.userId, request.gifticonUrl)
             goalGifticonService.create(
                 goalId = goal.id,
                 gifticonId = gifticon.id,
-                userId = userId
+                userId = request.userId
             )
         }
-        val hostUser = userService.loadById(userId)
+        val hostUser = userService.loadById(request.userId)
         return GoalResponse.of(goal, hostUser.nickname.value)
     }
 
@@ -106,19 +99,19 @@ class GoalApplicationService(
         val hostUser = userService.loadById(goal.userId)
         val bettingList = bettingService.loadAllByGoalId(goalId)
 
-        val hostDto = GoalBettingHost(
+        val hostDto = GoalBettingHostResponse(
             id = hostUser.id!!,
             nickname = hostUser.nickname.value,
             goalCreatedAt = goal.createdAt
         )
 
         val participants = bettingList.map {
-            GoalBettingParticipant(
+            GoalBettingParticipantResponse(
                 userId = it.userId,
                 nickname = userService.loadById(it.userId).nickname.value,
                 bettingId = it.id,
-                predictionType = it.predictionType,
-                result = it.result,
+                bettingPredictionType = it.bettingPredictionType,
+                bettingResult = it.bettingResult,
                 bettingCreatedAt = it.createdAt!!
             )
         }
@@ -136,19 +129,19 @@ class GoalApplicationService(
         val goalHostUser = userService.loadById(goal.userId)
         val bettingList = bettingService.loadAllByGoalId(goalId)
 
-        val hostDto = GoalBettingHost(
+        val hostDto = GoalBettingHostResponse(
             id = goalHostUser.id!!,
             nickname = goalHostUser.nickname.value,
             goalCreatedAt = goal.createdAt
         )
 
         val participants = bettingList.map {
-            GoalBettingParticipant(
+            GoalBettingParticipantResponse(
                 userId = it.userId,
                 nickname = userService.loadById(it.userId).nickname.value,
                 bettingId = it.id,
-                predictionType = it.predictionType,
-                result = it.result,
+                bettingPredictionType = it.bettingPredictionType,
+                bettingResult = it.bettingResult,
                 bettingCreatedAt = it.createdAt!!
             )
         }
@@ -184,37 +177,30 @@ class GoalApplicationService(
     }
 
     @Transactional
-    fun modifyGoal(
-        userId: Long,
-        goalId: Long,
-        content: String
-    ): GoalResponse {
-        val goal = goalService.loadById(goalId)
-        isNotUsersGoal(goal, userId)
+    fun modifyGoal(request: GoalModifyServiceRequest): GoalResponse {
+        val goal = goalService.loadById(request.goalId)
+        isNotUsersGoal(goal, request.userId)
         isAlreadyStarted(goal)
 
         val modifiedGoal = goalService.modify(
             goal = goal,
-            userEntity = userService.loadById(userId).fromDto(),
-            content = content
+            userEntity = userService.loadById(request.userId).fromDto(),
+            content = request.content
         )
 
-        val hostUser = userService.loadById(userId)
+        val hostUser = userService.loadById(request.userId)
         return GoalResponse.of(modifiedGoal, hostUser.nickname.value)
     }
 
     @Transactional
-    fun deleteGoal(
-        userId: Long,
-        goalId: Long,
-    ) {
-        val goal = goalService.loadById(goalId)
-        isNotUsersGoal(goal, userId)
+    fun deleteGoal(request: GoalDeleteServiceRequest) {
+        val goal = goalService.loadById(request.goalId)
+        isNotUsersGoal(goal, request.userId)
         isAlreadyStarted(goal)
 
         goalService.softDelete(
             goal = goal,
-            userEntity = userService.loadById(userId).fromDto(),
+            userEntity = userService.loadById(request.userId).fromDto(),
         )
     }
 

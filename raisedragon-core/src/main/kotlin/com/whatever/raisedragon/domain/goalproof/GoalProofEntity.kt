@@ -29,9 +29,6 @@ class GoalProofEntity(
 
     @Column(name = "comment")
     var comment: Comment,
-
-
-
 ) : BaseEntity()
 
 @Embeddable

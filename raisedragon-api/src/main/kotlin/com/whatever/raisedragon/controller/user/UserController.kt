@@ -1,6 +1,8 @@
 package com.whatever.raisedragon.controller.user
 
-import com.whatever.raisedragon.applicationservice.UserApplicationService
+import com.whatever.raisedragon.applicationservice.user.UserApplicationService
+import com.whatever.raisedragon.applicationservice.user.dto.UserNicknameDuplicatedResponse
+import com.whatever.raisedragon.applicationservice.user.dto.UserRetrieveResponse
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
@@ -25,7 +27,7 @@ class UserController(
     ): Response<UserNicknameDuplicatedResponse> {
         return Response.success(
             userApplicationService.isNicknameDuplicated(
-                nickname = userNicknameDuplicatedRequest.nickname
+                userNicknameDuplicatedRequest.toServiceRequest()
             )
         )
     }
@@ -57,10 +59,7 @@ class UserController(
         @RequestBody @Valid userNicknameUpdateRequest: UserNicknameUpdateRequest
     ): Response<UserRetrieveResponse> {
         return Response.success(
-            userApplicationService.updateNickname(
-                id = userInfo.id,
-                nickname = userNicknameUpdateRequest.nickname
-            )
+            userApplicationService.updateNickname(userNicknameUpdateRequest.toServiceRequest(userInfo.id))
         )
     }
 

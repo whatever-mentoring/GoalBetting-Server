@@ -9,10 +9,8 @@ import java.time.LocalDateTime
 interface GoalRepository : JpaRepository<GoalEntity, Long> {
     fun findAllByUserEntity(userEntity: UserEntity): List<GoalEntity>
 
-    fun findByIdAndUserEntity(id: Long, userEntity: UserEntity): GoalEntity?
+    fun findAllByEndDateLessThanEqualAndGoalResultIs(endDate: LocalDateTime, goalResult: GoalResult): List<GoalEntity>
 
-    fun findAllByEndDateLessThanEqualAndResultIs(endDate: LocalDateTime, result: Result): List<GoalEntity>
-
-    fun findAllByUserEntityAndResult(userEntity: UserEntity, result: Result): List<GoalEntity>
+    fun findAllByUserEntityAndGoalResult(userEntity: UserEntity, goalResult: GoalResult): List<GoalEntity>
     fun existsByUserEntityAndEndDateIsAfter(userEntity: UserEntity, now: LocalDateTime): Boolean
 }

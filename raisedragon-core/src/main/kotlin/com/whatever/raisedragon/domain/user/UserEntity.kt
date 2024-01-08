@@ -15,10 +15,10 @@ class UserEntity(
     val id: Long = 0L,
 
     @Column(name = "oauth_token_payload", nullable = true, length = 255)
-    var oauthTokenPayload: String?,
+    var oauthTokenPayload: String? = null,
 
     @Column(name = "fcm_token_payload", nullable = true, length = 255)
-    var fcmTokenPayload: String?,
+    var fcmTokenPayload: String? = null,
 
     @Embedded
     var nickname: Nickname

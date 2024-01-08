@@ -1,10 +1,9 @@
 package com.whatever.raisedragon.controller.betting
 
-import com.whatever.raisedragon.domain.betting.Betting
-import com.whatever.raisedragon.domain.betting.PredictionType
-import com.whatever.raisedragon.domain.betting.Result
+import com.whatever.raisedragon.applicationservice.betting.dto.BettingCreateServiceRequest
+import com.whatever.raisedragon.applicationservice.betting.dto.BettingUpdateServiceRequest
+import com.whatever.raisedragon.domain.betting.BettingPredictionType
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
 
 @Schema(description = "[Request] 배팅 생성")
 data class BettingCreateRequest(
@@ -12,7 +11,15 @@ data class BettingCreateRequest(
     val goalId: Long,
 
     @Schema(description = "배팅 타입 [SUCCESS, FAIL]")
-    val predictionType: PredictionType,
+    val predictionType: BettingPredictionType,
+)
+
+fun BettingCreateRequest.toServiceRequest(
+    userId: Long
+): BettingCreateServiceRequest = BettingCreateServiceRequest(
+    userId = userId,
+    goalId = goalId,
+    bettingPredictionType = predictionType
 )
 
 @Schema(description = "[Request] 배팅 수정")
@@ -21,39 +28,13 @@ data class BettingUpdateRequest(
     val bettingId: Long,
 
     @Schema(description = "배팅 타입 [SUCCESS, FAIL]")
-    val predictionType: PredictionType,
+    val predictionType: BettingPredictionType,
 )
 
-@Schema(description = "[Response] 배팅 생성/수정")
-data class BettingCreateUpdateResponse(
-    @Schema(description = "Goal Id")
-    val bettingRetrieveResponse: BettingRetrieveResponse,
+fun BettingUpdateRequest.toServiceRequest(
+    userId: Long
+): BettingUpdateServiceRequest = BettingUpdateServiceRequest(
+    userId = userId,
+    bettingId = bettingId,
+    bettingPredictionType = predictionType
 )
-
-@Schema(description = "[Response] 배팅 조회")
-data class BettingRetrieveResponse(
-    @Schema(description = "BettingId")
-    val id: Long,
-
-    @Schema(description = "UserId")
-    val userId: Long,
-
-    @Schema(description = "GoalId")
-    val goalId: Long,
-
-    @Schema(description = "예측")
-    val predictionType: PredictionType,
-
-    @Schema(description = "당첨 여부")
-    val result: Result,
-) {
-    companion object {
-        fun of(betting: Betting): BettingRetrieveResponse = BettingRetrieveResponse(
-            id = betting.id,
-            userId = betting.userId,
-            goalId = betting.goalId,
-            predictionType = betting.predictionType,
-            result = betting.result
-        )
-    }
-}

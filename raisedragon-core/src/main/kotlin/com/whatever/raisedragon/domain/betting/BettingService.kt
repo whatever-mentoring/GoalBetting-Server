@@ -1,9 +1,7 @@
 package com.whatever.raisedragon.domain.betting
 
 import com.whatever.raisedragon.domain.goal.GoalRepository
-import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserRepository
-import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,14 +18,14 @@ class BettingService(
     fun create(
         userId: Long,
         goalId: Long,
-        predictionType: PredictionType
+        bettingPredictionType: BettingPredictionType
     ): Betting {
         val betting = bettingRepository.save(
             BettingEntity(
                 userEntity = userRepository.findById(userId).get(),
                 goalEntity = goalRepository.findById(goalId).get(),
-                predictionType = predictionType,
-                result = Result.PROCEEDING
+                bettingPredictionType = bettingPredictionType,
+                bettingResult = BettingResult.PROCEEDING
             )
         )
         return betting.toDto()
@@ -44,7 +42,7 @@ class BettingService(
     }
 
     fun findAllByGoalIdAndNotDeleted(goalId: Long): List<Betting> {
-        return bettingRepository.findAllByGoalEntityAndDeletedAtIsNull(
+        return bettingRepository.findAllByGoalEntity(
             goalEntity = goalRepository.findByIdOrNull(goalId)
                 ?: throw IllegalStateException("cannot find goal $goalId")
         ).map { it.toDto() }
@@ -80,28 +78,28 @@ class BettingService(
     }
 
     @Transactional
-    fun update(bettingId: Long, predictionType: PredictionType): Betting {
+    fun update(bettingId: Long, bettingPredictionType: BettingPredictionType): Betting {
         val betting = bettingRepository.findByIdOrNull(bettingId)
             ?: throw IllegalStateException("Cannot find betting $bettingId")
-        if (betting.predictionType != predictionType) {
-            betting.predictionType = predictionType
+        if (betting.bettingPredictionType != bettingPredictionType) {
+            betting.bettingPredictionType = bettingPredictionType
         }
         return betting.toDto()
     }
 
     @Transactional
-    fun updateResult(bettingId: Long, result: Result): Betting {
+    fun updateResult(bettingId: Long, bettingResult: BettingResult): Betting {
         val betting = bettingRepository.findByIdOrNull(bettingId)
             ?: throw IllegalStateException("Cannot find betting $bettingId")
-        if (betting.result != result) {
-            betting.result = result
+        if (betting.bettingResult != bettingResult) {
+            betting.bettingResult = bettingResult
         }
         return betting.toDto()
     }
 
     @Transactional
-    fun bulkModifyingByResultWhereIdInIds(bettingIds: Set<Long>, result: Result): Int {
-        return bettingRepository.bulkModifyingByResultWhereIdInIds(result, bettingIds)
+    fun bulkModifyingByResultWhereIdInIds(bettingIds: Set<Long>, bettingResult: BettingResult): Int {
+        return bettingRepository.bulkModifyingByBettingResultWhereIdInIds(bettingResult, bettingIds)
     }
 
     @Transactional

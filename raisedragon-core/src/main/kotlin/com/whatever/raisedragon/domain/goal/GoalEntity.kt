@@ -20,7 +20,8 @@ class GoalEntity(
     val userEntity: UserEntity,
 
     @Enumerated(EnumType.STRING)
-    val type: BettingType,
+    @Column(name = "goal_type", nullable = false)
+    val goalType: GoalType,
 
     @Embedded
     @Column(name = "content", nullable = false, length = 255)
@@ -31,7 +32,8 @@ class GoalEntity(
     var threshold: Threshold = Threshold(0),
 
     @Enumerated(EnumType.STRING)
-    var result: Result,
+    @Column(name = "goal_result", nullable = false)
+    var goalResult: GoalResult,
 
     @Column(name = "start_date", nullable = false)
     val startDate: LocalDateTime,
@@ -44,19 +46,19 @@ class GoalEntity(
 fun Goal.fromDto(userEntity: UserEntity): GoalEntity = GoalEntity(
     id = id,
     userEntity = userEntity,
-    type = type,
+    goalType = type,
     content = content,
     threshold = threshold,
-    result = result,
+    goalResult = goalResult,
     startDate = startDate,
     endDate = endDate,
 )
 
-enum class BettingType {
+enum class GoalType {
     FREE, BILLING
 }
 
-enum class Result {
+enum class GoalResult {
     PROCEEDING, SUCCESS, FAIL
 }
 

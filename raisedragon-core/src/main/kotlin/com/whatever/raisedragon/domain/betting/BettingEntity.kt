@@ -24,17 +24,19 @@ class BettingEntity(
     val goalEntity: GoalEntity,
 
     @Enumerated(EnumType.STRING)
-    var predictionType: PredictionType,
+    @Column(name = "betting_prediction_type", nullable = false)
+    var bettingPredictionType: BettingPredictionType,
 
     @Enumerated(EnumType.STRING)
-    var result: Result,
+    @Column(name = "betting_result", nullable = false)
+    var bettingResult: BettingResult,
 
-) : BaseEntity()
+    ) : BaseEntity()
 
-enum class PredictionType {
+enum class BettingPredictionType {
     SUCCESS, FAIL
 }
 
-enum class Result {
+enum class BettingResult {
     PROCEEDING, FAIL, GET_GIFTICON, NO_GIFTICON
 }

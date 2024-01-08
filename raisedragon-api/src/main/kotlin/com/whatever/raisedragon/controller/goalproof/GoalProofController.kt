@@ -1,6 +1,9 @@
 package com.whatever.raisedragon.controller.goalproof
 
-import com.whatever.raisedragon.applicationservice.GoalProofApplicationService
+import com.whatever.raisedragon.applicationservice.goalproof.GoalProofApplicationService
+import com.whatever.raisedragon.applicationservice.goalproof.dto.GoalProofCreateUpdateResponse
+import com.whatever.raisedragon.applicationservice.goalproof.dto.GoalProofListRetrieveResponse
+import com.whatever.raisedragon.applicationservice.goalproof.dto.GoalProofRetrieveResponse
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
@@ -27,12 +30,7 @@ class GoalProofController(
         @GetAuth userInfo: UserInfo
     ): Response<GoalProofCreateUpdateResponse> {
         return Response.success(
-            goalProofApplicationService.create(
-                userId = userInfo.id,
-                goalId = goalProofCreateRequest.goalId,
-                url = goalProofCreateRequest.url ?: "",
-                comment = goalProofCreateRequest.comment,
-            )
+            goalProofApplicationService.create(goalProofCreateRequest.toServiceRequest(userInfo.id))
         )
     }
 
@@ -71,10 +69,7 @@ class GoalProofController(
     ): Response<GoalProofRetrieveResponse> {
         return Response.success(
             goalProofApplicationService.update(
-                goalProofId = goalProofId,
-                userId = userInfo.id,
-                url = request.url,
-                comment = request.comment
+                request.toServiceRequest(userId = userInfo.id, goalProofId = goalProofId)
             )
         )
     }

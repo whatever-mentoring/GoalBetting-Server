@@ -1,9 +1,10 @@
-package com.whatever.raisedragon.applicationservice
+package com.whatever.raisedragon.applicationservice.auth
 
+import com.whatever.raisedragon.applicationservice.auth.dto.LoginResponse
+import com.whatever.raisedragon.applicationservice.auth.dto.LoginServiceRequest
+import com.whatever.raisedragon.applicationservice.auth.dto.TokenRefreshResponse
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import com.whatever.raisedragon.controller.auth.LoginResponse
-import com.whatever.raisedragon.controller.auth.TokenRefreshResponse
 import com.whatever.raisedragon.domain.auth.AuthService
 import com.whatever.raisedragon.domain.refreshtoken.RefreshToken
 import com.whatever.raisedragon.domain.refreshtoken.RefreshTokenService
@@ -26,8 +27,8 @@ class AuthApplicationService(
 ) {
 
     @Transactional
-    fun kakaoLogin(accessToken: String): LoginResponse {
-        val kakaoId = authService.verifyKaKao(accessToken)
+    fun kakaoLogin(request: LoginServiceRequest): LoginResponse {
+        val kakaoId = authService.verifyKaKao(request.accessToken)
         val user = userService.loadByOAuthPayload(kakaoId)
 
         if (user == null) {

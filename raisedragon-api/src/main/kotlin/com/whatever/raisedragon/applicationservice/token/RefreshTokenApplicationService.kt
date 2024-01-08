@@ -1,4 +1,4 @@
-package com.whatever.raisedragon.applicationservice
+package com.whatever.raisedragon.applicationservice.token
 
 import com.whatever.raisedragon.domain.refreshtoken.RefreshTokenService
 import org.springframework.stereotype.Service

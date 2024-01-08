@@ -17,11 +17,9 @@ interface BettingRepository : JpaRepository<BettingEntity, Long> {
 
     fun findAllByGoalEntity(goalEntity: GoalEntity): List<BettingEntity>
 
-    fun findAllByGoalEntityAndDeletedAtIsNull(goalEntity: GoalEntity): List<BettingEntity>
-
     fun findAllByUserEntity(userEntity: UserEntity): List<BettingEntity>
 
     @Modifying
-    @Query("update BettingEntity b set b.result=:result where b.id in :ids")
-    fun bulkModifyingByResultWhereIdInIds(result: Result, ids: Set<Long>): Int
+    @Query("update BettingEntity b set b.bettingResult=:bettingResult where b.id in :ids")
+    fun bulkModifyingByBettingResultWhereIdInIds(bettingResult: BettingResult, ids: Set<Long>): Int
 }
