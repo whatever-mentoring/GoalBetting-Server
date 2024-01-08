@@ -2,12 +2,12 @@ package com.whatever.raisedragon.scheduler
 
 import com.whatever.raisedragon.controller.goal.GoalResponse
 import com.whatever.raisedragon.domain.betting.Betting
+import com.whatever.raisedragon.domain.betting.BettingPredictionType
 import com.whatever.raisedragon.domain.betting.BettingService
-import com.whatever.raisedragon.domain.betting.PredictionType
-import com.whatever.raisedragon.domain.goal.BettingType
 import com.whatever.raisedragon.domain.goal.Goal
+import com.whatever.raisedragon.domain.goal.GoalResult
 import com.whatever.raisedragon.domain.goal.GoalService
-import com.whatever.raisedragon.domain.goal.Result
+import com.whatever.raisedragon.domain.goal.GoalType
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.winner.WinnerService
@@ -43,15 +43,15 @@ class GoalResultScheduler(
     private fun confirmGoalResult(goal: Goal) {
         val goalProofCount = goalProofService.countAllByGoalId(goal.id)
         // TODO: using 7 instead of goal's threshold. must be changed to goal's threshold after confirming business requirements
-        val goalResult = if (goalProofCount >= 7) Result.SUCCESS else Result.FAIL
+        val goalResult = if (goalProofCount >= 7) GoalResult.SUCCESS else GoalResult.FAIL
         goalService.updateResult(goal.id, goalResult)
 
         val bettingList = bettingService.findAllByGoalIdAndNotDeleted(goal.id)
         val failedBettingList = mutableListOf<Betting>()
         val succeedBettingList = mutableListOf<Betting>()
         bettingList.forEach { betting ->
-            if (betting.predictionType == PredictionType.FAIL && goalResult == Result.FAIL ||
-                betting.predictionType == PredictionType.SUCCESS && goalResult == Result.SUCCESS
+            if (betting.bettingPredictionType == BettingPredictionType.FAIL && goalResult == GoalResult.FAIL ||
+                betting.bettingPredictionType == BettingPredictionType.SUCCESS && goalResult == GoalResult.SUCCESS
             ) {
                 succeedBettingList.add(betting)
             } else {
@@ -60,12 +60,12 @@ class GoalResultScheduler(
         }
         bettingService.bulkModifyingByResultWhereIdInIds(
             failedBettingList.map { betting -> betting.id }.toSet(),
-            com.whatever.raisedragon.domain.betting.Result.FAIL
+            com.whatever.raisedragon.domain.betting.BettingResult.FAIL
         )
-        if (goal.type == BettingType.FREE) {
+        if (goal.type == GoalType.FREE) {
             bettingService.bulkModifyingByResultWhereIdInIds(
                 succeedBettingList.map { betting -> betting.id }.toSet(),
-                com.whatever.raisedragon.domain.betting.Result.NO_GIFTICON
+                com.whatever.raisedragon.domain.betting.BettingResult.NO_GIFTICON
             )
         } else {
             val gifticonId = goalGifticonService.findByGoalId(goal.id)?.gifticonId
@@ -77,9 +77,12 @@ class GoalResultScheduler(
             val loserBettingList = succeedBettingList - winnerBetting
             bettingService.bulkModifyingByResultWhereIdInIds(
                 loserBettingList.map { betting -> betting.id }.toSet(),
-                com.whatever.raisedragon.domain.betting.Result.NO_GIFTICON
+                com.whatever.raisedragon.domain.betting.BettingResult.NO_GIFTICON
             )
-            bettingService.updateResult(winnerBetting.id, com.whatever.raisedragon.domain.betting.Result.GET_GIFTICON)
+            bettingService.updateResult(
+                winnerBetting.id,
+                com.whatever.raisedragon.domain.betting.BettingResult.GET_GIFTICON
+            )
             winnerService.create(
                 goalId = goal.id,
                 userId = winnerBetting.userId,
