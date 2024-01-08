@@ -30,7 +30,7 @@ class GoalApplicationService(
     @Transactional
     fun createGoal(
         content: Content,
-        bettingType: BettingType,
+        goalType: GoalType,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
         userId: Long,
@@ -40,19 +40,19 @@ class GoalApplicationService(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 생성할 수 있는 다짐 갯수를 초과하였습니다."
         )
-        if (goalService.existsByUserIdAndAnyResult(userId, Result.PROCEEDING)) throw BaseException.of(
+        if (goalService.existsByUserIdAndAnyResult(userId, GoalResult.PROCEEDING)) throw BaseException.of(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 이미 생성한 다짐이 있어 생성이 불가합니다."
         )
         val goal = goalService.create(
             userId = userId,
             content = content,
-            bettingType = bettingType,
+            goalType = goalType,
             threshold = Threshold(0),
             startDate = startDate,
             endDate = endDate
         )
-        if (!gifticonUrl.isNullOrBlank() && bettingType == BettingType.BILLING) {
+        if (!gifticonUrl.isNullOrBlank() && goalType == GoalType.BILLING) {
             val gifticon = gifticonService.create(userId, gifticonUrl)
             goalGifticonService.create(
                 goalId = goal.id,
@@ -117,8 +117,8 @@ class GoalApplicationService(
                 userId = it.userId,
                 nickname = userService.loadById(it.userId).nickname.value,
                 bettingId = it.id,
-                predictionType = it.predictionType,
-                result = it.result,
+                bettingPredictionType = it.bettingPredictionType,
+                bettingResult = it.bettingResult,
                 bettingCreatedAt = it.createdAt!!
             )
         }
@@ -147,8 +147,8 @@ class GoalApplicationService(
                 userId = it.userId,
                 nickname = userService.loadById(it.userId).nickname.value,
                 bettingId = it.id,
-                predictionType = it.predictionType,
-                result = it.result,
+                bettingPredictionType = it.bettingPredictionType,
+                bettingResult = it.bettingResult,
                 bettingCreatedAt = it.createdAt!!
             )
         }

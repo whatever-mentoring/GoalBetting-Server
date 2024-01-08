@@ -126,6 +126,6 @@ class GoalGifticonApplicationService(
     }
 
     private fun isBrokenTiming(goal: Goal) = LocalDateTime.now() > goal.startDate
-    private fun isNotBettingTypeBilling(bettingType: BettingType) = bettingType != BettingType.BILLING
+    private fun isNotBettingTypeBilling(goalType: GoalType) = goalType != GoalType.BILLING
     private fun isBrokenUserGoal(goal: Goal, userId: Long) = goal.userId != userId
 }

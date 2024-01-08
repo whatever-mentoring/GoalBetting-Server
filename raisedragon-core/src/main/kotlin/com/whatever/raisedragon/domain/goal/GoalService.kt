@@ -20,7 +20,7 @@ class GoalService(
     fun create(
         userId: Long,
         content: Content,
-        bettingType: BettingType,
+        goalType: GoalType,
         threshold: Threshold,
         startDate: LocalDateTime,
         endDate: LocalDateTime,
@@ -28,10 +28,10 @@ class GoalService(
         val goal = goalRepository.save(
             GoalEntity(
                 userEntity = userRepository.findById(userId).get(),
-                type = bettingType,
+                type = goalType,
                 content = content,
                 threshold = threshold,
-                result = Result.PROCEEDING,
+                goalResult = GoalResult.PROCEEDING,
                 startDate = startDate,
                 endDate = endDate
             )
@@ -44,10 +44,10 @@ class GoalService(
             ?: throw IllegalArgumentException("다짐을 조회하는 중, 잘못된 내용을 요청하셨습니다.")
     }
 
-    fun existsByUserIdAndAnyResult(userId: Long, result: Result): Boolean {
+    fun existsByUserIdAndAnyResult(userId: Long, goalResult: GoalResult): Boolean {
         val userEntity = userRepository.findByIdOrNull(userId)
             ?: throw IllegalArgumentException("cannot find user $userId")
-        return goalRepository.findAllByUserEntityAndResult(userEntity, result).isNotEmpty()
+        return goalRepository.findAllByUserEntityAndGoalResult(userEntity, goalResult).isNotEmpty()
     }
 
     fun loadAllByUserId(userId: Long): List<Goal> {
@@ -61,14 +61,14 @@ class GoalService(
     }
 
     fun findAllByEndDateLessThanEqualAndResultIsProceeding(endDate: LocalDateTime): List<Goal> {
-        return goalRepository.findAllByEndDateLessThanEqualAndResultIs(endDate, Result.PROCEEDING).map { it.toDto() }
+        return goalRepository.findAllByEndDateLessThanEqualAndGoalResultIs(endDate, GoalResult.PROCEEDING).map { it.toDto() }
     }
 
     @Transactional
-    fun updateResult(goalId: Long, result: Result): Goal {
+    fun updateResult(goalId: Long, goalResult: GoalResult): Goal {
         val goalEntity =
             goalRepository.findByIdOrNull(goalId) ?: throw IllegalStateException("cannot find goal $goalId")
-        goalEntity.result = result
+        goalEntity.goalResult = goalResult
         return goalEntity.toDto()
     }
 

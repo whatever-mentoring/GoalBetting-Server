@@ -6,7 +6,7 @@ import com.whatever.raisedragon.controller.betting.BettingCreateUpdateResponse
 import com.whatever.raisedragon.controller.betting.BettingRetrieveResponse
 import com.whatever.raisedragon.domain.betting.Betting
 import com.whatever.raisedragon.domain.betting.BettingService
-import com.whatever.raisedragon.domain.betting.PredictionType
+import com.whatever.raisedragon.domain.betting.BettingPredictionType
 import com.whatever.raisedragon.domain.goal.GoalService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,13 +23,13 @@ class BettingApplicationService(
     fun create(
         userId: Long,
         goalId: Long,
-        predictionType: PredictionType
+        bettingPredictionType: BettingPredictionType
     ): BettingCreateUpdateResponse {
         if (canBet(userId, goalId)) {
             val betting = bettingService.create(
                 userId = userId,
                 goalId = goalId,
-                predictionType = predictionType
+                bettingPredictionType = bettingPredictionType
             )
 
             return BettingCreateUpdateResponse(
@@ -37,8 +37,8 @@ class BettingApplicationService(
                     id = betting.id,
                     userId = betting.userId,
                     goalId = betting.goalId,
-                    predictionType = betting.predictionType,
-                    result = betting.result
+                    bettingPredictionType = betting.bettingPredictionType,
+                    bettingResult = betting.bettingResult
                 )
             )
         }
@@ -54,11 +54,11 @@ class BettingApplicationService(
     }
 
     @Transactional
-    fun update(userId: Long, bettingId: Long, predictionType: PredictionType): BettingRetrieveResponse {
+    fun update(userId: Long, bettingId: Long, bettingPredictionType: BettingPredictionType): BettingRetrieveResponse {
         val betting = findByIdOrThrowException(bettingId)
         betting.validateOwnerId(userId)
         betting.validateStartDate()
-        return BettingRetrieveResponse.of(bettingService.update(bettingId, predictionType))
+        return BettingRetrieveResponse.of(bettingService.update(bettingId, bettingPredictionType))
     }
 
     @Transactional
