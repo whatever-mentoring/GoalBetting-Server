@@ -1,6 +1,8 @@
 package com.whatever.raisedragon.controller.betting
 
-import com.whatever.raisedragon.applicationservice.BettingApplicationService
+import com.whatever.raisedragon.applicationservice.betting.BettingApplicationService
+import com.whatever.raisedragon.applicationservice.betting.dto.BettingCreateUpdateResponse
+import com.whatever.raisedragon.applicationservice.betting.dto.BettingRetrieveResponse
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
@@ -30,11 +32,7 @@ class BettingController(
         @GetAuth userInfo: UserInfo
     ): Response<BettingCreateUpdateResponse> {
         return Response.success(
-            bettingApplicationService.create(
-                userId = userInfo.id,
-                goalId = bettingCreateRequest.goalId,
-                predictionType = bettingCreateRequest.predictionType
-            )
+            bettingApplicationService.create(bettingCreateRequest.toServiceRequest(userInfo.id))
         )
     }
 
@@ -57,11 +55,7 @@ class BettingController(
         @GetAuth userInfo: UserInfo
     ): Response<BettingRetrieveResponse> {
         return Response.success(
-            bettingApplicationService.update(
-                userId = userInfo.id,
-                bettingId = request.bettingId,
-                predictionType = request.predictionType
-            )
+            bettingApplicationService.update(request.toServiceRequest(userInfo.id))
         )
     }
 
