@@ -1,7 +1,7 @@
 package com.whatever.raisedragon.controller.external
 
-import com.whatever.raisedragon.applicationservice.S3ApplicationService
 import com.whatever.raisedragon.common.Response
+import com.whatever.raisedragon.infra.s3.S3ApplicationService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag

@@ -1,11 +1,11 @@
-package com.whatever.raisedragon.applicationservice
+package com.whatever.raisedragon.applicationservice.test
 
 import com.whatever.raisedragon.domain.betting.Betting
-import com.whatever.raisedragon.domain.betting.BettingService
 import com.whatever.raisedragon.domain.betting.BettingPredictionType
-import com.whatever.raisedragon.domain.goal.GoalType
-import com.whatever.raisedragon.domain.goal.GoalService
+import com.whatever.raisedragon.domain.betting.BettingService
 import com.whatever.raisedragon.domain.goal.GoalResult
+import com.whatever.raisedragon.domain.goal.GoalService
+import com.whatever.raisedragon.domain.goal.GoalType
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.winner.WinnerService

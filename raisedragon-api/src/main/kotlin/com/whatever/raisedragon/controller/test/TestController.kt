@@ -1,6 +1,6 @@
 package com.whatever.raisedragon.controller.test
 
-import com.whatever.raisedragon.applicationservice.TestApplicationService
+import com.whatever.raisedragon.applicationservice.test.TestApplicationService
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.domain.user.UserService
 import com.whatever.raisedragon.security.jwt.JwtAgent

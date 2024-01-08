@@ -1,9 +1,9 @@
 package com.whatever.raisedragon.controller.me
 
-import com.whatever.raisedragon.applicationservice.GoalApplicationService
+import com.whatever.raisedragon.applicationservice.goal.GoalApplicationService
+import com.whatever.raisedragon.applicationservice.goal.dto.GoalResponse
+import com.whatever.raisedragon.applicationservice.goal.dto.GoalWithBettingResponse
 import com.whatever.raisedragon.common.Response
-import com.whatever.raisedragon.controller.goal.GoalResponse
-import com.whatever.raisedragon.controller.goal.GoalWithBettingResponse
 import com.whatever.raisedragon.security.authentication.UserInfo
 import com.whatever.raisedragon.security.resolver.GetAuth
 import io.swagger.v3.oas.annotations.Operation
