@@ -1,5 +1,7 @@
 package com.whatever.raisedragon.controller.goalgifticon
 
+import com.whatever.raisedragon.applicationservice.goalgifticon.dto.GoalGifticonCreateServiceRequest
+import com.whatever.raisedragon.applicationservice.goalgifticon.dto.GoalGifticonUpdateServiceRequest
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
 
@@ -14,6 +16,14 @@ data class GoalGifticonCreateRequest(
     val gifticonURL: String
 )
 
+fun GoalGifticonCreateRequest.toServiceRequest(
+    userId: Long
+): GoalGifticonCreateServiceRequest = GoalGifticonCreateServiceRequest(
+    userId = userId,
+    goalId = goalId,
+    uploadedURL = gifticonURL
+)
+
 @Schema(description = "[Request] 다짐 기프티콘 수정")
 data class GoalGifticonRequest(
     @Schema(description = "기프티콘을 등록할 다짐의 Id")
@@ -25,29 +35,10 @@ data class GoalGifticonRequest(
     val gifticonURL: String
 )
 
-@Schema(description = "[Response] 다짐에 기프티콘 업로드")
-data class GoalGifticonResponse(
-    @Schema(description = "생성된 Goal-Gifticon Id")
-    val goalGifticonId: Long,
-
-    @Schema(description = "기프티콘을 업로드한 Goal의 Id")
-    val goalId: Long,
-
-    @Schema(description = "생성된 Gifticon Id")
-    val gifticonId: Long,
-
-    @Schema(description = "업로드된 Gifticon URL")
-    val gifticonURL: String
-)
-
-@Schema(description = "[Response] 기프티콘 조회")
-data class GifticonResponse(
-    @Schema(description = "기프티콘을 업로드한 Goal의 Id")
-    val goalId: Long,
-
-    @Schema(description = "생성된 Gifticon Id")
-    val gifticonId: Long,
-
-    @Schema(description = "업로드된 Gifticon URL")
-    val gifticonURL: String
+fun GoalGifticonRequest.toServiceRequest(
+    userId: Long
+): GoalGifticonUpdateServiceRequest = GoalGifticonUpdateServiceRequest(
+    userId = userId,
+    goalId = goalId,
+    gifticonURL = gifticonURL
 )

@@ -1,9 +1,11 @@
-package com.whatever.raisedragon.applicationservice
+package com.whatever.raisedragon.applicationservice.goalgifticon
 
+import com.whatever.raisedragon.applicationservice.goalgifticon.dto.GifticonResponse
+import com.whatever.raisedragon.applicationservice.goalgifticon.dto.GoalGifticonCreateServiceRequest
+import com.whatever.raisedragon.applicationservice.goalgifticon.dto.GoalGifticonResponse
+import com.whatever.raisedragon.applicationservice.goalgifticon.dto.GoalGifticonUpdateServiceRequest
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import com.whatever.raisedragon.controller.goalgifticon.GifticonResponse
-import com.whatever.raisedragon.controller.goalgifticon.GoalGifticonResponse
 import com.whatever.raisedragon.domain.gifticon.GifticonService
 import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.*
@@ -26,18 +28,14 @@ class GoalGifticonApplicationService(
 ) {
 
     @Transactional
-    fun createAndUploadGifticon(
-        userId: Long,
-        goalId: Long,
-        uploadedURL: String
-    ): GoalGifticonResponse {
-        val goal = goalService.loadById(goalId)
+    fun createAndUploadGifticon(request: GoalGifticonCreateServiceRequest): GoalGifticonResponse {
+        val goal = goalService.loadById(request.goalId)
         if (isNotBettingTypeBilling(goal.type)) throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
             executionMessage = "기프티콘을 업르도하는 중, 무료 다짐에는 기프티콘을 업로드할 수 없습니다."
         )
 
-        if (isBrokenUserGoal(goal, userId)) throw BaseException.of(
+        if (isBrokenUserGoal(goal, request.userId)) throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
             executionMessage = "기프티콘을 업로드하는 중, 요청한 유저가 생성한 다짐에 대한 요청이 아닙니다."
         )
@@ -48,17 +46,17 @@ class GoalGifticonApplicationService(
         )
 
 
-        val gifticon = gifticonService.create(userId, uploadedURL)
+        val gifticon = gifticonService.create(request.userId, request.uploadedURL)
         val goalGifticon = goalGifticonService.create(
-            goalId = goalId,
+            goalId = request.goalId,
             gifticonId = gifticon.id,
-            userId = userId
+            userId = request.userId
         )
         return GoalGifticonResponse(
             goalGifticonId = goalGifticon.id,
             goalId = goal.id,
             gifticonId = gifticon.id,
-            gifticonURL = uploadedURL
+            gifticonURL = request.uploadedURL
         )
     }
 
@@ -93,22 +91,18 @@ class GoalGifticonApplicationService(
     }
 
     @Transactional
-    fun updateGifticonURLByGoalId(
-        userId: Long,
-        goalId: Long,
-        gifticonURL: String
-    ): GoalGifticonResponse {
-        val userEntity = userService.loadById(userId).fromDto()
-        val goal = goalService.loadById(goalId).fromDto(userEntity).toDto()
+    fun updateGifticonURLByGoalId(request: GoalGifticonUpdateServiceRequest): GoalGifticonResponse {
+        val userEntity = userService.loadById(request.userId).fromDto()
+        val goal = goalService.loadById(request.goalId).fromDto(userEntity).toDto()
         val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
             goal = goal,
             userEntity = userEntity
         ) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
         val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
 
-        validateIsRequestUserHasUpdateAuthority(goal, userId)
+        validateIsRequestUserHasUpdateAuthority(goal, request.userId)
 
-        gifticon.url = URL(gifticonURL)
+        gifticon.url = URL(request.gifticonURL)
 
         return GoalGifticonResponse(
             goalGifticonId = goalGifticon.id,
