@@ -104,7 +104,7 @@ class GoalRepositoryTest : RepositoryTestSupport() {
         val goalEntity3 = createGoalEntity(userEntity1, FREE, SUCCESS)
         val goalEntity4 = createGoalEntity(userEntity2, FREE, FAIL)
         val goalEntity5 = createGoalEntity(userEntity2, FREE, PROCEEDING)
-        goalRepository.saveAll(listOf(goalEntity1,goalEntity2,goalEntity3,goalEntity4,goalEntity5))
+        goalRepository.saveAll(listOf(goalEntity1, goalEntity2, goalEntity3, goalEntity4, goalEntity5))
 
         // when
         val foundGoalEntityList = goalRepository.findAllByUserEntityAndGoalResult(userEntity1, PROCEEDING)
@@ -152,7 +152,7 @@ class GoalRepositoryTest : RepositoryTestSupport() {
             goalResult = SUCCESS,
             endDateTime = specificEndDateTime.plusSeconds(1L)
         )
-        goalRepository.saveAll(listOf(goalEntity1,goalEntity2,goalEntity3,goalEntity4))
+        goalRepository.saveAll(listOf(goalEntity1, goalEntity2, goalEntity3, goalEntity4))
 
         // when
         val existsGoalEntity = goalRepository.existsByUserEntityAndEndDateIsAfter(userEntity1, specificEndDateTime)
