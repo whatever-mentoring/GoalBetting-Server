@@ -97,7 +97,7 @@ class GoalApplicationService(
     ): GoalRetrieveParticipantResponse {
         val goal = goalService.loadById(goalId)
         val hostUser = userService.loadById(goal.userId)
-        val bettingList = bettingService.loadAllByGoalId(goalId)
+        val bettingList = bettingService.findAllByGoalId(goalId)
 
         val hostDto = GoalBettingHostResponse(
             id = hostUser.id!!,
@@ -127,7 +127,7 @@ class GoalApplicationService(
     ): GoalRetrieveParticipantResponse {
         val goal = goalService.loadById(goalId)
         val goalHostUser = userService.loadById(goal.userId)
-        val bettingList = bettingService.loadAllByGoalId(goalId)
+        val bettingList = bettingService.findAllByGoalId(goalId)
 
         val hostDto = GoalBettingHostResponse(
             id = goalHostUser.id!!,

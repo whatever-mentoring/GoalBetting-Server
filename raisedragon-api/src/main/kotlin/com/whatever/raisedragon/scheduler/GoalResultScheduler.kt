@@ -45,7 +45,7 @@ class GoalResultScheduler(
         val goalResult = if (goalProofCount >= 7) GoalResult.SUCCESS else GoalResult.FAIL
         goalService.updateResult(goal.id, goalResult)
 
-        val bettingList = bettingService.findAllByGoalIdAndNotDeleted(goal.id)
+        val bettingList = bettingService.findAllByGoalId(goal.id)
         val failedBettingList = mutableListOf<Betting>()
         val succeedBettingList = mutableListOf<Betting>()
         bettingList.forEach { betting ->

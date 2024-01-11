@@ -41,18 +41,12 @@ class BettingService(
         )?.toDto()
     }
 
-    fun findAllByGoalIdAndNotDeleted(goalId: Long): List<Betting> {
-        return bettingRepository.findAllByGoalEntity(
-            goalEntity = goalRepository.findByIdOrNull(goalId)
-                ?: throw IllegalStateException("cannot find goal $goalId")
-        ).map { it.toDto() }
-    }
-
-    fun loadAllByGoalId(
+    fun findAllByGoalId(
         goalId: Long
     ): List<Betting> {
         return bettingRepository.findAllByGoalEntity(
-            goalEntity = goalRepository.findById(goalId).get()
+            goalEntity = goalRepository.findByIdOrNull(goalId)
+                ?: throw IllegalStateException("cannot find goal $goalId")
         ).map { it.toDto() }
     }
 
