@@ -44,7 +44,7 @@ create table if not exists refresh_token
     updated_at datetime(6)  not null
 );
 
-create table if not exists user
+create table if not exists users
 (
     id                  bigint auto_increment primary key,
     nickname            varchar(255) not null,
