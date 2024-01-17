@@ -39,7 +39,7 @@ class GoalProofApplicationService(
             url = URL(request.url),
             comment = request.comment
         )
-        goalService.increaseThreshold(goal, user.fromDto())
+        goalService.increaseThreshold(goal.id)
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
     }
 

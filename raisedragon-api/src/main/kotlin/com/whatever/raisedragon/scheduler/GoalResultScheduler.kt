@@ -34,7 +34,7 @@ class GoalResultScheduler(
         val now = LocalDateTime.now()
         logger.info("Start adjusting result of goals at {}", now)
         val endDate = LocalDateTime.of(now.year, now.month, now.dayOfMonth, 23, 59, 59, 59)
-        val betGoalList = goalService.findAllByEndDateLessThanEqualAndResultIsProceeding(endDate)
+        val betGoalList = goalService.findAllByEndDateLessThanEqualAndGoalResultIsProceeding(endDate)
         betGoalList.forEach(::confirmGoalResult)
         logger.info("Done adjusting result for {} goals, at {}", betGoalList.size, LocalDateTime.now())
     }

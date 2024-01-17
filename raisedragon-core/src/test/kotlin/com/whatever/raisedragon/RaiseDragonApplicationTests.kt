@@ -1,7 +1,6 @@
 package com.whatever.raisedragon
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 
 @SpringBootApplication
 class RaiseDragonApplicationTests
