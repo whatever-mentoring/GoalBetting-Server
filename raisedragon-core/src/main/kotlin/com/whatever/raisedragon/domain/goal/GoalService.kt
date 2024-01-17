@@ -39,16 +39,11 @@ class GoalService(
         return goal.toDto()
     }
 
-    fun loadById(id: Long): Goal {
+    fun findById(id: Long): Goal {
         return goalRepository.findById(id).orElseThrow(notFoundExceptionSupplier).toDto()
     }
 
-    fun existsByUserIdAndAnyGoalResult(userId: Long, goalResult: GoalResult): Boolean {
-        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
-        return goalRepository.findAllByUserEntityAndGoalResult(userEntity, goalResult).isNotEmpty()
-    }
-
-    fun loadAllByUserId(userId: Long): List<Goal> {
+    fun findAllByUserId(userId: Long): List<Goal> {
         return goalRepository.findAllByUserEntity(
             userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         ).map { it.toDto() }
@@ -61,6 +56,18 @@ class GoalService(
     fun findAllByEndDateLessThanEqualAndGoalResultIsProceeding(endDate: LocalDateTime): List<Goal> {
         return goalRepository.findAllByEndDateLessThanEqualAndGoalResultIs(endDate, GoalResult.PROCEEDING)
             .map { it.toDto() }
+    }
+
+    fun existsByUserIdAndAnyGoalResult(userId: Long, goalResult: GoalResult): Boolean {
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
+        return goalRepository.findAllByUserEntityAndGoalResult(userEntity, goalResult).isNotEmpty()
+    }
+
+    fun existsByUserAndEndDateIsAfterThanNow(userId: Long): Boolean {
+        return goalRepository.existsByUserEntityAndEndDateIsAfter(
+            userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier),
+            now = LocalDateTime.now()
+        )
     }
 
     @Transactional
@@ -78,6 +85,12 @@ class GoalService(
     }
 
     @Transactional
+    fun increaseThreshold(id: Long) {
+        val goalEntity = goalRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
+        goalEntity.threshold = Threshold(goalEntity.threshold.value + 1)
+    }
+
+    @Transactional
     fun softDelete(id: Long): Goal {
         val goalEntity = goalRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
         goalEntity.deletedAt = LocalDateTime.now()
@@ -90,18 +103,5 @@ class GoalService(
             userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         )
         goalRepository.deleteAll(goals)
-    }
-
-    @Transactional
-    fun increaseThreshold(id: Long) {
-        val goalEntity = goalRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
-        goalEntity.threshold = Threshold(goalEntity.threshold.value + 1)
-    }
-
-    fun existsByUserAndEndDateIsAfterThanNow(userId: Long): Boolean {
-        return goalRepository.existsByUserEntityAndEndDateIsAfter(
-            userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier),
-            now = LocalDateTime.now()
-        )
     }
 }

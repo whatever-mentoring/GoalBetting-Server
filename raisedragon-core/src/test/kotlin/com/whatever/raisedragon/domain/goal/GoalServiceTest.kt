@@ -109,7 +109,7 @@ class GoalServiceTest : IntegrationTestSupport {
         goalRepository.save(goalEntity)
 
         // when
-        val foundGoal = goalService.loadById(goalEntity.id)
+        val foundGoal = goalService.findById(goalEntity.id)
 
         // then
         assertThat(foundGoal)
@@ -142,7 +142,7 @@ class GoalServiceTest : IntegrationTestSupport {
         goalRepository.save(goalEntity)
 
         // when // then
-        assertThatThrownBy { goalService.loadById(-1L) }.isInstanceOf(BaseException::class.java)
+        assertThatThrownBy { goalService.findById(-1L) }.isInstanceOf(BaseException::class.java)
             .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
     }
 
@@ -218,7 +218,7 @@ class GoalServiceTest : IntegrationTestSupport {
         goalRepository.saveAll(listOf(goalEntity1, goalEntity2, goalEntity3))
 
         // when
-        val goalList = goalService.loadAllByUserId(userEntity1.id)
+        val goalList = goalService.findAllByUserId(userEntity1.id)
 
         // then
         assertThat(goalList).hasSize(2)
@@ -243,7 +243,7 @@ class GoalServiceTest : IntegrationTestSupport {
         goalRepository.saveAll(listOf(goalEntity1, goalEntity2, goalEntity3))
 
         // when // then
-        assertThatThrownBy { goalService.loadAllByUserId(-1L) }
+        assertThatThrownBy { goalService.findAllByUserId(-1L) }
             .isInstanceOf(BaseException::class.java)
             .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
     }

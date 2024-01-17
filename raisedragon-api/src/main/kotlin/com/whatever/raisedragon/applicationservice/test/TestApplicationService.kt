@@ -24,7 +24,7 @@ class TestApplicationService(
 
     @Transactional
     fun confirmGoalResult(goalId: Long) {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val goalProofCount = goalProofService.countAllByGoalId(goal.id)
         // TODO: using 7 instead of goal's threshold. must be changed to goal's threshold after confirming business requirements
         val goalResult = if (goalProofCount >= 7) GoalResult.SUCCESS else GoalResult.FAIL

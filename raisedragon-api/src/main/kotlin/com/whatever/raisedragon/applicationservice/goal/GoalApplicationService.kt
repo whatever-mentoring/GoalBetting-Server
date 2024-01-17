@@ -57,13 +57,13 @@ class GoalApplicationService(
     }
 
     fun retrieveGoal(goalId: Long): GoalResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val hostUser = userService.loadById(goal.userId)
         return GoalResponse.of(goal, hostUser.nickname.value)
     }
 
     fun retrieveGoalDetail(goalId: Long, userId: Long): GoalWithBettingResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val hostUser = userService.loadById(goal.userId)
         val betting = bettingService.loadUserAndGoal(userId, goalId)
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
@@ -79,7 +79,7 @@ class GoalApplicationService(
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
-        val goals = goalService.loadAllByUserId(userId)
+        val goals = goalService.findAllByUserId(userId)
         val users = userService.findAllByIdInIds(goals.map { it.userId }.toSet())
 
         return goals.map { goal ->
@@ -94,7 +94,7 @@ class GoalApplicationService(
     fun retrieveGoalBettingParticipant(
         goalId: Long
     ): GoalRetrieveParticipantResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val hostUser = userService.loadById(goal.userId)
         val bettingList = bettingService.findAllByGoalId(goalId)
 
@@ -124,7 +124,7 @@ class GoalApplicationService(
     fun retrieveGoalBettingParticipantNoAuth(
         goalId: Long
     ): GoalRetrieveParticipantResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val goalHostUser = userService.loadById(goal.userId)
         val bettingList = bettingService.findAllByGoalId(goalId)
 
@@ -177,7 +177,7 @@ class GoalApplicationService(
 
     @Transactional
     fun modifyGoal(request: GoalModifyServiceRequest): GoalResponse {
-        val goal = goalService.loadById(request.goalId)
+        val goal = goalService.findById(request.goalId)
         isNotUsersGoal(goal, request.userId)
         isAlreadyStarted(goal)
 
@@ -192,7 +192,7 @@ class GoalApplicationService(
 
     @Transactional
     fun deleteGoal(request: GoalDeleteServiceRequest) {
-        val goal = goalService.loadById(request.goalId)
+        val goal = goalService.findById(request.goalId)
         isNotUsersGoal(goal, request.userId)
         isAlreadyStarted(goal)
 
@@ -218,6 +218,6 @@ class GoalApplicationService(
     }
 
     private fun isNumberOfGoalUnderOneHundred(userId: Long): Boolean {
-        return goalService.loadAllByUserId(userId).size > 99
+        return goalService.findAllByUserId(userId).size > 99
     }
 }
