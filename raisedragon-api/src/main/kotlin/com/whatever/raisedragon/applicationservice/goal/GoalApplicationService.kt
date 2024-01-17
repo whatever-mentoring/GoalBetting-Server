@@ -9,7 +9,6 @@ import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goalgifticon.GoalGifticonService
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
-import com.whatever.raisedragon.domain.user.fromDto
 import com.whatever.raisedragon.domain.winner.WinnerService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -33,7 +32,7 @@ class GoalApplicationService(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 생성할 수 있는 다짐 갯수를 초과하였습니다."
         )
-        if (goalService.existsByUserIdAndAnyResult(request.userId, GoalResult.PROCEEDING)) throw BaseException.of(
+        if (goalService.existsByUserIdAndAnyGoalResult(request.userId, GoalResult.PROCEEDING)) throw BaseException.of(
             exceptionCode = ExceptionCode.E409_CONFLICT,
             executionMessage = "다짐을 생성하는 중, 이미 생성한 다짐이 있어 생성이 불가합니다."
         )
@@ -58,13 +57,13 @@ class GoalApplicationService(
     }
 
     fun retrieveGoal(goalId: Long): GoalResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val hostUser = userService.loadById(goal.userId)
         return GoalResponse.of(goal, hostUser.nickname.value)
     }
 
     fun retrieveGoalDetail(goalId: Long, userId: Long): GoalWithBettingResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val hostUser = userService.loadById(goal.userId)
         val betting = bettingService.loadUserAndGoal(userId, goalId)
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
@@ -80,7 +79,7 @@ class GoalApplicationService(
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {
-        val goals = goalService.loadAllByUserId(userId)
+        val goals = goalService.findAllByUserId(userId)
         val users = userService.findAllByIdInIds(goals.map { it.userId }.toSet())
 
         return goals.map { goal ->
@@ -95,9 +94,9 @@ class GoalApplicationService(
     fun retrieveGoalBettingParticipant(
         goalId: Long
     ): GoalRetrieveParticipantResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val hostUser = userService.loadById(goal.userId)
-        val bettingList = bettingService.loadAllByGoalId(goalId)
+        val bettingList = bettingService.findAllByGoalId(goalId)
 
         val hostDto = GoalBettingHostResponse(
             id = hostUser.id!!,
@@ -125,9 +124,9 @@ class GoalApplicationService(
     fun retrieveGoalBettingParticipantNoAuth(
         goalId: Long
     ): GoalRetrieveParticipantResponse {
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         val goalHostUser = userService.loadById(goal.userId)
-        val bettingList = bettingService.loadAllByGoalId(goalId)
+        val bettingList = bettingService.findAllByGoalId(goalId)
 
         val hostDto = GoalBettingHostResponse(
             id = goalHostUser.id!!,
@@ -178,13 +177,12 @@ class GoalApplicationService(
 
     @Transactional
     fun modifyGoal(request: GoalModifyServiceRequest): GoalResponse {
-        val goal = goalService.loadById(request.goalId)
+        val goal = goalService.findById(request.goalId)
         isNotUsersGoal(goal, request.userId)
         isAlreadyStarted(goal)
 
-        val modifiedGoal = goalService.modify(
-            goal = goal,
-            userEntity = userService.loadById(request.userId).fromDto(),
+        val modifiedGoal = goalService.updateContent(
+            goalId = goal.id,
             content = request.content
         )
 
@@ -194,14 +192,11 @@ class GoalApplicationService(
 
     @Transactional
     fun deleteGoal(request: GoalDeleteServiceRequest) {
-        val goal = goalService.loadById(request.goalId)
+        val goal = goalService.findById(request.goalId)
         isNotUsersGoal(goal, request.userId)
         isAlreadyStarted(goal)
 
-        goalService.softDelete(
-            goal = goal,
-            userEntity = userService.loadById(request.userId).fromDto(),
-        )
+        goalService.softDelete(goal.id)
     }
 
     private fun isNotUsersGoal(goal: Goal, userId: Long) {
@@ -223,6 +218,6 @@ class GoalApplicationService(
     }
 
     private fun isNumberOfGoalUnderOneHundred(userId: Long): Boolean {
-        return goalService.loadAllByUserId(userId).size > 99
+        return goalService.findAllByUserId(userId).size > 99
     }
 }

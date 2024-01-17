@@ -1,16 +1,18 @@
 package com.whatever.raisedragon.domain.gifticon
 
-import com.whatever.raisedragon.RepositoryTestSupport
+import com.whatever.raisedragon.IntegrationTestSupport
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
+import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-class GifticonRepositoryTest : RepositoryTestSupport() {
+@Transactional
+class GifticonRepositoryTest : IntegrationTestSupport {
 
     @Autowired
     private lateinit var gifticonRepository: GifticonRepository

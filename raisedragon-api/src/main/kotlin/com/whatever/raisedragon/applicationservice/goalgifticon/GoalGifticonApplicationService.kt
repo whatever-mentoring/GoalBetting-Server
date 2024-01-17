@@ -29,7 +29,7 @@ class GoalGifticonApplicationService(
 
     @Transactional
     fun createAndUploadGifticon(request: GoalGifticonCreateServiceRequest): GoalGifticonResponse {
-        val goal = goalService.loadById(request.goalId)
+        val goal = goalService.findById(request.goalId)
         if (isNotBettingTypeBilling(goal.type)) throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
             executionMessage = "기프티콘을 업르도하는 중, 무료 다짐에는 기프티콘을 업로드할 수 없습니다."
@@ -65,7 +65,7 @@ class GoalGifticonApplicationService(
         userId: Long
     ): GifticonResponse {
         val user = userService.loadById(userId)
-        val goal = goalService.loadById(goalId)
+        val goal = goalService.findById(goalId)
         isBrokenTiming(goal)
 
         val goalGifticon = if (userId != goal.userId) {
@@ -93,7 +93,7 @@ class GoalGifticonApplicationService(
     @Transactional
     fun updateGifticonURLByGoalId(request: GoalGifticonUpdateServiceRequest): GoalGifticonResponse {
         val userEntity = userService.loadById(request.userId).fromDto()
-        val goal = goalService.loadById(request.goalId).fromDto(userEntity).toDto()
+        val goal = goalService.findById(request.goalId).fromDto(userEntity).toDto()
         val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
             goal = goal,
             userEntity = userEntity

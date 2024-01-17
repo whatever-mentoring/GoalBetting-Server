@@ -47,8 +47,7 @@ class UserApplicationService(
 
     @Transactional
     fun delete(id: Long) {
-        val user = userService.loadById(id)
-        if (goalService.findProceedingGoalIsExistsByUser(user)) {
+        if (goalService.existsByUserAndEndDateIsAfterThanNow(id)) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
                 executionMessage = "아직 진행중인 다짐이 있어 회원탈퇴에 실패했습니다."

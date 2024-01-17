@@ -34,7 +34,7 @@ class GoalResultScheduler(
         val now = LocalDateTime.now()
         logger.info("Start adjusting result of goals at {}", now)
         val endDate = LocalDateTime.of(now.year, now.month, now.dayOfMonth, 23, 59, 59, 59)
-        val betGoalList = goalService.findAllByEndDateLessThanEqualAndResultIsProceeding(endDate)
+        val betGoalList = goalService.findAllByEndDateLessThanEqualAndGoalResultIsProceeding(endDate)
         betGoalList.forEach(::confirmGoalResult)
         logger.info("Done adjusting result for {} goals, at {}", betGoalList.size, LocalDateTime.now())
     }
@@ -45,7 +45,7 @@ class GoalResultScheduler(
         val goalResult = if (goalProofCount >= 7) GoalResult.SUCCESS else GoalResult.FAIL
         goalService.updateResult(goal.id, goalResult)
 
-        val bettingList = bettingService.findAllByGoalIdAndNotDeleted(goal.id)
+        val bettingList = bettingService.findAllByGoalId(goal.id)
         val failedBettingList = mutableListOf<Betting>()
         val succeedBettingList = mutableListOf<Betting>()
         bettingList.forEach { betting ->

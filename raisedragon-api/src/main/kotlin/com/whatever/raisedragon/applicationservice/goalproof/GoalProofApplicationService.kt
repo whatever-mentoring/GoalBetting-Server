@@ -10,12 +10,10 @@ import com.whatever.raisedragon.domain.goalproof.Comment
 import com.whatever.raisedragon.domain.goalproof.GoalProof
 import com.whatever.raisedragon.domain.goalproof.GoalProofService
 import com.whatever.raisedragon.domain.user.UserService
-import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import kotlin.math.abs
 
 @Service
 @Transactional(readOnly = true)
@@ -27,7 +25,7 @@ class GoalProofApplicationService(
 
     @Transactional
     fun create(request: GoalProofCreateServiceRequest): GoalProofCreateUpdateResponse {
-        val goal = goalService.loadById(request.goalId)
+        val goal = goalService.findById(request.goalId)
         val user = userService.loadById(request.userId)
 
         isGoalProofAlreadyExists(request.goalId)
@@ -39,7 +37,7 @@ class GoalProofApplicationService(
             url = URL(request.url),
             comment = request.comment
         )
-        goalService.increaseThreshold(goal, user.fromDto())
+        goalService.increaseThreshold(goal.id)
         return GoalProofCreateUpdateResponse(GoalProofRetrieveResponse.of(goalProof))
     }
 
@@ -63,7 +61,7 @@ class GoalProofApplicationService(
 
     fun retrieveAll(goalId: Long, userId: Long): GoalProofListRetrieveResponse {
         val goalProofs = goalProofService.findAllByGoalIdAndUserId(goalId, userId)
-        val goalStartDateTime = goalService.loadById(goalId).startDate
+        val goalStartDateTime = goalService.findById(goalId).startDate
 
         val progressDays = goalProofs.map {
             it.createdAt!!.dayOfMonth.minus(goalStartDateTime.dayOfMonth) + 1
@@ -126,7 +124,7 @@ class GoalProofApplicationService(
     }
 
     private fun GoalProof.validateEndDate() {
-        if (goalService.loadById(goalId).endDate > LocalDateTime.now()) {
+        if (goalService.findById(goalId).endDate > LocalDateTime.now()) {
             throw BaseException.of(ExceptionCode.E400_BAD_REQUEST, "이미 끝난 내기입니다")
         }
     }

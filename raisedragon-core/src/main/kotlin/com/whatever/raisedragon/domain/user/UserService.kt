@@ -1,12 +1,15 @@
 package com.whatever.raisedragon.domain.user
 
-import org.springframework.data.repository.findByIdOrNull
+import com.whatever.raisedragon.common.exception.BaseException
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.function.Supplier
 
 @Service
 @Transactional(readOnly = true)
 class UserService(
+    @Qualifier("notFoundExceptionSupplier") private val notFoundExceptionSupplier: Supplier<BaseException>,
     private val userRepository: UserRepository,
 ) {
 
@@ -15,7 +18,7 @@ class UserService(
     }
 
     fun loadById(id: Long): User {
-        return userRepository.findByIdOrNull(id)?.toDto() ?: throw IllegalArgumentException("유저를 불러오는 중, 잘못된 값을 요청하셨습니다.")
+        return userRepository.findById(id).orElseThrow(notFoundExceptionSupplier).toDto()
     }
 
     fun findAllByIdInIds(ids: Set<Long>): List<User> {
@@ -33,7 +36,7 @@ class UserService(
 
     @Transactional
     fun updateNickname(id: Long, nickname: String): User {
-        val userEntity = userRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("유저를 불러오는 중, 잘못된 값을 요청하셨습니다.")
+        val userEntity = userRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
         userEntity.nickname = Nickname(nickname)
         return userEntity.toDto()
     }

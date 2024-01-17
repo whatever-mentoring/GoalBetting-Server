@@ -1,6 +1,5 @@
 package com.whatever.raisedragon.common.exception
 
-import com.whatever.raisedragon.common.ErrorResponse
 import org.springframework.http.HttpStatus
 
 enum class ExceptionCode(
@@ -37,12 +36,5 @@ fun ExceptionCode.throwAsException() {
     throw BaseException.of(
         exceptionCode = this,
         executionMessage = message
-    )
-}
-
-fun ExceptionCode.toErrorResponse(): ErrorResponse {
-    return ErrorResponse(
-        code = code,
-        detailMessage = message
     )
 }

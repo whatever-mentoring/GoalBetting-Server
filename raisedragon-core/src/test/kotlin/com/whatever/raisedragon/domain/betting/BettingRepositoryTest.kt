@@ -1,6 +1,6 @@
 package com.whatever.raisedragon.domain.betting
 
-import com.whatever.raisedragon.RepositoryTestSupport
+import com.whatever.raisedragon.IntegrationTestSupport
 import com.whatever.raisedragon.domain.betting.BettingPredictionType.FAIL
 import com.whatever.raisedragon.domain.betting.BettingPredictionType.SUCCESS
 import com.whatever.raisedragon.domain.betting.BettingResult.*
@@ -8,6 +8,7 @@ import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
+import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.groups.Tuple.tuple
 import org.junit.jupiter.api.DisplayName
@@ -15,7 +16,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
 
-class BettingRepositoryTest : RepositoryTestSupport() {
+@Transactional
+class BettingRepositoryTest : IntegrationTestSupport {
 
     @Autowired
     private lateinit var bettingRepository: BettingRepository
