@@ -1,12 +1,13 @@
 package com.whatever.raisedragon.domain.goal
 
-import com.whatever.raisedragon.RepositoryTestSupport
+import com.whatever.raisedragon.IntegrationTestSupport
 import com.whatever.raisedragon.domain.goal.GoalResult.*
 import com.whatever.raisedragon.domain.goal.GoalType.BILLING
 import com.whatever.raisedragon.domain.goal.GoalType.FREE
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
+import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.junit.jupiter.api.DisplayName
@@ -14,7 +15,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
 
-class GoalRepositoryTest : RepositoryTestSupport() {
+@Transactional
+class GoalRepositoryTest : IntegrationTestSupport {
 
     @Autowired
     private lateinit var goalRepository: GoalRepository

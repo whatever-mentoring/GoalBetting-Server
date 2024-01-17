@@ -1,6 +1,6 @@
 package com.whatever.raisedragon.domain.goalproof
 
-import com.whatever.raisedragon.RepositoryTestSupport
+import com.whatever.raisedragon.IntegrationTestSupport
 import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.*
 import com.whatever.raisedragon.domain.goal.GoalResult.PROCEEDING
@@ -10,6 +10,7 @@ import com.whatever.raisedragon.domain.goal.GoalType.FREE
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
+import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
@@ -17,7 +18,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
 
-class GoalProofRepositoryTest : RepositoryTestSupport() {
+@Transactional
+class GoalProofRepositoryTest : IntegrationTestSupport {
 
     @Autowired
     private lateinit var goalProofRepository: GoalProofRepository

@@ -1,12 +1,14 @@
 package com.whatever.raisedragon.domain.user
 
-import com.whatever.raisedragon.RepositoryTestSupport
+import com.whatever.raisedragon.IntegrationTestSupport
+import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-class UserRepositoryTest : RepositoryTestSupport() {
+@Transactional
+class UserRepositoryTest : IntegrationTestSupport {
 
     @Autowired
     private lateinit var userRepository: UserRepository
