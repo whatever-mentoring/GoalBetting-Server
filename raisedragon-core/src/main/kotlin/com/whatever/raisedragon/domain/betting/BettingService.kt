@@ -1,15 +1,19 @@
 package com.whatever.raisedragon.domain.betting
 
+import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.domain.goal.GoalRepository
 import com.whatever.raisedragon.domain.user.UserRepository
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.function.Supplier
 
 @Service
 @Transactional(readOnly = true)
 class BettingService(
+    @Qualifier("notFoundExceptionSupplier") private val notFoundExceptionSupplier: Supplier<BaseException>,
     private val bettingRepository: BettingRepository,
     private val userRepository: UserRepository,
     private val goalRepository: GoalRepository,
@@ -22,8 +26,10 @@ class BettingService(
     ): Betting {
         val betting = bettingRepository.save(
             BettingEntity(
-                userEntity = userRepository.findById(userId).get(),
-                goalEntity = goalRepository.findById(goalId).get(),
+                userEntity = userRepository.findById(userId)
+                    .orElseThrow(notFoundExceptionSupplier),
+                goalEntity = goalRepository.findById(goalId)
+                    .orElseThrow(notFoundExceptionSupplier),
                 bettingPredictionType = bettingPredictionType,
                 bettingResult = BettingResult.PROCEEDING
             )
@@ -36,8 +42,8 @@ class BettingService(
         goalId: Long
     ): Betting? {
         return bettingRepository.findByUserEntityAndGoalEntity(
-            userEntity = userRepository.findById(userId).get(),
-            goalEntity = goalRepository.findById(goalId).get()
+            userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier),
+            goalEntity = goalRepository.findById(goalId).orElseThrow(notFoundExceptionSupplier)
         )?.toDto()
     }
 
@@ -45,8 +51,8 @@ class BettingService(
         goalId: Long
     ): List<Betting> {
         return bettingRepository.findAllByGoalEntity(
-            goalEntity = goalRepository.findByIdOrNull(goalId)
-                ?: throw IllegalStateException("cannot find goal $goalId")
+            goalEntity = goalRepository.findById(goalId)
+                .orElseThrow(notFoundExceptionSupplier)
         ).map { it.toDto() }
     }
 
@@ -55,14 +61,12 @@ class BettingService(
     }
 
     fun findAllByUserId(userId: Long): List<Betting> {
-        val userEntity =
-            userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         return bettingRepository.findAllByUserEntity(userEntity).map { it.toDto() }
     }
 
     fun existsBettingParticipantUser(userId: Long): Boolean {
-        val userEntity =
-            userRepository.findByIdOrNull(userId) ?: throw IllegalStateException("cannot find user $userId")
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         val bettings = bettingRepository.findAllByUserEntity(userEntity)
 
         for (betting in bettings) {
@@ -73,8 +77,7 @@ class BettingService(
 
     @Transactional
     fun update(bettingId: Long, bettingPredictionType: BettingPredictionType): Betting {
-        val betting = bettingRepository.findByIdOrNull(bettingId)
-            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        val betting = bettingRepository.findById(bettingId).orElseThrow(notFoundExceptionSupplier)
         if (betting.bettingPredictionType != bettingPredictionType) {
             betting.bettingPredictionType = bettingPredictionType
         }
@@ -83,8 +86,7 @@ class BettingService(
 
     @Transactional
     fun updateResult(bettingId: Long, bettingResult: BettingResult): Betting {
-        val betting = bettingRepository.findByIdOrNull(bettingId)
-            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        val betting = bettingRepository.findById(bettingId).orElseThrow(notFoundExceptionSupplier)
         if (betting.bettingResult != bettingResult) {
             betting.bettingResult = bettingResult
         }
@@ -98,23 +100,21 @@ class BettingService(
 
     @Transactional
     fun softDelete(bettingId: Long) {
-        val betting = bettingRepository.findByIdOrNull(bettingId)
-            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        val betting = bettingRepository.findById(bettingId).orElseThrow(notFoundExceptionSupplier)
         betting.deletedAt = LocalDateTime.now()
     }
 
     @Transactional
     fun hardDelete(bettingId: Long) {
-        val betting = bettingRepository.findByIdOrNull(bettingId)
-            ?: throw IllegalStateException("Cannot find betting $bettingId")
+        val betting = bettingRepository.findById(bettingId).orElseThrow(notFoundExceptionSupplier)
         bettingRepository.delete(betting)
     }
 
     @Transactional
     fun hardDeleteByUserId(userId: Long) {
-        val bettings = bettingRepository.findAllByUserEntity(
-            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        val bettingEntities = bettingRepository.findAllByUserEntity(
+            userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         )
-        bettingRepository.deleteAll(bettings)
+        bettingRepository.deleteAll(bettingEntities)
     }
 }

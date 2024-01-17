@@ -1,13 +1,16 @@
 package com.whatever.raisedragon.domain.gifticon
 
+import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.domain.user.UserRepository
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.function.Supplier
 
 @Transactional(readOnly = true)
 @Service
 class GifticonService(
+    @Qualifier("notFoundExceptionSupplier") private val notFoundExceptionSupplier: Supplier<BaseException>,
     private val gifticonRepository: GifticonRepository,
     private val userRepository: UserRepository
 ) {
@@ -19,7 +22,7 @@ class GifticonService(
     ): Gifticon {
         val gifticon = gifticonRepository.save(
             GifticonEntity(
-                userEntity = userRepository.findById(userId).get(),
+                userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier),
                 url = URL(url)
             )
         )
@@ -27,14 +30,14 @@ class GifticonService(
     }
 
     fun loadById(gifticonId: Long): Gifticon {
-        return gifticonRepository.findById(gifticonId).get().toDto()
+        return gifticonRepository.findById(gifticonId).orElseThrow(notFoundExceptionSupplier).toDto()
     }
 
     @Transactional
     fun hardDeleteByUserId(userId: Long) {
-        val gifticons = gifticonRepository.findAllByUserEntity(
-            userEntity = userRepository.findByIdOrNull(userId) ?: throw IllegalArgumentException("Cannot find user $userId")
+        val gifticonEntities = gifticonRepository.findAllByUserEntity(
+            userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         )
-        gifticonRepository.deleteAll(gifticons)
+        gifticonRepository.deleteAll(gifticonEntities)
     }
 }
