@@ -2,7 +2,6 @@ package com.whatever.raisedragon.common
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
-import org.springframework.http.HttpStatus
 
 data class Response<T>(
     val isSuccess: Boolean,

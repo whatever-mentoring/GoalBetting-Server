@@ -97,7 +97,8 @@ class JwtAgentImpl(
 
     companion object {
         const val BEARER_PREFIX = "Bearer"
-//        private const val ACCESS_TOKEN_EXPIRE_TIME = (1000 * 60 * 30).toLong()
+
+        //        private const val ACCESS_TOKEN_EXPIRE_TIME = (1000 * 60 * 30).toLong()
         private const val ACCESS_TOKEN_EXPIRE_TIME = (1000 * 60 * 60 * 24 * 7).toLong() // 임시 JWT 만료기간
         private const val REFRESH_TOKEN_EXPIRE_TIME = (1000 * 60 * 60 * 24 * 7).toLong()
         private const val CLAIM_INFO_KEY = "claim-info"

@@ -48,8 +48,7 @@ class GoalApplicationService(
             val gifticon = gifticonService.create(request.userId, request.gifticonUrl)
             goalGifticonService.create(
                 goalId = goal.id,
-                gifticonId = gifticon.id,
-                userId = request.userId
+                gifticonId = gifticon.id
             )
         }
         val hostUser = userService.loadById(request.userId)

@@ -10,7 +10,7 @@ import org.hibernate.annotations.SQLRestriction
 @Table(name = "winner")
 @Entity
 @SQLRestriction("deleted_at IS NULL")
-class WinnerEntity (
+class WinnerEntity(
     @OneToOne
     @JoinColumn(name = "goal_id")
     val goalEntity: GoalEntity,
@@ -26,4 +26,4 @@ class WinnerEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
-): BaseEntity()
+) : BaseEntity()
