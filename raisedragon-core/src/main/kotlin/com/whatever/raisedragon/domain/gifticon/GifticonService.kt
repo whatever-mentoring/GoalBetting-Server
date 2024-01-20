@@ -29,7 +29,7 @@ class GifticonService(
         return gifticon.toDto()
     }
 
-    fun loadById(gifticonId: Long): Gifticon {
+    fun findById(gifticonId: Long): Gifticon {
         return gifticonRepository.findById(gifticonId).orElseThrow(notFoundExceptionSupplier).toDto()
     }
 

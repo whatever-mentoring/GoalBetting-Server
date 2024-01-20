@@ -81,7 +81,7 @@ class GoalGifticonApplicationService(
             ExceptionCode.E403_FORBIDDEN,
             "접근할 수 없는 기프티콘입니다."
         )
-        val gifticon = gifticonService.loadById(actualGifticonId)
+        val gifticon = gifticonService.findById(actualGifticonId)
 
         return GifticonResponse(
             goalId = goalId,
@@ -98,7 +98,7 @@ class GoalGifticonApplicationService(
             goal = goal,
             userEntity = userEntity
         ) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
-        val gifticon = gifticonService.loadById(goalGifticon.gifticonId)
+        val gifticon = gifticonService.findById(goalGifticon.gifticonId)
 
         validateIsRequestUserHasUpdateAuthority(goal, request.userId)
 
