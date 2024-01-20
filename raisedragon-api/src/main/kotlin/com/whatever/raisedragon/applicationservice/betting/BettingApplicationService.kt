@@ -55,7 +55,7 @@ class BettingApplicationService(
         val betting = findByIdOrThrowException(request.bettingId)
         betting.validateOwnerId(request.userId)
         betting.validateStartDate()
-        return BettingRetrieveResponse.of(bettingService.update(request.bettingId, request.bettingPredictionType))
+        return BettingRetrieveResponse.of(bettingService.updatePredictionType(request.bettingId, request.bettingPredictionType))
     }
 
     @Transactional
