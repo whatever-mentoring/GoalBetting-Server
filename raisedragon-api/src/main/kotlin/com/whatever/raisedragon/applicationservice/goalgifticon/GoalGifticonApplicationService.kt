@@ -45,12 +45,10 @@ class GoalGifticonApplicationService(
             executionMessage = "기프티콘을 업로드하는 중, 이미 다짐 수행이 시작되어 업로드할 수 없습니다."
         )
 
-
         val gifticon = gifticonService.create(request.userId, request.uploadedURL)
         val goalGifticon = goalGifticonService.create(
             goalId = request.goalId,
-            gifticonId = gifticon.id,
-            userId = request.userId
+            gifticonId = gifticon.id
         )
         return GoalGifticonResponse(
             goalGifticonId = goalGifticon.id,
@@ -64,17 +62,13 @@ class GoalGifticonApplicationService(
         goalId: Long,
         userId: Long
     ): GifticonResponse {
-        val user = userService.loadById(userId)
         val goal = goalService.findById(goalId)
         isBrokenTiming(goal)
 
         val goalGifticon = if (userId != goal.userId) {
             null
         } else {
-            goalGifticonService.loadByGoalAndUserEntity(
-                goal = goal,
-                userEntity = user.fromDto()
-            )
+            goalGifticonService.findByGoalId(goal.id)
         }
         val winnerGifticonId = winnerService.findByGoalIdAndUserId(goalId, userId)?.gifticonId
         val actualGifticonId = goalGifticon?.gifticonId ?: winnerGifticonId ?: throw BaseException.of(
@@ -94,10 +88,8 @@ class GoalGifticonApplicationService(
     fun updateGifticonURLByGoalId(request: GoalGifticonUpdateServiceRequest): GoalGifticonResponse {
         val userEntity = userService.loadById(request.userId).fromDto()
         val goal = goalService.findById(request.goalId).fromDto(userEntity).toDto()
-        val goalGifticon = goalGifticonService.loadByGoalAndUserEntity(
-            goal = goal,
-            userEntity = userEntity
-        ) ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
+        val goalGifticon = goalGifticonService.findByGoalId(goal.id)
+            ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
         val gifticon = gifticonService.findById(goalGifticon.gifticonId)
 
         validateIsRequestUserHasUpdateAuthority(goal, request.userId)
