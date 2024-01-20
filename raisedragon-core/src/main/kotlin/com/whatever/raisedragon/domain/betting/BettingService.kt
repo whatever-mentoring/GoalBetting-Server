@@ -76,7 +76,7 @@ class BettingService(
     }
 
     @Transactional
-    fun update(bettingId: Long, bettingPredictionType: BettingPredictionType): Betting {
+    fun updatePredictionType(bettingId: Long, bettingPredictionType: BettingPredictionType): Betting {
         val betting = bettingRepository.findById(bettingId).orElseThrow(notFoundExceptionSupplier)
         if (betting.bettingPredictionType != bettingPredictionType) {
             betting.bettingPredictionType = bettingPredictionType
@@ -96,12 +96,6 @@ class BettingService(
     @Transactional
     fun bulkModifyingByResultWhereIdInIds(bettingIds: Set<Long>, bettingResult: BettingResult): Int {
         return bettingRepository.bulkModifyingByBettingResultWhereIdInIds(bettingResult, bettingIds)
-    }
-
-    @Transactional
-    fun softDelete(bettingId: Long) {
-        val betting = bettingRepository.findById(bettingId).orElseThrow(notFoundExceptionSupplier)
-        betting.deletedAt = LocalDateTime.now()
     }
 
     @Transactional
