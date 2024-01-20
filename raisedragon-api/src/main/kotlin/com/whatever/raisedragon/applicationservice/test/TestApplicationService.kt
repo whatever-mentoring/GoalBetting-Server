@@ -60,7 +60,10 @@ class TestApplicationService(
                 loserBettingList.map { betting -> betting.id }.toSet(),
                 com.whatever.raisedragon.domain.betting.BettingResult.NO_GIFTICON
             )
-            bettingService.updateResult(winnerBetting.id, com.whatever.raisedragon.domain.betting.BettingResult.GET_GIFTICON)
+            bettingService.updateResult(
+                bettingId = winnerBetting.id,
+                bettingResult = com.whatever.raisedragon.domain.betting.BettingResult.GET_GIFTICON
+            )
             winnerService.create(
                 goalId = goal.id,
                 userId = winnerBetting.userId,

@@ -52,8 +52,7 @@ class UserApplicationService(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
                 executionMessage = "아직 진행중인 다짐이 있어 회원탈퇴에 실패했습니다."
             )
-        }
-        else if (bettingService.existsBettingParticipantUser(id)) {
+        } else if (bettingService.existsBettingParticipantUser(id)) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
                 executionMessage = "아직 진행중인 다짐에 대한 내기가 있어 회원탈퇴에 실패했습니다."

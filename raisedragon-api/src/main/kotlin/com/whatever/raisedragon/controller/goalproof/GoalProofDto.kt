@@ -35,10 +35,12 @@ data class GoalProofUpdateRequest(
     val comment: String? = null
 )
 
-fun GoalProofUpdateRequest.toServiceRequest(userId: Long, goalProofId: Long): GoalProofUpdateServiceRequest =
-    GoalProofUpdateServiceRequest(
-        userId = userId,
-        goalProofId = goalProofId,
-        url = url,
-        comment = comment?.let { Comment(it) }
+fun GoalProofUpdateRequest.toServiceRequest(
+    userId: Long,
+    goalProofId: Long
+): GoalProofUpdateServiceRequest = GoalProofUpdateServiceRequest(
+    userId = userId,
+    goalProofId = goalProofId,
+    url = url,
+    comment = comment?.let { Comment(it) }
 )
