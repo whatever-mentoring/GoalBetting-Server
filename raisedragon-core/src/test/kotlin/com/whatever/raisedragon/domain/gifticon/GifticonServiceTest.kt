@@ -31,9 +31,9 @@ class GifticonServiceTest : IntegrationTestSupport {
     fun create1() {
         // given
         val user = UserEntity(
-                oauthTokenPayload = null,
-                fcmTokenPayload = null,
-                nickname = Nickname("UserNickname1")
+            oauthTokenPayload = null,
+            fcmTokenPayload = null,
+            nickname = Nickname("UserNickname1")
         )
         userRepository.save(user)
 
@@ -44,9 +44,9 @@ class GifticonServiceTest : IntegrationTestSupport {
 
         // then
         assertThat(foundGifticon)
-                .isInstanceOfGifticon()
-                .extracting("userId", "url")
-                .contains(user.id, URL(url))
+            .isInstanceOfGifticon()
+            .extracting("userId", "url")
+            .contains(user.id, URL(url))
     }
 
     @DisplayName("userId와 url를 입력받아 Gifticon을 생성할 때 요청한 userId에 해당하는 유저가 없는 경우 예외가 발생한다.")
@@ -54,9 +54,9 @@ class GifticonServiceTest : IntegrationTestSupport {
     fun create2() {
         // given
         val user = UserEntity(
-                oauthTokenPayload = null,
-                fcmTokenPayload = null,
-                nickname = Nickname("UserNickname1")
+            oauthTokenPayload = null,
+            fcmTokenPayload = null,
+            nickname = Nickname("UserNickname1")
         )
         userRepository.save(user)
 
@@ -64,8 +64,8 @@ class GifticonServiceTest : IntegrationTestSupport {
 
         // when // then
         assertThatThrownBy { gifticonService.create(-1L, url) }
-                .isInstanceOf(BaseException::class.java)
-                .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
+            .isInstanceOf(BaseException::class.java)
+            .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
     }
 
     @DisplayName("요청한 id에 해당하는 Gifticon을 조회한다.")
@@ -73,9 +73,9 @@ class GifticonServiceTest : IntegrationTestSupport {
     fun findById1() {
         // given
         val user = UserEntity(
-                oauthTokenPayload = null,
-                fcmTokenPayload = null,
-                nickname = Nickname("UserNickname1")
+            oauthTokenPayload = null,
+            fcmTokenPayload = null,
+            nickname = Nickname("UserNickname1")
         )
         userRepository.save(user)
 
@@ -88,9 +88,9 @@ class GifticonServiceTest : IntegrationTestSupport {
 
         // then
         assertThat(foundGifticon)
-                .isInstanceOfGifticon()
-                .extracting("userId", "url")
-                .contains(user.id, url)
+            .isInstanceOfGifticon()
+            .extracting("userId", "url")
+            .contains(user.id, url)
     }
 
     @DisplayName("요청한 id에 해당하는 Gifticon을 조회하는 중 해당하는 Gifticon이 없는 경우 예외가 발생한다.")
@@ -98,9 +98,9 @@ class GifticonServiceTest : IntegrationTestSupport {
     fun findById2() {
         // given
         val user = UserEntity(
-                oauthTokenPayload = null,
-                fcmTokenPayload = null,
-                nickname = Nickname("UserNickname1")
+            oauthTokenPayload = null,
+            fcmTokenPayload = null,
+            nickname = Nickname("UserNickname1")
         )
         userRepository.save(user)
 
@@ -110,8 +110,8 @@ class GifticonServiceTest : IntegrationTestSupport {
 
         // when // then
         assertThatThrownBy { gifticonService.findById(-1L) }
-                .isInstanceOf(BaseException::class.java)
-                .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
+            .isInstanceOf(BaseException::class.java)
+            .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
     }
 
     @DisplayName("요청한 userId를 갖는 Gifticon을 hard-delete한다.")
@@ -119,9 +119,9 @@ class GifticonServiceTest : IntegrationTestSupport {
     fun hardDeleteByUserId1() {
         // given
         val user = UserEntity(
-                oauthTokenPayload = null,
-                fcmTokenPayload = null,
-                nickname = Nickname("UserNickname1")
+            oauthTokenPayload = null,
+            fcmTokenPayload = null,
+            nickname = Nickname("UserNickname1")
         )
         userRepository.save(user)
 
@@ -134,7 +134,7 @@ class GifticonServiceTest : IntegrationTestSupport {
 
         // then
         assertThat(gifticonRepositry.findByIdOrNull(gifticon1.id))
-                .isNull()
+            .isNull()
     }
 
     @DisplayName("요청한 userId를 갖는 Gifticon을 hard-delete 하는 중 userId에 해당하는 User가 없으면 예외가 발생한다.")
@@ -142,9 +142,9 @@ class GifticonServiceTest : IntegrationTestSupport {
     fun hardDeleteByUserId2() {
         // given
         val user = UserEntity(
-                oauthTokenPayload = null,
-                fcmTokenPayload = null,
-                nickname = Nickname("UserNickname1")
+            oauthTokenPayload = null,
+            fcmTokenPayload = null,
+            nickname = Nickname("UserNickname1")
         )
         userRepository.save(user)
 
@@ -154,8 +154,8 @@ class GifticonServiceTest : IntegrationTestSupport {
 
         // when // then
         assertThatThrownBy { gifticonService.hardDeleteByUserId(-1L) }
-                .isInstanceOf(BaseException::class.java)
-                .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
+            .isInstanceOf(BaseException::class.java)
+            .hasMessage(ExceptionCode.E404_NOT_FOUND.message)
     }
 
     private fun ObjectAssert<*>.isInstanceOfGifticon() = isInstanceOf(Gifticon::class.java)
