@@ -2,12 +2,8 @@ package com.whatever.raisedragon.domain.goalproof
 
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.domain.gifticon.URL
-import com.whatever.raisedragon.domain.goal.Goal
 import com.whatever.raisedragon.domain.goal.GoalRepository
-import com.whatever.raisedragon.domain.goal.fromDto
-import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserRepository
-import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,20 +21,33 @@ class GoalProofService(
 
     @Transactional
     fun create(
-        user: User,
-        goal: Goal,
+        userId: Long,
+        goalId: Long,
         url: URL,
         comment: Comment
     ): GoalProof {
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
+        val goalEntity = goalRepository.findById(goalId).orElseThrow(notFoundExceptionSupplier)
         val goalProof = goalProofRepository.save(
             GoalProofEntity(
-                userEntity = user.fromDto(),
-                goalEntity = goal.fromDto(user.fromDto()),
+                userEntity = userEntity,
+                goalEntity = goalEntity,
                 url = url,
                 comment = comment,
             )
         )
         return goalProof.toDto()
+    }
+
+    fun findById(id: Long): GoalProof? {
+        return goalProofRepository.findById(id).orElseThrow(notFoundExceptionSupplier).toDto()
+    }
+
+    fun findAllByGoalIdAndUserId(goalId: Long, userId: Long): List<GoalProof> {
+        val goalEntity = goalRepository.findById(goalId).orElseThrow(notFoundExceptionSupplier)
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
+        return goalProofRepository.findAllByUserEntityAndGoalEntity(goalEntity = goalEntity, userEntity = userEntity)
+            .map { it.toDto() }
     }
 
     fun existsGoalIdAndDateTimeBetween(goalId: Long, targetDateTime: LocalDateTime): Boolean {
@@ -65,25 +74,14 @@ class GoalProofService(
         )
     }
 
-    fun findById(goalProofId: Long): GoalProof? {
-        return goalProofRepository.findById(goalProofId).orElseThrow(notFoundExceptionSupplier).toDto()
-    }
-
     fun countAllByGoalId(goalId: Long): Int {
         val goalEntity = goalRepository.findById(goalId).orElseThrow(notFoundExceptionSupplier)
         return goalProofRepository.countAllByGoalEntity(goalEntity)
     }
 
-    fun findAllByGoalIdAndUserId(goalId: Long, userId: Long): List<GoalProof> {
-        val goalEntity = goalRepository.findById(goalId).orElseThrow(notFoundExceptionSupplier)
-        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
-        return goalProofRepository.findAllByUserEntityAndGoalEntity(goalEntity = goalEntity, userEntity = userEntity)
-            .map { it.toDto() }
-    }
-
     @Transactional
-    fun update(goalProofId: Long, url: URL? = null, comment: Comment? = null): GoalProof {
-        val goalProof = goalProofRepository.findById(goalProofId).orElseThrow(notFoundExceptionSupplier)
+    fun update(id: Long, url: URL? = null, comment: Comment? = null): GoalProof {
+        val goalProof = goalProofRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
         url?.let { goalProof.url = it }
         comment?.let { goalProof.comment = it }
         return goalProof.toDto()

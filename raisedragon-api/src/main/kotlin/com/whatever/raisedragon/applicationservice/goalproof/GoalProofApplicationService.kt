@@ -26,14 +26,13 @@ class GoalProofApplicationService(
     @Transactional
     fun create(request: GoalProofCreateServiceRequest): GoalProofCreateUpdateResponse {
         val goal = goalService.findById(request.goalId)
-        val user = userService.loadById(request.userId)
 
-        isGoalProofAlreadyExists(request.goalId)
+        isGoalProofAlreadyExists(goal.id)
         validateGoalProofCreateTiming(goal)
 
         val goalProof = goalProofService.create(
-            user = user,
-            goal = goal,
+            userId = request.userId,
+            goalId = goal.id,
             url = URL(request.url),
             comment = request.comment
         )
