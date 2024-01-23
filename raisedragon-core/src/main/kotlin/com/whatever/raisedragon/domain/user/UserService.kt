@@ -45,17 +45,14 @@ class UserService(
     fun softDelete(id: Long) {
         val userEntity = loadById(id).fromDto()
         userEntity.disable()
+    fun convertBySoftDeleteToEntity(id: Long) {
+        val userEntity = userRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
+        userEntity.able()
     }
 
     @Transactional
     fun hardDeleteById(id: Long) {
         val userEntity = loadById(id).fromDto()
         userRepository.delete(userEntity)
-    }
-
-    @Transactional
-    fun convertBySoftDeleteToEntity(id: Long) {
-        val userEntity = loadById(id).fromDto()
-        userEntity.able()
     }
 }
