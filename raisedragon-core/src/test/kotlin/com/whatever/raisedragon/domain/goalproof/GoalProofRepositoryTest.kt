@@ -38,8 +38,8 @@ class GoalProofRepositoryTest : IntegrationTestSupport {
         val userEntity2 = UserEntity(nickname = Nickname("User2"))
         userRepository.saveAll(listOf(userEntity1, userEntity2))
 
-        val goalEntity1 = createGoalProofEntity(userEntity1, BILLING, PROCEEDING)
-        val goalEntity2 = createGoalProofEntity(userEntity1, FREE, SUCCESS)
+        val goalEntity1 = createGoalEntity(userEntity1, BILLING, PROCEEDING)
+        val goalEntity2 = createGoalEntity(userEntity1, FREE, SUCCESS)
         goalRepository.saveAll(listOf(goalEntity1, goalEntity2))
 
         val goalProofEntity1 = createGoalProofEntity(userEntity1, goalEntity1)
@@ -65,7 +65,7 @@ class GoalProofRepositoryTest : IntegrationTestSupport {
         val userEntity2 = UserEntity(nickname = Nickname("User2"))
         userRepository.saveAll(listOf(userEntity1, userEntity2))
 
-        val goalEntity = createGoalProofEntity(userEntity1, BILLING, PROCEEDING)
+        val goalEntity = createGoalEntity(userEntity1, BILLING, PROCEEDING)
         goalRepository.save(goalEntity)
 
         val goalProofEntity1 = createGoalProofEntity(userEntity1, goalEntity)
@@ -90,7 +90,7 @@ class GoalProofRepositoryTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity = createGoalProofEntity(userEntity, BILLING, PROCEEDING)
+        val goalEntity = createGoalEntity(userEntity, BILLING, PROCEEDING)
         goalRepository.save(goalEntity)
 
         val todayStartDateTime = LocalDateTime.now().minusDays(2)
@@ -127,7 +127,7 @@ class GoalProofRepositoryTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity = createGoalProofEntity(userEntity, BILLING, PROCEEDING)
+        val goalEntity = createGoalEntity(userEntity, BILLING, PROCEEDING)
         goalRepository.save(goalEntity)
 
         val targetDateTime = LocalDateTime.now()
@@ -178,8 +178,8 @@ class GoalProofRepositoryTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity1 = createGoalProofEntity(userEntity, BILLING, PROCEEDING)
-        val goalEntity2 = createGoalProofEntity(userEntity, FREE, SUCCESS)
+        val goalEntity1 = createGoalEntity(userEntity, BILLING, PROCEEDING)
+        val goalEntity2 = createGoalEntity(userEntity, FREE, SUCCESS)
         goalRepository.saveAll(listOf(goalEntity1, goalEntity2))
 
         val goalProofEntity1 = createGoalProofEntity(userEntity, goalEntity1)
@@ -195,7 +195,7 @@ class GoalProofRepositoryTest : IntegrationTestSupport {
         assertThat(foundGoalProofCount).isEqualTo(2)
     }
 
-    private fun createGoalProofEntity(
+    private fun createGoalEntity(
         userEntity: UserEntity,
         goalType: GoalType,
         goalResult: GoalResult
