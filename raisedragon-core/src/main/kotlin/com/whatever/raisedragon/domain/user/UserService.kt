@@ -13,11 +13,22 @@ class UserService(
     private val userRepository: UserRepository,
 ) {
 
-    fun loadByOAuthPayload(payload: String): User? {
-        return userRepository.findByOauthTokenPayload(payload)?.toDto()
+    @Transactional
+    fun create(
+        oauthTokenPayload: String?,
+        fcmTokenPayload: String?,
+        nickname: Nickname,
+    ): User {
+        return userRepository.save(
+            UserEntity(
+                oauthTokenPayload = oauthTokenPayload,
+                fcmTokenPayload = fcmTokenPayload,
+                nickname = nickname
+            )
+        ).toDto()
     }
 
-    fun loadById(id: Long): User {
+    fun findById(id: Long): User {
         return userRepository.findById(id).orElseThrow(notFoundExceptionSupplier).toDto()
     }
 
@@ -25,13 +36,12 @@ class UserService(
         return userRepository.findAllById(ids).map { it.toDto() }
     }
 
-    fun isNicknameDuplicated(nickname: String): Boolean {
-        return userRepository.existsByNickname(Nickname(nickname))
+    fun findByOAuthPayload(payload: String): User? {
+        return userRepository.findByOauthTokenPayload(payload)?.toDto()
     }
 
-    @Transactional
-    fun create(user: User): User {
-        return userRepository.save(user.fromDto()).toDto()
+    fun isNicknameDuplicated(nickname: String): Boolean {
+        return userRepository.existsByNickname(Nickname(nickname))
     }
 
     @Transactional
@@ -42,9 +52,6 @@ class UserService(
     }
 
     @Transactional
-    fun softDelete(id: Long) {
-        val userEntity = loadById(id).fromDto()
-        userEntity.disable()
     fun convertBySoftDeleteToEntity(id: Long) {
         val userEntity = userRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
         userEntity.able()
@@ -52,7 +59,7 @@ class UserService(
 
     @Transactional
     fun hardDeleteById(id: Long) {
-        val userEntity = loadById(id).fromDto()
+        val userEntity = userRepository.findById(id).orElseThrow(notFoundExceptionSupplier)
         userRepository.delete(userEntity)
     }
 }

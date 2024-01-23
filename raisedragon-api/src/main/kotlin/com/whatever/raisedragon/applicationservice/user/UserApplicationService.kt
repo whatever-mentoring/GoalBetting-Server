@@ -27,7 +27,7 @@ class UserApplicationService(
 ) {
 
     fun retrieve(id: Long): UserRetrieveResponse {
-        val user = userService.loadById(id)
+        val user = userService.findById(id)
         return UserRetrieveResponse(
             userId = user.id!!,
             nickname = user.nickname,
