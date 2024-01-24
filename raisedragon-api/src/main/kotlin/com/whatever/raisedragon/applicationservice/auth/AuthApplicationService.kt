@@ -68,7 +68,7 @@ class AuthApplicationService(
     private fun buildLoginResponseByUser(user: User): LoginResponse {
         val jwtToken = JwtToken(
             accessToken = jwtAgent.provide(user).accessToken,
-            refreshToken = refreshTokenService.loadByUser(user)?.payload!!
+            refreshToken = refreshTokenService.findByUser(user)?.payload!!
         )
 
         return LoginResponse(
@@ -82,7 +82,7 @@ class AuthApplicationService(
 
     @Transactional
     fun reissueToken(refreshToken: String): TokenRefreshResponse {
-        val refreshTokenVo = refreshTokenService.loadByPayload(refreshToken) ?: throw BaseException.of(
+        val refreshTokenVo = refreshTokenService.findByPayload(refreshToken) ?: throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
             executionMessage = "잘못된 토큰으로 요청하셨습니다."
         )

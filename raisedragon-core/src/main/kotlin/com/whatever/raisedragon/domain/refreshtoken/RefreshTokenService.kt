@@ -1,10 +1,7 @@
 package com.whatever.raisedragon.domain.refreshtoken
 
 import com.whatever.raisedragon.common.exception.BaseException
-import com.whatever.raisedragon.domain.user.User
-import com.whatever.raisedragon.domain.user.UserEntity
 import com.whatever.raisedragon.domain.user.UserRepository
-import com.whatever.raisedragon.domain.user.fromDto
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,23 +17,27 @@ class RefreshTokenService(
 ) {
 
     @Transactional
-    fun create(refreshToken: RefreshToken, userEntity: UserEntity) {
-        refreshTokenRepository.save(refreshToken.fromDto(userEntity))
+    fun create(userId: Long, payload: String?): RefreshToken {
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
+        return refreshTokenRepository.save(RefreshTokenEntity(userEntity, payload)).toDto()
     }
 
-    fun loadByPayload(payload: String): RefreshToken? {
+    fun findByPayload(payload: String): RefreshToken? {
         return refreshTokenRepository.findByPayload(payload)?.toDto()
     }
 
-    fun loadByUser(user: User): RefreshTokenEntity? {
-        return refreshTokenRepository.findByUserEntity(user.fromDto())
+    fun findByUser(userId: Long): RefreshTokenEntity? {
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
+        return refreshTokenRepository.findByUserEntity(userEntity)
     }
 
     @Transactional
-    fun updatePayloadByUserId(userId: Long, payload: String) {
+    fun updatePayloadByUserId(userId: Long, payload: String): RefreshToken {
         val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
         val refreshTokenEntity = refreshTokenRepository.findByUserEntity(userEntity)
-        refreshTokenEntity?.payload = payload
+            ?: throw notFoundExceptionSupplier.get()
+        refreshTokenEntity.payload = payload
+        return refreshTokenEntity.toDto()
     }
 
     @Transactional

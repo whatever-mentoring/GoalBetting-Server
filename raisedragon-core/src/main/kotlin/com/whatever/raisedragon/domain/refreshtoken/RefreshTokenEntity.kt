@@ -10,16 +10,16 @@ import org.hibernate.annotations.SQLRestriction
 @SQLRestriction("deleted_at IS NULL")
 class RefreshTokenEntity(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val userEntity: UserEntity,
 
     @Column(name = "payload", nullable = true, length = 255)
-    var payload: String?
+    var payload: String?,
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L
 
 ) : BaseEntity()
 
