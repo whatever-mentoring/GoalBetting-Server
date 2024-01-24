@@ -33,8 +33,10 @@ class RefreshTokenService(
     }
 
     @Transactional
-    fun updatePayloadByVo(refreshToken: RefreshToken, userEntity: UserEntity) {
-        val refreshTokenEntity = refreshToken.fromDto(userEntity)
+    fun updatePayloadByUserId(userId: Long, payload: String) {
+        val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
+        val refreshTokenEntity = refreshTokenRepository.findByUserEntity(userEntity)
+        refreshTokenEntity?.payload = payload
     }
 
     @Transactional

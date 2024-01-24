@@ -91,8 +91,7 @@ class AuthApplicationService(
         val user = userService.findById(userId)
         val jwtToken = jwtAgent.reissueToken(refreshToken, user)
 
-        refreshTokenVo.payload = jwtToken.refreshToken
-        refreshTokenService.updatePayloadByVo(refreshTokenVo, user.fromDto())
+        refreshTokenService.updatePayloadByUserId(userId, jwtToken.refreshToken)
 
         return TokenRefreshResponse(
             accessToken = jwtToken.accessToken,

@@ -19,7 +19,7 @@ class RefreshTokenEntity(
     val userEntity: UserEntity,
 
     @Column(name = "payload", nullable = true, length = 255)
-    val payload: String?
+    var payload: String?
 
 ) : BaseEntity()
 
