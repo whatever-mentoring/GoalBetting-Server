@@ -29,15 +29,13 @@ class AuthApplicationService(
     @Transactional
     fun kakaoLogin(request: LoginServiceRequest): LoginResponse {
         val kakaoId = authService.verifyKaKao(request.accessToken)
-        val user = userService.loadByOAuthPayload(kakaoId)
+        val user = userService.findByOAuthPayload(kakaoId)
 
         if (user == null) {
             val newUser = userService.create(
-                User(
-                    oauthTokenPayload = kakaoId,
-                    fcmTokenPayload = null,
-                    nickname = Nickname.generateRandomNickname()
-                )
+                oauthTokenPayload = kakaoId,
+                fcmTokenPayload = null,
+                nickname = Nickname.generateRandomNickname()
             )
             return buildLoginResponseByNewUser(newUser)
         }
@@ -90,7 +88,7 @@ class AuthApplicationService(
         )
 
         val userId = refreshTokenVo.userId
-        val user = userService.loadById(userId)
+        val user = userService.findById(userId)
         val jwtToken = jwtAgent.reissueToken(refreshToken, user)
 
         refreshTokenVo.payload = jwtToken.refreshToken

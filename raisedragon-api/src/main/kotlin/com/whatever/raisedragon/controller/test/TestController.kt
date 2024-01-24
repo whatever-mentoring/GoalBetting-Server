@@ -20,7 +20,7 @@ class TestController(
     @Operation(description = "테스트 토큰 발급")
     @GetMapping("/token/{userId}")
     fun getToken(@PathVariable userId: Long): Response<String> {
-        return Response.success(jwtAgent.provide(userService.loadById(userId)).accessToken)
+        return Response.success(jwtAgent.provide(userService.findById(userId)).accessToken)
     }
 
     @Operation(description = "단일 다짐에 대한 결과 확정")

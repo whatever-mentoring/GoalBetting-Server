@@ -86,7 +86,7 @@ class GoalGifticonApplicationService(
 
     @Transactional
     fun updateGifticonURLByGoalId(request: GoalGifticonUpdateServiceRequest): GoalGifticonResponse {
-        val userEntity = userService.loadById(request.userId).fromDto()
+        val userEntity = userService.findById(request.userId).fromDto()
         val goal = goalService.findById(request.goalId).fromDto(userEntity).toDto()
         val goalGifticon = goalGifticonService.findByGoalId(goal.id)
             ?: throw BaseException.of(ExceptionCode.E404_NOT_FOUND, "다짐에 등록된 기프티콘을 찾을 수 없습니다.")
