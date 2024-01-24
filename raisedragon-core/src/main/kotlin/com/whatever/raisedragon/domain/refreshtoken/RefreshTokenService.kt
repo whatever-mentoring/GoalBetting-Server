@@ -26,9 +26,9 @@ class RefreshTokenService(
         return refreshTokenRepository.findByPayload(payload)?.toDto()
     }
 
-    fun findByUser(userId: Long): RefreshTokenEntity? {
+    fun findByUserId(userId: Long): RefreshToken? {
         val userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier)
-        return refreshTokenRepository.findByUserEntity(userEntity)
+        return refreshTokenRepository.findByUserEntity(userEntity)?.toDto()
     }
 
     @Transactional
