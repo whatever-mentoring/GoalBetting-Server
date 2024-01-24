@@ -6,12 +6,10 @@ import com.whatever.raisedragon.applicationservice.auth.dto.TokenRefreshResponse
 import com.whatever.raisedragon.common.exception.BaseException
 import com.whatever.raisedragon.common.exception.ExceptionCode
 import com.whatever.raisedragon.domain.auth.AuthService
-import com.whatever.raisedragon.domain.refreshtoken.RefreshToken
 import com.whatever.raisedragon.domain.refreshtoken.RefreshTokenService
 import com.whatever.raisedragon.domain.user.Nickname
 import com.whatever.raisedragon.domain.user.User
 import com.whatever.raisedragon.domain.user.UserService
-import com.whatever.raisedragon.domain.user.fromDto
 import com.whatever.raisedragon.security.jwt.JwtAgent
 import com.whatever.raisedragon.security.jwt.JwtToken
 import org.springframework.stereotype.Service
@@ -49,26 +47,25 @@ class AuthApplicationService(
 
     private fun buildLoginResponseByNewUser(newUser: User): LoginResponse {
         val jwtToken = jwtAgent.provide(newUser)
-        val refreshToken = RefreshToken(
-            userId = newUser.id!!,
-            payload = jwtToken.refreshToken,
-        )
+        newUser.id ?: throw BaseException.of(ExceptionCode.E500_INTERNAL_SERVER_ERROR)
 
-        refreshTokenService.create(refreshToken, newUser.fromDto())
+        val refreshToken = refreshTokenService.create(newUser.id!!, jwtToken.refreshToken).payload
+            ?: throw BaseException.of(ExceptionCode.E400_BAD_REQUEST)
 
         return LoginResponse(
             userId = newUser.id!!,
             nickname = newUser.nickname.value,
             accessToken = jwtToken.accessToken,
-            refreshToken = jwtToken.refreshToken,
+            refreshToken = refreshToken,
             nicknameIsModified = newUser.createdAt!! < newUser.updatedAt
         )
     }
 
     private fun buildLoginResponseByUser(user: User): LoginResponse {
+        user.id ?: throw BaseException.of(ExceptionCode.E500_INTERNAL_SERVER_ERROR)
         val jwtToken = JwtToken(
             accessToken = jwtAgent.provide(user).accessToken,
-            refreshToken = refreshTokenService.loadByUser(user)?.payload!!
+            refreshToken = refreshTokenService.findByUserId(user.id!!)?.payload!!
         )
 
         return LoginResponse(
@@ -82,7 +79,7 @@ class AuthApplicationService(
 
     @Transactional
     fun reissueToken(refreshToken: String): TokenRefreshResponse {
-        val refreshTokenVo = refreshTokenService.loadByPayload(refreshToken) ?: throw BaseException.of(
+        val refreshTokenVo = refreshTokenService.findByPayload(refreshToken) ?: throw BaseException.of(
             exceptionCode = ExceptionCode.E400_BAD_REQUEST,
             executionMessage = "잘못된 토큰으로 요청하셨습니다."
         )
@@ -91,8 +88,7 @@ class AuthApplicationService(
         val user = userService.findById(userId)
         val jwtToken = jwtAgent.reissueToken(refreshToken, user)
 
-        refreshTokenVo.payload = jwtToken.refreshToken
-        refreshTokenService.updatePayloadByVo(refreshTokenVo, user.fromDto())
+        refreshTokenService.updatePayloadByUserId(userId, jwtToken.refreshToken)
 
         return TokenRefreshResponse(
             accessToken = jwtToken.accessToken,

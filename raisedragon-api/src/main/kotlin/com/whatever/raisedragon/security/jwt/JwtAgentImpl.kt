@@ -75,7 +75,7 @@ class JwtAgentImpl(
     }
 
     private fun isExistRefreshToken(refreshTokenPayload: String) {
-        refreshTokenService.loadByPayload(refreshTokenPayload)
+        refreshTokenService.findByPayload(refreshTokenPayload)
             ?: throw BaseException.of(
                 exceptionCode = ExceptionCode.E400_BAD_REQUEST,
                 executionMessage = "토큰을 갱신하는 중, 유효하지 않은 토큰으로 요청하셨습니다."
