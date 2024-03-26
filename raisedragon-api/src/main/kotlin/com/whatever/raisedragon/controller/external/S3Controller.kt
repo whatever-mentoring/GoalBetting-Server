@@ -1,7 +1,7 @@
 package com.whatever.raisedragon.controller.external
 
 import com.whatever.raisedragon.common.Response
-import com.whatever.raisedragon.infra.s3.S3ApplicationService
+import com.whatever.raisedragon.infra.s3.FileUploader
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/v1/s3")
 @SecurityRequirement(name = "Authorization")
 class S3Controller(
-    private val s3ApplicationService: S3ApplicationService
+    private val fileUploader: FileUploader
 ) {
 
     @Operation(summary = "Upload Gifticon", description = "기프티콘을 업로드합니다.")
@@ -28,6 +28,6 @@ class S3Controller(
     fun create(
         @RequestPart multipartFile: MultipartFile
     ): Response<String> {
-        return Response.success(s3ApplicationService.upload(multipartFile))
+        return Response.success(fileUploader.upload(multipartFile))
     }
 }

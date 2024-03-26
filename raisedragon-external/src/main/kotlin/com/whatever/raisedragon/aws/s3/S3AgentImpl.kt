@@ -3,12 +3,14 @@ package com.whatever.raisedragon.aws.s3
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.util.*
 
 @Component
+@Profile("!test")
 class S3AgentImpl(
     private val amazonS3: AmazonS3,
     private val s3Properties: S3Config.S3Properties

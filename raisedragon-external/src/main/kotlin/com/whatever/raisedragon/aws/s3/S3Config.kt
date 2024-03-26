@@ -10,13 +10,19 @@ import org.springframework.cloud.aws.autoconfigure.context.properties.AwsCredent
 import org.springframework.cloud.aws.autoconfigure.context.properties.AwsRegionProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 
 @Configuration
 @EnableConfigurationProperties(S3Config.S3Properties::class)
+@Profile("!test")
 class S3Config {
 
     @Bean
-    fun amazonS3(awsCredentialsProperties: AwsCredentialsProperties, awsRegionProperties: AwsRegionProperties, s3Properties: S3Properties): AmazonS3 {
+    fun amazonS3(
+        awsCredentialsProperties: AwsCredentialsProperties,
+        awsRegionProperties: AwsRegionProperties,
+        s3Properties: S3Properties
+    ): AmazonS3 {
         val awsCredentials = BasicAWSCredentials(awsCredentialsProperties.accessKey, awsCredentialsProperties.secretKey)
         return AmazonS3ClientBuilder.standard()
             .withRegion(awsRegionProperties.static)
