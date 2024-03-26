@@ -22,27 +22,33 @@ class BettingApplicationService(
 
     @Transactional
     fun create(request: BettingCreateServiceRequest): BettingCreateUpdateResponse {
-        if (canBet(request.userId, request.goalId)) {
-            val betting = bettingService.create(
-                userId = request.userId,
-                goalId = request.goalId,
-                bettingPredictionType = request.bettingPredictionType
-            )
-
-            return BettingCreateUpdateResponse(
-                BettingRetrieveResponse(
-                    id = betting.id,
-                    userId = betting.userId,
-                    goalId = betting.goalId,
-                    bettingPredictionType = betting.bettingPredictionType,
-                    bettingResult = betting.bettingResult
-                )
+        if (existBetting(request.userId, request.goalId)) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E409_CONFLICT,
+                executionMessage = "이미 배팅에 참여한 다짐입니다."
             )
         }
+        if (isOwnGoal(request.userId, request.goalId)) {
+            throw BaseException.of(
+                exceptionCode = ExceptionCode.E403_FORBIDDEN,
+                executionMessage = "자신의 다짐에는 베팅할 수 없습니다."
+            )
+        }
+        validateGoalStartDate(request.goalId)
+        val betting = bettingService.create(
+            userId = request.userId,
+            goalId = request.goalId,
+            bettingPredictionType = request.bettingPredictionType
+        )
 
-        throw BaseException.of(
-            exceptionCode = ExceptionCode.E409_CONFLICT,
-            executionMessage = "이미 배팅에 참여한 다짐입니다."
+        return BettingCreateUpdateResponse(
+            BettingRetrieveResponse(
+                id = betting.id,
+                userId = betting.userId,
+                goalId = betting.goalId,
+                bettingPredictionType = betting.bettingPredictionType,
+                bettingResult = betting.bettingResult
+            )
         )
     }
 
@@ -55,8 +61,12 @@ class BettingApplicationService(
         val betting = findByIdOrThrowException(request.bettingId)
         betting.validateOwnerId(request.userId)
         betting.validateStartDate()
-        return BettingRetrieveResponse.of(bettingService.updatePredictionType(request.bettingId,
-            request.bettingPredictionType))
+        return BettingRetrieveResponse.of(
+            bettingService.updatePredictionType(
+                bettingId = request.bettingId,
+                bettingPredictionType = request.bettingPredictionType
+            )
+        )
     }
 
     @Transactional
@@ -88,8 +98,20 @@ class BettingApplicationService(
         }
     }
 
-    private fun canBet(
+    private fun validateGoalStartDate(goalId: Long) {
+        val now = LocalDateTime.now()
+        val goalStartDate = goalService.findById(goalId).startDate
+        if (now.toLocalDate() >= goalStartDate.toLocalDate()) {
+            throw BaseException.of(ExceptionCode.E400_BAD_REQUEST, "이미 시작한 내기 입니다.")
+        }
+    }
+
+    private fun existBetting(
         userId: Long,
         goalId: Long
-    ) = bettingService.loadUserAndGoal(userId, goalId) == null
+    ) = bettingService.loadUserAndGoal(userId, goalId) != null
+
+    private fun isOwnGoal(userId: Long, goalId: Long): Boolean {
+        return goalService.findById(goalId).userId == userId
+    }
 }
