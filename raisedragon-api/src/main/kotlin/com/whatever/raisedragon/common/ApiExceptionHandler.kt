@@ -16,6 +16,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 class ApiExceptionHandler {
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
     private fun handlerMethodArgumentNotValidException(
         exception: MethodArgumentNotValidException
@@ -26,6 +27,7 @@ class ApiExceptionHandler {
         )
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException::class)
     private fun handlerConstraintViolationException(
         exception: ConstraintViolationException,
@@ -36,6 +38,7 @@ class ApiExceptionHandler {
         )
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     private fun handleMethodArgumentTypeMismatchException(
         exception: MethodArgumentTypeMismatchException,
@@ -46,6 +49,7 @@ class ApiExceptionHandler {
         )
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException::class)
     private fun handleMissingServletRequestParameterException(
         exception: MissingServletRequestParameterException,
@@ -56,6 +60,7 @@ class ApiExceptionHandler {
         )
     }
 
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     private fun httpRequestMethodNotSupportedException(
         exception: HttpRequestMethodNotSupportedException
