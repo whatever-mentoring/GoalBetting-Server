@@ -21,7 +21,7 @@ class BettingApplicationService(
 ) {
 
     @Transactional
-    fun create(request: BettingCreateServiceRequest): BettingCreateUpdateResponse {
+    fun create(request: BettingCreateServiceRequest): BettingRetrieveResponse {
         if (existBetting(request.userId, request.goalId)) {
             throw BaseException.of(
                 exceptionCode = ExceptionCode.E409_CONFLICT,
@@ -41,14 +41,12 @@ class BettingApplicationService(
             bettingPredictionType = request.bettingPredictionType
         )
 
-        return BettingCreateUpdateResponse(
-            BettingRetrieveResponse(
-                id = betting.id,
-                userId = betting.userId,
-                goalId = betting.goalId,
-                bettingPredictionType = betting.bettingPredictionType,
-                bettingResult = betting.bettingResult
-            )
+        return BettingRetrieveResponse(
+            id = betting.id,
+            userId = betting.userId,
+            goalId = betting.goalId,
+            bettingPredictionType = betting.bettingPredictionType,
+            bettingResult = betting.bettingResult
         )
     }
 

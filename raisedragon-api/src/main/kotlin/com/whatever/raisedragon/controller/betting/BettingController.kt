@@ -30,7 +30,7 @@ class BettingController(
     fun create(
         @Valid @RequestBody bettingCreateRequest: BettingCreateRequest,
         @GetAuth userInfo: UserInfo
-    ): Response<BettingCreateUpdateResponse> {
+    ): Response<BettingRetrieveResponse> {
         return Response.success(
             bettingApplicationService.create(bettingCreateRequest.toServiceRequest(userInfo.id))
         )
