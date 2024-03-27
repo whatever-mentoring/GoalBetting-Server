@@ -4,10 +4,12 @@ import com.whatever.raisedragon.applicationservice.betting.dto.BettingCreateServ
 import com.whatever.raisedragon.applicationservice.betting.dto.BettingUpdateServiceRequest
 import com.whatever.raisedragon.domain.betting.BettingPredictionType
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.Positive
 
 @Schema(description = "[Request] 배팅 생성")
 data class BettingCreateRequest(
     @Schema(description = "Goal Id")
+    @field:Positive(message = "올바른 goalId를 입력해야합니다.")
     val goalId: Long,
 
     @Schema(description = "배팅 타입 [SUCCESS, FAIL]")
