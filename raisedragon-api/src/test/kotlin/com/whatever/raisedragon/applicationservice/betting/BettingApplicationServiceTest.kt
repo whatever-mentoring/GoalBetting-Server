@@ -1,7 +1,6 @@
 package com.whatever.raisedragon.applicationservice.betting
 
 import com.whatever.raisedragon.applicationservice.betting.dto.BettingCreateServiceRequest
-import com.whatever.raisedragon.applicationservice.betting.dto.BettingCreateUpdateResponse
 import com.whatever.raisedragon.applicationservice.betting.dto.BettingRetrieveResponse
 import com.whatever.raisedragon.applicationservice.betting.dto.BettingUpdateServiceRequest
 import com.whatever.raisedragon.common.exception.BaseException

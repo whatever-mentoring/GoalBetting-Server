@@ -41,11 +41,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity = createGoalEntity(userEntity,
+        val goalEntity = createGoalEntity(
+            userEntity,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         // when
@@ -69,11 +71,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity = createGoalEntity(userEntity,
+        val goalEntity = createGoalEntity(
+            userEntity,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         // when // then
@@ -93,11 +97,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity = createGoalEntity(userEntity,
+        val goalEntity = createGoalEntity(
+            userEntity,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         // when // then
@@ -117,11 +123,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity = UserEntity(nickname = Nickname("User1"))
         userRepository.save(userEntity)
 
-        val goalEntity = createGoalEntity(userEntity,
+        val goalEntity = createGoalEntity(
+            userEntity,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         val bettingEntity = BettingEntity(
@@ -150,11 +158,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity2 = UserEntity(nickname = Nickname("User2"))
         userRepository.saveAll(listOf(userEntity1, userEntity2))
 
-        val goalEntity = createGoalEntity(userEntity1,
+        val goalEntity = createGoalEntity(
+            userEntity1,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         val bettingEntity = BettingEntity(
@@ -180,11 +190,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity2 = UserEntity(nickname = Nickname("User2"))
         userRepository.saveAll(listOf(userEntity1, userEntity2))
 
-        val goalEntity = createGoalEntity(userEntity1,
+        val goalEntity = createGoalEntity(
+            userEntity1,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         val bettingEntity = BettingEntity(
@@ -208,11 +220,13 @@ class BettingServiceTest : IntegrationTestSupport {
         val userEntity2 = UserEntity(nickname = Nickname("User2"))
         userRepository.saveAll(listOf(userEntity1, userEntity2))
 
-        val goalEntity = createGoalEntity(userEntity1,
+        val goalEntity = createGoalEntity(
+            userEntity1,
             BILLING,
             PROCEEDING,
             LocalDateTime.now(),
-            LocalDateTime.now().plusDays(7))
+            LocalDateTime.now().plusDays(7)
+        )
         goalRepository.save(goalEntity)
 
         val bettingEntity = BettingEntity(
@@ -284,14 +298,18 @@ class BettingServiceTest : IntegrationTestSupport {
         assertThat(foundBettingList).hasSize(2)
             .extractingBettingProperties()
             .containsExactlyInAnyOrder(
-                tuple(bettingEntity1.userEntity.id,
+                tuple(
+                    bettingEntity1.userEntity.id,
                     bettingEntity1.goalEntity.id,
                     BettingPredictionType.FAIL,
-                    BettingResult.PROCEEDING),
-                tuple(bettingEntity2.userEntity.id,
+                    BettingResult.PROCEEDING
+                ),
+                tuple(
+                    bettingEntity2.userEntity.id,
                     bettingEntity2.goalEntity.id,
                     BettingPredictionType.SUCCESS,
-                    BettingResult.NO_GIFTICON),
+                    BettingResult.NO_GIFTICON
+                ),
             )
     }
 
@@ -1024,10 +1042,16 @@ class BettingServiceTest : IntegrationTestSupport {
         bettingService.hardDeleteByUserId(userEntity.id)
 
         // then
-        assertThat(bettingRepository.findAllById(setOf(bettingEntity1.id,
-            bettingEntity2.id,
-            bettingEntity3.id,
-            bettingEntity4.id)))
+        assertThat(
+            bettingRepository.findAllById(
+                setOf(
+                    bettingEntity1.id,
+                    bettingEntity2.id,
+                    bettingEntity3.id,
+                    bettingEntity4.id
+                )
+            )
+        )
             .isEmpty()
     }
 
@@ -1079,15 +1103,19 @@ class BettingServiceTest : IntegrationTestSupport {
 
     private fun ObjectAssert<*>.isInstanceOfBetting() = isInstanceOf(Betting::class.java)
 
-    private fun ObjectAssert<*>.extractingBettingProperties() = extracting("userId",
+    private fun ObjectAssert<*>.extractingBettingProperties() = extracting(
+        "userId",
         "goalId",
         "bettingPredictionType",
-        "bettingResult")
+        "bettingResult"
+    )
 
-    private fun ListAssert<*>.extractingBettingProperties() = extracting("userId",
+    private fun ListAssert<*>.extractingBettingProperties() = extracting(
+        "userId",
         "goalId",
         "bettingPredictionType",
-        "bettingResult")
+        "bettingResult"
+    )
 
     private fun createGoalEntity(
         userEntity: UserEntity,
