@@ -57,11 +57,11 @@ class BettingApplicationServiceTest : ApplicationServiceTestSupport {
 
         // then
         assertThat(bettingResponse)
-            .isInstanceOf(BettingCreateUpdateResponse::class.java)
-        assertThat(bettingResponse.bettingRetrieveResponse)
             .isInstanceOf(BettingRetrieveResponse::class.java)
-            .extracting("userId", "goalId", "bettingPredictionType", "bettingResult")
-            .contains(request.userId, request.goalId, request.bettingPredictionType, BettingResult.PROCEEDING)
+        assertThat(bettingResponse.userId).isEqualTo(userEntity2.id)
+        assertThat(bettingResponse.goalId).isEqualTo(goalEntity.id)
+        assertThat(bettingResponse.bettingPredictionType).isEqualTo(request.bettingPredictionType)
+        assertThat(bettingResponse.bettingResult).isEqualTo(BettingResult.PROCEEDING)
     }
 
     @DisplayName("Betting을 생성을 요청하는 사용자의 id로 만들어진 Betting이 있는 경우 생성에 실패한다.")
