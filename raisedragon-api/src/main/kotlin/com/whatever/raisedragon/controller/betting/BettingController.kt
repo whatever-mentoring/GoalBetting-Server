@@ -1,7 +1,6 @@
 package com.whatever.raisedragon.controller.betting
 
 import com.whatever.raisedragon.applicationservice.betting.BettingApplicationService
-import com.whatever.raisedragon.applicationservice.betting.dto.BettingCreateUpdateResponse
 import com.whatever.raisedragon.applicationservice.betting.dto.BettingRetrieveResponse
 import com.whatever.raisedragon.common.Response
 import com.whatever.raisedragon.security.authentication.UserInfo
