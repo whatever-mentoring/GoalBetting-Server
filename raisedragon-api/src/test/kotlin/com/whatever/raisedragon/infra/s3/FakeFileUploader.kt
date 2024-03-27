@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Service
 @Profile("test")
-class FakeFileUploader: FileUploader {
+class FakeFileUploader : FileUploader {
     override fun upload(multipartFile: MultipartFile): String {
         return ""
     }

@@ -74,7 +74,8 @@ class GoalApplicationService(
             hostUserNickname = hostUser.nickname.value,
             betting = betting,
             isSuccess = isSuccess,
-            winnerNickname = winnerNickname)
+            winnerNickname = winnerNickname
+        )
     }
 
     fun retrieveAllByUserId(userId: Long): List<GoalResponse> {

@@ -109,7 +109,7 @@ class UserServiceTest : IntegrationTestSupport {
         val userEntity4 = UserEntity(nickname = Nickname("User4"))
         userRepository.saveAll(listOf(userEntity1, userEntity2, userEntity3, userEntity4))
 
-        val selectedUserEntityList = listOf(userEntity1,userEntity2,userEntity4)
+        val selectedUserEntityList = listOf(userEntity1, userEntity2, userEntity4)
         val selectedUserIds = selectedUserEntityList.map { user -> user.id }.toSet()
         val selectedUserNickname = selectedUserEntityList.map { user -> user.nickname }.toTypedArray()
 
@@ -135,7 +135,7 @@ class UserServiceTest : IntegrationTestSupport {
         userRepository.saveAll(listOf(userEntity1, userEntity2, userEntity3, userEntity4))
 
         // when
-        val foundUserList = userService.findAllByIdInIds(setOf(-1,-2,-3))
+        val foundUserList = userService.findAllByIdInIds(setOf(-1, -2, -3))
 
         // then
         assertThat(foundUserList)

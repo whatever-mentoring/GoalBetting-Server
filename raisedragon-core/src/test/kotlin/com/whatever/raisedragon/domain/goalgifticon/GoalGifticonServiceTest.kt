@@ -126,7 +126,8 @@ class GoalGifticonServiceTest : IntegrationTestSupport {
                 goalGifticonEntity1,
                 goalGifticonEntity2,
                 goalGifticonEntity3,
-                goalGifticonEntity4)
+                goalGifticonEntity4
+            )
         )
         // when
         val foundGoalGifticon = goalGifticonService.findByGoalId(goalEntity1.id)
@@ -164,7 +165,8 @@ class GoalGifticonServiceTest : IntegrationTestSupport {
                 goalGifticonEntity1,
                 goalGifticonEntity2,
                 goalGifticonEntity3,
-                goalGifticonEntity4)
+                goalGifticonEntity4
+            )
         )
         // when
         val foundGoalGifticon = goalGifticonService.findByGoalId(goalEntity1.id)
@@ -199,7 +201,8 @@ class GoalGifticonServiceTest : IntegrationTestSupport {
                 goalGifticonEntity1,
                 goalGifticonEntity2,
                 goalGifticonEntity3,
-                goalGifticonEntity4)
+                goalGifticonEntity4
+            )
         )
         // when // then
         assertThatThrownBy { goalGifticonService.findByGoalId(-1L) }

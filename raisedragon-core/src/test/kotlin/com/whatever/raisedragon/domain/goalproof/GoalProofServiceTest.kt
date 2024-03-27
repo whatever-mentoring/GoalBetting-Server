@@ -180,12 +180,14 @@ class GoalProofServiceTest : IntegrationTestSupport {
         val goalProofEntity3 = createGoalProofEntity(userEntity2, goalEntity1, URL("url3"), Comment("comment3"))
         val goalProofEntity4 = createGoalProofEntity(userEntity2, goalEntity2, URL("url4"), Comment("comment4"))
         val goalProofEntity5 = createGoalProofEntity(userEntity1, goalEntity1, URL("url5"), Comment("comment5"))
-        goalProofRepository.saveAll(listOf(
-            goalProofEntity1,
-            goalProofEntity2,
-            goalProofEntity3,
-            goalProofEntity4,
-            goalProofEntity5)
+        goalProofRepository.saveAll(
+            listOf(
+                goalProofEntity1,
+                goalProofEntity2,
+                goalProofEntity3,
+                goalProofEntity4,
+                goalProofEntity5
+            )
         )
 
         // when
@@ -222,13 +224,15 @@ class GoalProofServiceTest : IntegrationTestSupport {
         val goalProofEntity3 = createGoalProofEntity(userEntity2, goalEntity1, URL("url3"), Comment("comment3"))
         val goalProofEntity4 = createGoalProofEntity(userEntity2, goalEntity2, URL("url4"), Comment("comment4"))
         val goalProofEntity5 = createGoalProofEntity(userEntity1, goalEntity1, URL("url5"), Comment("comment5"))
-        goalProofRepository.saveAll(listOf(
-            goalProofEntity1,
-            goalProofEntity2,
-            goalProofEntity3,
-            goalProofEntity4,
-            goalProofEntity5
-        ))
+        goalProofRepository.saveAll(
+            listOf(
+                goalProofEntity1,
+                goalProofEntity2,
+                goalProofEntity3,
+                goalProofEntity4,
+                goalProofEntity5
+            )
+        )
 
         // when
         val foundGoalProofList = goalProofService.findAllByGoalIdAndUserId(
@@ -259,13 +263,15 @@ class GoalProofServiceTest : IntegrationTestSupport {
         val goalProofEntity3 = createGoalProofEntity(userEntity2, goalEntity1, URL("url3"), Comment("comment3"))
         val goalProofEntity4 = createGoalProofEntity(userEntity2, goalEntity2, URL("url4"), Comment("comment4"))
         val goalProofEntity5 = createGoalProofEntity(userEntity1, goalEntity1, URL("url5"), Comment("comment5"))
-        goalProofRepository.saveAll(listOf(
-            goalProofEntity1,
-            goalProofEntity2,
-            goalProofEntity3,
-            goalProofEntity4,
-            goalProofEntity5
-        ))
+        goalProofRepository.saveAll(
+            listOf(
+                goalProofEntity1,
+                goalProofEntity2,
+                goalProofEntity3,
+                goalProofEntity4,
+                goalProofEntity5
+            )
+        )
 
         // when // then
         assertThatThrownBy { goalProofService.findAllByGoalIdAndUserId(goalId = -1L, userId = userEntity1.id) }
@@ -290,13 +296,15 @@ class GoalProofServiceTest : IntegrationTestSupport {
         val goalProofEntity3 = createGoalProofEntity(userEntity2, goalEntity1, URL("url3"), Comment("comment3"))
         val goalProofEntity4 = createGoalProofEntity(userEntity2, goalEntity2, URL("url4"), Comment("comment4"))
         val goalProofEntity5 = createGoalProofEntity(userEntity1, goalEntity1, URL("url5"), Comment("comment5"))
-        goalProofRepository.saveAll(listOf(
-            goalProofEntity1,
-            goalProofEntity2,
-            goalProofEntity3,
-            goalProofEntity4,
-            goalProofEntity5
-        ))
+        goalProofRepository.saveAll(
+            listOf(
+                goalProofEntity1,
+                goalProofEntity2,
+                goalProofEntity3,
+                goalProofEntity4,
+                goalProofEntity5
+            )
+        )
 
         // when // then
         assertThatThrownBy { goalProofService.findAllByGoalIdAndUserId(goalId = goalEntity1.id, userId = -1L) }
@@ -321,13 +329,15 @@ class GoalProofServiceTest : IntegrationTestSupport {
         val goalProofEntity3 = createGoalProofEntity(userEntity2, goalEntity1, URL("url3"), Comment("comment3"))
         val goalProofEntity4 = createGoalProofEntity(userEntity2, goalEntity2, URL("url4"), Comment("comment4"))
         val goalProofEntity5 = createGoalProofEntity(userEntity1, goalEntity1, URL("url5"), Comment("comment5"))
-        goalProofRepository.saveAll(listOf(
-            goalProofEntity1,
-            goalProofEntity2,
-            goalProofEntity3,
-            goalProofEntity4,
-            goalProofEntity5
-        ))
+        goalProofRepository.saveAll(
+            listOf(
+                goalProofEntity1,
+                goalProofEntity2,
+                goalProofEntity3,
+                goalProofEntity4,
+                goalProofEntity5
+            )
+        )
 
         // when
         val count = goalProofService.countAllByGoalId(goalEntity1.id)
@@ -354,13 +364,15 @@ class GoalProofServiceTest : IntegrationTestSupport {
         val goalProofEntity3 = createGoalProofEntity(userEntity2, goalEntity1, URL("url3"), Comment("comment3"))
         val goalProofEntity4 = createGoalProofEntity(userEntity2, goalEntity2, URL("url4"), Comment("comment4"))
         val goalProofEntity5 = createGoalProofEntity(userEntity1, goalEntity1, URL("url5"), Comment("comment5"))
-        goalProofRepository.saveAll(listOf(
-            goalProofEntity1,
-            goalProofEntity2,
-            goalProofEntity3,
-            goalProofEntity4,
-            goalProofEntity5
-        ))
+        goalProofRepository.saveAll(
+            listOf(
+                goalProofEntity1,
+                goalProofEntity2,
+                goalProofEntity3,
+                goalProofEntity4,
+                goalProofEntity5
+            )
+        )
 
         // when // then
         assertThatThrownBy { goalProofService.countAllByGoalId(-1L) }

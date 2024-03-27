@@ -15,7 +15,7 @@ class UserInfoArgumentResolver : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.hasParameterAnnotation(GetAuth::class.java)
-            && parameter.parameter.type == UserInfo::class.java
+                && parameter.parameter.type == UserInfo::class.java
     }
 
     override fun resolveArgument(
