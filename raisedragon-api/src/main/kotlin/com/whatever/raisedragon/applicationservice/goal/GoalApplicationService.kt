@@ -44,7 +44,7 @@ class GoalApplicationService(
             startDate = request.startDate,
             endDate = request.endDate
         )
-        if (!request.gifticonUrl.isNullOrBlank() && request.goalType == GoalType.BILLING) {
+        if (request.gifticonUrl != null && request.gifticonUrl.value.isNotBlank() && request.goalType == GoalType.BILLING) {
             val gifticon = gifticonService.create(request.userId, request.gifticonUrl)
             goalGifticonService.create(
                 goalId = goal.id,

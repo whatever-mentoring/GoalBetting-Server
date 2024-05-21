@@ -44,7 +44,7 @@ class GoalGifticonApplicationService(
             executionMessage = "기프티콘을 업로드하는 중, 이미 다짐 수행이 시작되어 업로드할 수 없습니다."
         )
 
-        val gifticon = gifticonService.create(request.userId, request.uploadedURL)
+        val gifticon = gifticonService.create(request.userId, URL(request.uploadedURL))
         val goalGifticon = goalGifticonService.create(
             goalId = request.goalId,
             gifticonId = gifticon.id

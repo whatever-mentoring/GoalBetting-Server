@@ -1,5 +1,6 @@
 package com.whatever.raisedragon.applicationservice.goal.dto
 
+import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.domain.goal.GoalType
 import java.time.LocalDateTime
@@ -10,7 +11,7 @@ data class GoalCreateServiceRequest(
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
     val userId: Long,
-    val gifticonUrl: String? = null
+    val gifticonUrl: URL? = null
 )
 
 data class GoalModifyServiceRequest(

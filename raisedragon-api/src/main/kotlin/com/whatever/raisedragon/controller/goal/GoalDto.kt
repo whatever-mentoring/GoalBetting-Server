@@ -4,6 +4,7 @@ import com.whatever.raisedragon.applicationservice.goal.dto.GoalCreateServiceReq
 import com.whatever.raisedragon.applicationservice.goal.dto.GoalDeleteServiceRequest
 import com.whatever.raisedragon.applicationservice.goal.dto.GoalModifyServiceRequest
 import com.whatever.raisedragon.common.aop.badwordfilter.ValidateBadWord
+import com.whatever.raisedragon.domain.gifticon.URL
 import com.whatever.raisedragon.domain.goal.Content
 import com.whatever.raisedragon.domain.goal.GoalType
 import io.swagger.v3.oas.annotations.media.Schema
@@ -39,7 +40,7 @@ fun GoalCreateRequest.toServiceRequest(userId: Long): GoalCreateServiceRequest =
     startDate = startDate,
     endDate = endDate,
     userId = userId,
-    gifticonUrl = gifticonUrl
+    gifticonUrl = gifticonUrl?.let { URL(it) }
 )
 
 @Schema(description = "[Request] 다짐 수정")

@@ -18,12 +18,12 @@ class GifticonService(
     @Transactional
     fun create(
         userId: Long,
-        url: String,
+        url: URL,
     ): Gifticon {
         val gifticon = gifticonRepository.save(
             GifticonEntity(
                 userEntity = userRepository.findById(userId).orElseThrow(notFoundExceptionSupplier),
-                url = URL(url)
+                url = url
             )
         )
         return gifticon.toDto()
