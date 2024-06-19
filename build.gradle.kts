@@ -20,10 +20,6 @@ allprojects {
     }
 }
 
-application {
-    mainClass = "com.whatever.raisedragon.RaiseDragonApiApplicationKt"
-}
-
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
@@ -145,12 +141,12 @@ subprojects {
             jvmTarget = "17"
         }
     }
+}
 
-    tasks.bootJar {
-        enabled = false
-    }
+tasks.bootJar {
+    enabled = false
+}
 
-    tasks.jar {
-        enabled = true
-    }
+tasks.jar {
+    enabled = true
 }

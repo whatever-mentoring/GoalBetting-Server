@@ -1,11 +1,3 @@
-tasks.bootJar {
-    enabled = true
-}
-
-tasks.jar {
-    enabled = false
-}
-
 val swaggerVersion: String by project.extra
 
 dependencies {
